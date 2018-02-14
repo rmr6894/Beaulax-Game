@@ -1,0 +1,9 @@
+This will be the order of the variables saved using the Save/Load method in the game. If you ever write code for saving to a save file or loading, make sure you use this
+basic structure. If you have any questions, feel free to let me know.
+		-	Cole Boggan
+
+1- Flashlight State (Boolean): Wether player has flashlight or not
+2- Jumppack State (Boolean): Wether player has Jumppack or not
+3- Spacesuit State (Boolean): Wether player has Spacesuit or not
+4- Access Level State (Int): Gives the player's Access Level, from 0-4
+5- Location (Vector2): Gives the player's Location, (x,y) coordinates
