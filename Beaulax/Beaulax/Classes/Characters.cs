@@ -13,9 +13,9 @@ namespace Beaulax.Classes
     class Characters: MovingObjects
     {
         //Common attributes
-        private int health;
-        private int damage;
-        private Vector2 location;
+        protected int health;
+        protected int damage;
+        protected Vector2 location;
 
         //Gets and Sets for attributes
         public int characterHealth { get { return health; } set { health = value; } }
