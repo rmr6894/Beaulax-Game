@@ -6,4 +6,5 @@ basic structure. If you have any questions, feel free to let me know.
 2- Jumppack State (Boolean): Wether player has Jumppack or not
 3- Spacesuit State (Boolean): Wether player has Spacesuit or not
 4- Access Level State (Int): Gives the player's Access Level, from 0-4
-5- Location (Vector2): Gives the player's Location, (x,y) coordinates
+5- Location X (Int): Gives player's location in x-axis
+6- Location Y (Int): Gives player's location in y-axis
