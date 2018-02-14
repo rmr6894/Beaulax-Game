@@ -19,7 +19,7 @@ namespace Beaulax.Classes
         private int accessLevel;
 
         // constructors
-        public Character()
+        public Player()
         {
             hasFlashlight = false;
             hasJumppack = false;
