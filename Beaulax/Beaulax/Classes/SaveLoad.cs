@@ -18,7 +18,8 @@ namespace Beaulax.Classes
         private bool jumppack;
         private bool spaceSuit;
         private int access;
-        private Vector2 location;
+        private int locationX;
+        private int locationY;
 
         // default contructor
         public SaveLoad()
@@ -27,26 +28,24 @@ namespace Beaulax.Classes
             jumppack = false;
             spaceSuit = false;
             access = 0;
-            location = new Vector2(0,0);
+            locationX = 0;
+            locationY = 0;
         }
 
         // methods
 
         /// <summary>
-        /// Allows you to save the various states of the game.
+        /// This method saves the player's data to an external file, allowing them to reaccess it later.
         /// </summary>
-        /// <param name="flash"></param>
-        /// <param name="jump"></param>
-        /// <param name="suit"></param>
-        /// <param name="acc"></param>
-        /// <param name="loc"></param>
-        public void Save(bool flash, bool jump, bool suit, int acc, Vector2 loc)
+        /// <param name="p"></param>
+        public void Save(Player p)
         {
-            flashlight = flash;
-            jumppack = jump;
-            spaceSuit = suit;
-            access = acc;
-            location = loc;
+            flashlight = p.HasFlashlight;
+            jumppack = p.HasJumppack;
+            spaceSuit = p.HasSpacesuit;
+            access = p.AccessLevel;
+            locationX = p.Location;
+            locationY = p.Location;
 
             Stream outStream = File.OpenWrite("save.data");
 
@@ -56,7 +55,8 @@ namespace Beaulax.Classes
             output.Write(jumppack);
             output.Write(spaceSuit);
             output.Write(access);
-            output.Write(location);
+            output.Write(locationX);
+            output.Write(locationY);
 
             output.Close();
 
