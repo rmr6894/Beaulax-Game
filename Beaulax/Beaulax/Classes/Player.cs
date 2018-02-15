@@ -25,10 +25,10 @@ namespace Beaulax.Classes
             hasJumppack = false;
             hasSpacesuit = false;
             accessLevel = 0;
-            location = 0;
+            location = new Vector2(0,0);
         }
 
-        public Character(bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, int ilocation)
+        public Player(bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, Vector2 ilocation)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -42,7 +42,7 @@ namespace Beaulax.Classes
         public bool HasJumppack { get { return hasJumppack; } set { hasJumppack = value; } }
         public bool HasSpacesuit { get { return hasSpacesuit; } set { hasSpacesuit = value; } }
         public int AccessLevel { get { return accessLevel; } set { accessLevel = value; } }
-        public int Location { get { return location; } set { location = value; } }
+        public Vector2 Location { get { return location; } set { location = value; } }
 
         // method
         public override string ToString()
