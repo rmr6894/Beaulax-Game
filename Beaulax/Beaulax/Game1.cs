@@ -18,6 +18,10 @@ namespace Beaulax
         SpriteBatch spriteBatch;
         Vector2 initialPosition;
 
+        // set up game states
+        enum GameState { MainMenu, Options, Gameplay, PauseMenu, MapView, GameOver };
+        GameState currentState;
+
         // call classes
         Classes.Player player;
 
@@ -81,7 +85,31 @@ namespace Beaulax
                 Exit();
 
             // TODO: Add your update logic here
-            player.Movement();
+
+            // run the update method for the current game state
+            switch (currentState)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu(gameTime);
+                    break;
+                case GameState.Options:
+                    UpdateOptions(gameTime);
+                    break;
+                case GameState.Gameplay:
+                    UpdateGameplay(gameTime);
+                    break;
+                case GameState.PauseMenu:
+                    UpdatePauseMenu(gameTime);
+                    break;
+                case GameState.MapView:
+                    UpdateMapView(gameTime);
+                    break;
+                case GameState.GameOver:
+                    UpdateGameOver(gameTime);
+                    break;
+                default:
+                    break;
+            }
 
             base.Update(gameTime);
         }
@@ -96,10 +124,155 @@ namespace Beaulax
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            player.Draw(spriteBatch);
+
+            // run the draw method for the current game state
+            switch (currentState)
+            {
+                case GameState.MainMenu:
+                    DrawMainMenu(gameTime);
+                    break;
+                case GameState.Options:
+                    DrawOptions(gameTime);
+                    break;
+                case GameState.Gameplay:
+                    DrawGameplay(gameTime);
+                    break;
+                case GameState.PauseMenu:
+                    DrawPauseMenu(gameTime);
+                    break;
+                case GameState.MapView:
+                    DrawMapView(gameTime);
+                    break;
+                case GameState.GameOver:
+                    DrawGameOver(gameTime);
+                    break;
+                default:
+                    break;
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        #region MainMenu Methods
+        /// <summary>
+        /// Logic for updating the main menu.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdateMainMenu(GameTime gameTime)
+        {
+            currentState = GameState.Gameplay;
+        }
+
+        /// <summary>
+        /// This is called when the main menu should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawMainMenu(GameTime deltaTime)
+        {
+            
+        }
+        #endregion
+
+        #region Options Methods
+        /// <summary>
+        /// Logic for updating the options menu.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdateOptions(GameTime gameTime)
+        {
+
+        }
+
+        /// <summary>
+        /// This is called when the options menu should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawOptions(GameTime deltaTime)
+        {
+
+        }
+        #endregion
+
+        #region Gameplay Methods
+        /// <summary>
+        /// Logic for updating the gameplay.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdateGameplay(GameTime gameTime)
+        {
+            player.Movement();
+        }
+
+        /// <summary>
+        /// This is called when the gameplay should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawGameplay(GameTime deltaTime)
+        {
+            player.Draw(spriteBatch);
+        }
+        #endregion
+
+        #region PauseMenu Methods
+        /// <summary>
+        /// Logic for updating the pause menu.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdatePauseMenu(GameTime gameTime)
+        {
+
+        }
+
+        /// <summary>
+        /// This is called when the pause menu should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawPauseMenu(GameTime deltaTime)
+        {
+
+        }
+        #endregion
+
+        #region MapView Methods
+        /// <summary>
+        /// Logic for updating the map view.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdateMapView(GameTime gameTime)
+        {
+
+        }
+
+        /// <summary>
+        /// This is called when the map view should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawMapView(GameTime deltaTime)
+        {
+
+        }
+        #endregion
+
+        #region GameOver Methods
+        /// <summary>
+        /// Logic for updating the game over screen.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void UpdateGameOver(GameTime gameTime)
+        {
+
+        }
+
+        /// <summary>
+        /// This is called when the game over screen should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        void DrawGameOver(GameTime deltaTime)
+        {
+
+        }
+        #endregion
     }
 }
