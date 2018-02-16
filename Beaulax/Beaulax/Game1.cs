@@ -17,7 +17,9 @@ namespace Beaulax
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Vector2 initialPosition;
-        
+
+        // call classes
+        Classes.Player Jim;
 
         public Game1()
         {
@@ -28,9 +30,6 @@ namespace Beaulax
             graphics.PreferredBackBufferWidth = 1200;
             graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
-
-            // call classes
-            Classes.Player Jim;
         }
 
         /// <summary>
