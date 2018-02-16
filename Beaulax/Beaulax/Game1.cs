@@ -19,7 +19,7 @@ namespace Beaulax
         Vector2 initialPosition;
 
         // call classes
-        Classes.Player Jim;
+        Classes.Player player;
 
         public Game1()
         {
@@ -41,7 +41,10 @@ namespace Beaulax
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
+            // set initial position of the player
+            initialPosition = new Vector2(50, 500);
+
             base.Initialize();
         }
 
@@ -55,6 +58,7 @@ namespace Beaulax
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, initialPosition);
         }
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace Beaulax
                 Exit();
 
             // TODO: Add your update logic here
+            player.Movement();
 
             base.Update(gameTime);
         }
@@ -90,6 +95,9 @@ namespace Beaulax
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            player.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

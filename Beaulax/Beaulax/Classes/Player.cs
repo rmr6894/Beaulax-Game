@@ -31,9 +31,10 @@ namespace Beaulax.Classes
             accessLevel = 0;
             location = new Vector2(0, 0);
             hasJumped = true;
+            
         }
 
-        public Player(bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, Vector2 ilocation)
+        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, Vector2 ilocation)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -42,6 +43,7 @@ namespace Beaulax.Classes
             location = ilocation;
             initialLocation = ilocation;
             hasJumped = true;
+            this.sprite = sprite;
         }
 
         // properties
