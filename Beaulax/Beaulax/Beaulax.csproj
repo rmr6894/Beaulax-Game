@@ -54,11 +54,11 @@
     <Compile Include="Classes\Narratives.cs" />
     <Compile Include="Classes\Obstacles.cs" />
     <Compile Include="Classes\Platforms.cs" />
-    <Compile Include="Classes\Player.cs" />
     <Compile Include="Classes\PlayerInput.cs" />
     <Compile Include="Classes\SaveLoad.cs" />
     <Compile Include="Classes\StaticObjects.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Classes\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

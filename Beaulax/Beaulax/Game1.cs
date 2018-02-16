@@ -11,6 +11,8 @@ namespace Beaulax
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Vector2 initialPosition;
+        
 
         public Game1()
         {
