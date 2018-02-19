@@ -1,4 +1,4 @@
-![progress pictures](https://imgur.com/LcPSbYF)
+![progress pictures](https://i.imgur.com/LcPSbYF.png)
 # Beaulax
 G.D.A.P.S. II Group Project
 
