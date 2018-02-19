@@ -24,6 +24,7 @@ namespace Beaulax
 
         // call classes
         Classes.Player player;
+        Classes.SaveLoad saver;
 
         public Game1()
         {
@@ -48,6 +49,7 @@ namespace Beaulax
 
             // set initial position of the player
             initialPosition = new Vector2(50, 500);
+            saver = new Classes.SaveLoad();
 
             base.Initialize();
         }
@@ -62,7 +64,7 @@ namespace Beaulax
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, initialPosition);
+            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, initialPosition);
         }
 
         /// <summary>
@@ -203,6 +205,18 @@ namespace Beaulax
         void UpdateGameplay(GameTime gameTime)
         {
             player.Movement();
+
+            KeyboardState kb = Keyboard.GetState();
+
+            if (kb.IsKeyDown(Keys.T))
+            {
+                saver.Save(player);
+            }
+
+            if (kb.IsKeyDown(Keys.G))
+            {
+                saver.Load(player);
+            }
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ namespace Beaulax.Classes
         private int access;
         private int locationX;
         private int locationY;
+        private bool hasJumped;
 
         private float floatX; // need this to set the vector for location later
         private float floatY; // need this to set the vector for location later
@@ -35,6 +36,7 @@ namespace Beaulax.Classes
             locationY = 0;
             floatX = 0.0f;
             floatY = 0.0f;
+            hasJumped = false;
         }
 
         // methods
@@ -51,6 +53,7 @@ namespace Beaulax.Classes
             access = p.AccessLevel;
             locationX = (int)p.Location.X;
             locationY = (int)p.Location.Y;
+            hasJumped = p.HasJumped;
 
             Stream outStream = File.OpenWrite("saveFile.data");
 
@@ -62,8 +65,9 @@ namespace Beaulax.Classes
             output.Write(access);
             output.Write(locationX);
             output.Write(locationY);
+            output.Write(hasJumped);
 
-            output.Close();
+            outStream.Close();
 
             Console.WriteLine("Save complete");
         }
@@ -74,9 +78,12 @@ namespace Beaulax.Classes
         /// <param name="p"></param>
         public void Load(Player p)
         {
+            
+            Stream inStream;
+
             try
             {
-                Stream inStream = File.OpenRead("saveFile.data");
+                inStream = File.OpenRead("saveFile.data");
 
                 BinaryReader input = new BinaryReader(inStream);
 
@@ -86,9 +93,12 @@ namespace Beaulax.Classes
                 p.AccessLevel = input.ReadInt32();
                 floatX = (float)input.ReadInt32();
                 floatY = (float)input.ReadInt32();
+                p.HasJumped = input.ReadBoolean();
 
                 p.Location = new Vector2(floatX, floatY);
                 Console.WriteLine(p);
+
+                inStream.Close();
             }
             catch (Exception e)
             {
