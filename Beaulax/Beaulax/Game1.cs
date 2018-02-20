@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -208,14 +209,23 @@ namespace Beaulax
 
             KeyboardState kb = Keyboard.GetState();
 
+            // save the game
             if (kb.IsKeyDown(Keys.T))
             {
                 saver.Save(player);
             }
 
+            // load the game
             if (kb.IsKeyDown(Keys.G))
             {
                 saver.Load(player);
+            }
+
+            // pause the game by switching to the pause menu state
+            if (kb.IsKeyDown(Keys.Enter))
+            {
+                currentState = GameState.PauseMenu;
+                Thread.Sleep(150);
             }
         }
 
@@ -236,7 +246,14 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdatePauseMenu(GameTime gameTime)
         {
+            KeyboardState kb = Keyboard.GetState();
 
+            // resume the game by switching to the gameplay state
+            if (kb.IsKeyDown(Keys.Enter))
+            {
+                currentState = GameState.Gameplay;
+                Thread.Sleep(150);
+            }
         }
 
         /// <summary>
