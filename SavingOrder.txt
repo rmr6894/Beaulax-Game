@@ -8,3 +8,4 @@ basic structure. If you have any questions, feel free to let me know.
 4- Access Level State (Int): Gives the player's Access Level, from 0-4
 5- Location X (Int): Gives player's location in x-axis
 6- Location Y (Int): Gives player's location in y-axis
+7- HasJumped State (Boolean): Tells whether teh player has jumped before saving
