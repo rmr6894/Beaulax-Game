@@ -28,7 +28,9 @@ namespace Beaulax
         int buttonWidth;
         int buttonHeight;
         int buttonX;
-        int buttonY;
+        int newGameButtonY;
+        int loadGameButtonY;
+        int optionsButtonY;
 
         // screen size attributes
         int screenWidth = 1200;
@@ -189,7 +191,30 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdateMainMenu(GameTime gameTime)
         {
-            currentState = GameState.Gameplay;
+            MouseState mState = Mouse.GetState();
+
+            // check if the mouse is in the X position that the buttons are
+            if (mState.X >= buttonX && mState.X <= buttonX + buttonWidth)
+            {
+                // start new game when new game button is left clicked
+                if (mState.Y >= newGameButtonY && mState.Y <= newGameButtonY + buttonHeight && mState.LeftButton == ButtonState.Pressed)
+                {
+                    currentState = GameState.Gameplay;
+                }
+
+                // load the saved game when load game button is left clicked
+                if (mState.Y >= loadGameButtonY && mState.Y <= loadGameButtonY + buttonHeight && mState.LeftButton == ButtonState.Pressed)
+                {
+                    saver.Load(player);
+                    currentState = GameState.Gameplay;
+                }
+
+                // open the options menu when the options button is left clicked
+                if (mState.Y >= optionsButtonY && mState.Y <= optionsButtonY + buttonHeight && mState.LeftButton == ButtonState.Pressed)
+                {
+                    currentState = GameState.Options;
+                }
+            }
         }
 
         /// <summary>
@@ -210,13 +235,15 @@ namespace Beaulax
 
             // calculate button locations
             buttonX = (screenWidth - buttonWidth) / 2;
-            buttonY = (int)(screenHeight / (12f / 7f));
+            newGameButtonY = (int)(screenHeight / (12f / 7f));
+            loadGameButtonY = (int)(newGameButtonY + buttonHeight + screenHeight * (1f / 72f));
+            optionsButtonY = (int)(loadGameButtonY + buttonHeight + screenHeight * (1f / 72f));
 
             // draw the main menu
             spriteBatch.Draw(mainMenuBackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-            spriteBatch.Draw(newGameButton, new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), Color.White);
-            spriteBatch.Draw(loadGameButton, new Rectangle(buttonX, (int)(buttonY + buttonHeight + screenHeight * (1f / 72f)), buttonWidth, buttonHeight), Color.White);
-            spriteBatch.Draw(optionsButton, new Rectangle(buttonX, (int)(buttonY + buttonHeight * 2 + screenHeight * (2f / 72f)), buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(newGameButton, new Rectangle(buttonX, newGameButtonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(loadGameButton, new Rectangle(buttonX, loadGameButtonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(optionsButton, new Rectangle(buttonX, optionsButtonY, buttonWidth, buttonHeight), Color.White);
         }
         #endregion
 
