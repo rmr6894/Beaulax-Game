@@ -15,9 +15,26 @@ namespace Beaulax
     /// </summary>
     public class Game1 : Game
     {
+        #region Declarations
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Vector2 initialPosition;
+
+        // main menu textures and attributes
+        Texture2D mainMenuBackground;
+        Texture2D newGameButton;
+        Texture2D loadGameButton;
+        Texture2D optionsButton;
+        int buttonWidth;
+        int buttonHeight;
+        int buttonX;
+        int buttonY;
+
+        // screen size attributes
+        int screenWidth = 1200;
+        int screenHeight = 720;
+        double widthScaleFactor = 1;
+        double heightScaleFactor = 1;
 
         // set up game states
         enum GameState { MainMenu, Options, Gameplay, PauseMenu, MapView, GameOver };
@@ -26,6 +43,7 @@ namespace Beaulax
         // call classes
         Classes.Player player;
         Classes.SaveLoad saver;
+        #endregion
 
         public Game1()
         {
@@ -33,8 +51,8 @@ namespace Beaulax
             Content.RootDirectory = "Content";
 
             // set the default resolution
-            graphics.PreferredBackBufferWidth = 1200;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
         }
 
@@ -66,6 +84,12 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, initialPosition);
+
+            // load main menu assets
+            mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
+            newGameButton = Content.Load<Texture2D>("Main Menu Assets/NewGame");
+            loadGameButton = Content.Load<Texture2D>("Main Menu Assets/LoadGame");
+            optionsButton = Content.Load<Texture2D>("Main Menu Assets/Options");
         }
 
         /// <summary>
@@ -174,7 +198,25 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawMainMenu(GameTime deltaTime)
         {
-            
+            IsMouseVisible = true;
+
+            // calculate scale factors for appropriately resizing depending on screen resolution
+            widthScaleFactor = (float)mainMenuBackground.Width / screenWidth;
+            heightScaleFactor = (float)mainMenuBackground.Height / screenHeight;
+
+            // calculate the size of the buttons
+            buttonWidth = (int)(newGameButton.Width / widthScaleFactor);
+            buttonHeight = (int)(newGameButton.Height / heightScaleFactor);
+
+            // calculate button locations
+            buttonX = (screenWidth - buttonWidth) / 2;
+            buttonY = (int)(screenHeight / (12f / 7f));
+
+            // draw the main menu
+            spriteBatch.Draw(mainMenuBackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+            spriteBatch.Draw(newGameButton, new Rectangle(buttonX, buttonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(loadGameButton, new Rectangle(buttonX, (int)(buttonY + buttonHeight + screenHeight * (1f / 72f)), buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(optionsButton, new Rectangle(buttonX, (int)(buttonY + buttonHeight * 2 + screenHeight * (2f / 72f)), buttonWidth, buttonHeight), Color.White);
         }
         #endregion
 
@@ -194,7 +236,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawOptions(GameTime deltaTime)
         {
-
+            IsMouseVisible = true;
         }
         #endregion
 
@@ -235,6 +277,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameplay(GameTime deltaTime)
         {
+            IsMouseVisible = false;
             player.Draw(spriteBatch);
         }
         #endregion
@@ -262,7 +305,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawPauseMenu(GameTime deltaTime)
         {
-
+            IsMouseVisible = true;
         }
         #endregion
 
@@ -282,7 +325,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawMapView(GameTime deltaTime)
         {
-
+            IsMouseVisible = true;
         }
         #endregion
 
@@ -302,7 +345,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameOver(GameTime deltaTime)
         {
-
+            IsMouseVisible = true;
         }
         #endregion
     }
