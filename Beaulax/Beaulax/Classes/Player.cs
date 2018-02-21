@@ -24,6 +24,10 @@ namespace Beaulax.Classes
         private Vector2 initialLocation;
         private float speed;
 
+        // defining states
+        KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
+        KeyboardState prevState;  // will give the precious state of pressed keys
+
         // constructors
         public Player()
         {
@@ -72,7 +76,7 @@ namespace Beaulax.Classes
         /// </summary>
         public void Movement()
         {
-            KeyboardState state = Keyboard.GetState();
+            state = Keyboard.GetState();
             location += velocity;
 
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
@@ -95,13 +99,8 @@ namespace Beaulax.Classes
                 location.Y -= 10f;
                 velocity.Y = -5f;
                 hasJumped = true;
-                hasDoubleJumped = true;
             }
-            else if (state.IsKeyUp(Keys.W))
-            {
-                hasDoubleJumped = false;
-            }
-            else if (state.IsKeyDown(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false)
+            else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false)
             {
                 location.Y -= 10f;
                 velocity.Y = -5f;
@@ -125,6 +124,8 @@ namespace Beaulax.Classes
             {
                 velocity.Y = 0f;
             }
+
+            prevState = state;
         }
 
         public void Draw(SpriteBatch spriteBatch)
