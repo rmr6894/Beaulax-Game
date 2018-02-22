@@ -15,12 +15,13 @@ namespace Beaulax.Classes
         //Common attributes
         protected int health;
         protected int damage;
+        protected float speed;
         protected Vector2 location;
 
         //Gets and Sets for attributes
-        public int characterHealth { get { return health; } set { health = value; } }
-        public int characterDamage { get { return damage; } set { damage = value; } }
-        public Vector2 characterLocation { get { return location; } set { location = value; } }
+        public int CharacterHealth { get { return health; } set { health = value; } }
+        public int CharacterDamage { get { return damage; } set { damage = value; } }
+        public Vector2 CharacterLocation { get { return location; } set { location = value; } }
 
         public Characters()
         {

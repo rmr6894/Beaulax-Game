@@ -22,7 +22,7 @@ namespace Beaulax.Classes
         private bool hasJumped;
         private bool hasDoubleJumped;
         private Vector2 initialLocation;
-        private float speed;
+        private float jumpHeight;
 
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
@@ -39,9 +39,10 @@ namespace Beaulax.Classes
             hasJumped = true;
             hasDoubleJumped = true;
             speed = 3f;
+            jumpHeight = 10f;
         }
 
-        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, Vector2 ilocation)
+        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -53,6 +54,7 @@ namespace Beaulax.Classes
             hasDoubleJumped = true;
             this.sprite = sprite;
             speed = ispeed;
+            jumpHeight = ijumpHeight;
         }
 
         // properties
