@@ -10,7 +10,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Beaulax.Classes
 {
-    class GameObjects
+    class GameObjects: ICollidableObjects
     {
+        // attributes
+        protected Rectangle location; // gives an x,y location and a seze (width, height)
+
+        // constructor
+        public GameObjects(Rectangle iLocation)
+        {
+            location = iLocation;
+        }
     }
 }

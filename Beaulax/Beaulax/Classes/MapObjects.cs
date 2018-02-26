@@ -12,5 +12,11 @@ namespace Beaulax.Classes
 {
     class MapObjects: StaticObjects
     {
+        // constructor
+        public MapObjects(Rectangle location) : base(location)
+        {
+
+        }
+
     }
 }

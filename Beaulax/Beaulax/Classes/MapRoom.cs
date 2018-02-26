@@ -12,5 +12,11 @@ namespace Beaulax.Classes
 {
     class MapRoom: MapObjects
     {
+        // constructor
+        public MapRoom(Rectangle location) : base(location)
+        {
+
+        }
+
     }
 }

@@ -12,5 +12,11 @@ namespace Beaulax.Classes
 {
     class Platforms: MovingObjects
     {
+        // constructor
+        public Platforms(Rectangle location, int ispeed) : base(location, ispeed)
+        {
+
+        }
+
     }
 }

@@ -12,5 +12,11 @@ namespace Beaulax.Classes
 {
     class Item: Collectibles
     {
+        // constructor
+        public Item(Rectangle location) : base(location)
+        {
+
+        }
+
     }
 }

@@ -12,5 +12,11 @@ namespace Beaulax.Classes
 {
     class Obstacles: StaticObjects
     {
+        // constructor
+        public Obstacles(Rectangle location) : base(location)
+        {
+
+        }
+
     }
 }

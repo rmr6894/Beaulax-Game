@@ -22,9 +22,6 @@ namespace Beaulax.Classes
         private int locationY;
         private bool hasJumped;
 
-        private float floatX; // need this to set the vector for location later
-        private float floatY; // need this to set the vector for location later
-
         // default contructor
         public SaveLoad()
         {
@@ -34,8 +31,6 @@ namespace Beaulax.Classes
             access = 0;
             locationX = 0;
             locationY = 0;
-            floatX = 0.0f;
-            floatY = 0.0f;
             hasJumped = false;
         }
 
@@ -91,11 +86,11 @@ namespace Beaulax.Classes
                 p.HasJumppack = input.ReadBoolean();
                 p.HasSpacesuit = input.ReadBoolean();
                 p.AccessLevel = input.ReadInt32();
-                floatX = (float)input.ReadInt32();
-                floatY = (float)input.ReadInt32();
+                locationX = input.ReadInt32();
+                locationY = input.ReadInt32();
                 p.HasJumped = input.ReadBoolean();
 
-                p.Location = new Vector2(floatX, floatY);
+                p.Location = new Rectangle(locationX, locationY, p.Location.Width, p.Location.Height);
                 Console.WriteLine(p);
 
                 inStream.Close();

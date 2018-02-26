@@ -12,5 +12,13 @@ namespace Beaulax.Classes
 {
     class MovingObjects: GameObjects
     {
+        // attributes
+        protected int speed;
+
+        // constructor
+        public MovingObjects(Rectangle location, int iSpeed) : base(location)
+        {
+            speed = iSpeed;
+        }
     }
 }
