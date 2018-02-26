@@ -125,6 +125,12 @@
     <Content Include="Content\Main Menu Assets\Beaulax Menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Main Menu Assets\ColdHot Studios.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Main Menu Assets\Exit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Main Menu Assets\LoadGame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
