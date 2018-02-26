@@ -48,8 +48,8 @@ namespace Beaulax
         #endregion
 
         // screen size attributes
-        int screenWidth = 1920;
-        int screenHeight = 1080;
+        int screenWidth = 1200;
+        int screenHeight = 720;
         double widthScaleFactor = 1;
         double heightScaleFactor = 1;
 
