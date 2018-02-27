@@ -102,11 +102,10 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition);
-<<<<<<< HEAD
+
 
             cursor = Content.Load<Texture2D>("cursor");
-=======
->>>>>>> parent of bc7d250... updated player initializer
+
 
             // load main menu assets
             mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
@@ -133,7 +132,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Delete))
                 Exit();
 
             // TODO: Add your update logic here
@@ -412,7 +411,7 @@ namespace Beaulax
             }
 
             // pause the game by switching to the pause menu state
-            if (kb.IsKeyDown(Keys.Enter))
+            if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.PauseMenu;
                 Thread.Sleep(150);
@@ -439,7 +438,7 @@ namespace Beaulax
             KeyboardState kb = Keyboard.GetState();
 
             // resume the game by switching to the gameplay state
-            if (kb.IsKeyDown(Keys.Enter))
+            if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.Gameplay;
                 Thread.Sleep(150);

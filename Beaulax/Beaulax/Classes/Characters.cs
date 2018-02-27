@@ -37,7 +37,7 @@ namespace Beaulax.Classes
             location = v;
         }
 
-        public string ToString()
+        public virtual string ToString()
         {
             return "Health: " + health + "; Damage: " + damage + "; Location: (" + location.X + ", " + location.Y + ")";
         }

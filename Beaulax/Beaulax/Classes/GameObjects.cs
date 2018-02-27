@@ -12,17 +12,17 @@ namespace Beaulax.Classes
 {
     class GameObjects
     {
-<<<<<<< HEAD
+
         // attributes
-        protected Rectangle location; // gives an x,y location and a seze (width, height)
+        //protected Rectangle location; // gives an x,y location and a size (width, height)
         protected bool hasCollided; // stores the information of whether an object has collided with another
 
         // properties
-        public Rectangle Location
+        /*public Rectangle Location
         {
             get { return location; }
             set { location = value; }
-        }
+        }*/
 
         public bool HasCollided
         {
@@ -30,7 +30,7 @@ namespace Beaulax.Classes
             set { hasCollided = value; }
         }
 
-        // constructor
+        /*// constructor
         public GameObjects(Rectangle iLocation)
         {
             location = iLocation;
@@ -48,9 +48,8 @@ namespace Beaulax.Classes
             }
 
             return false;
-        }
+        }*/
 
-=======
->>>>>>> parent of d590be7... Made a shit ton of changes
+
     }
 }
