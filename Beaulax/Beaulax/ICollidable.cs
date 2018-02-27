@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Beaulax
 {
-    interface ICollidableObjects
+    interface ICollidable
     {
-
+        void CollisionFunction();
     }
 }
