@@ -34,7 +34,7 @@ namespace Beaulax.Classes
             location = r;
         }
 
-        public override string ToString()
+        public string ToString()
         {
             return "Health: " + health + "; Damage: " + damage + "; Location: (" + location.X + ", " + location.Y + ")";
         }
