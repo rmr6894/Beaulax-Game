@@ -19,6 +19,7 @@ namespace Beaulax
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Vector2 initialPosition;
+        Texture2D cursor;
 
         #region Main Menu
         // main menu textures and attributes
@@ -32,6 +33,8 @@ namespace Beaulax
         bool loadGameButtonHover = false;
         bool optionsButtonHover = false;
         bool exitButtonHover = false;
+        double widthScaleFactor = 1;
+        double heightScaleFactor = 1;
         int buttonWidth;
         int buttonHeight;
         int buttonX;
@@ -50,8 +53,6 @@ namespace Beaulax
         // screen size attributes
         int screenWidth = 1200;
         int screenHeight = 720;
-        double widthScaleFactor = 1;
-        double heightScaleFactor = 1;
 
         // set up game states
         enum GameState { MainMenu, Options, Gameplay, PauseMenu, MapView, GameOver };
@@ -101,6 +102,8 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3, 10f, new Rectangle((int)initialPosition.X, (int)initialPosition.Y, 422, 585), 15, 15);
+
+            cursor = Content.Load<Texture2D>("cursor");
 
             // load main menu assets
             mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
@@ -301,8 +304,6 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawMainMenu(GameTime deltaTime)
         {
-            IsMouseVisible = true;
-
             // calculate scale factors for appropriately resizing buttons depending on screen resolution
             widthScaleFactor = (float)mainMenuBackground.Width / screenWidth;
             heightScaleFactor = (float)mainMenuBackground.Height / screenHeight;
@@ -357,6 +358,9 @@ namespace Beaulax
             {
                 spriteBatch.Draw(exitButton, new Rectangle(exitButtonX, exitButtonY, exitButtonDimension, exitButtonDimension), Color.White);
             }
+
+            // draw the custom cursor
+            DrawCursor(spriteBatch);
         }
         #endregion
 
@@ -376,7 +380,8 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawOptions(GameTime deltaTime)
         {
-            IsMouseVisible = true;
+            // draw the custom cursor
+            DrawCursor(spriteBatch);
         }
         #endregion
 
@@ -417,7 +422,6 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameplay(GameTime deltaTime)
         {
-            IsMouseVisible = false;
             player.Draw(spriteBatch);
         }
         #endregion
@@ -445,7 +449,8 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawPauseMenu(GameTime deltaTime)
         {
-            IsMouseVisible = true;
+            // draw the custom cursor
+            DrawCursor(spriteBatch);
         }
         #endregion
 
@@ -465,7 +470,8 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawMapView(GameTime deltaTime)
         {
-            IsMouseVisible = true;
+            // draw the custom cursor
+            DrawCursor(spriteBatch);
         }
         #endregion
 
@@ -485,8 +491,26 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameOver(GameTime deltaTime)
         {
-            IsMouseVisible = true;
+            // draw the custom cursor
+            DrawCursor(spriteBatch);
         }
         #endregion
+
+        /// <summary>
+        /// Draws the custom cursor at the location of the mouse.
+        /// </summary>
+        /// <param name="spriteBatch">Current SpriteBatch being used for drawing.</param>
+        public void DrawCursor(SpriteBatch spriteBatch)
+        {
+            MouseState mState = Mouse.GetState();
+
+            // calculate the size and location of the cursor
+            int cursorDimensions = (int)(screenWidth * (11f / 400f));
+            int cursorX = mState.X - cursorDimensions / 2;
+            int cursorY = mState.Y - cursorDimensions / 2;
+
+            // draw the cursor
+            spriteBatch.Draw(cursor, new Rectangle(cursorX, cursorY, cursorDimensions, cursorDimensions), Color.LightGray);
+        }
     }
 }
