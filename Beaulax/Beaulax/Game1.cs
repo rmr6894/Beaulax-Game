@@ -102,8 +102,11 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition);
+<<<<<<< HEAD
 
             cursor = Content.Load<Texture2D>("cursor");
+=======
+>>>>>>> parent of bc7d250... updated player initializer
 
             // load main menu assets
             mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
