@@ -12,12 +12,5 @@ namespace Beaulax.Classes
 {
     class Narratives: Collectibles
     {
-
-        // constructor
-        public Narratives(Rectangle location) : base(location)
-        {
-
-        }
-
     }
 }

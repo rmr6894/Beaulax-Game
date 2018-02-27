@@ -12,11 +12,5 @@ namespace Beaulax.Classes
 {
     class Computer: MapObjects 
     {
-        // constructor
-        public Computer(Rectangle location) : base(location)
-        {
-
-        }
-
     }
 }

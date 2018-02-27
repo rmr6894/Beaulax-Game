@@ -12,10 +12,5 @@ namespace Beaulax.Classes
 {
     class StaticObjects: GameObjects
     {
-        // constructor
-        public StaticObjects(Rectangle location) : base(location)
-        {
-
-        }
     }
 }

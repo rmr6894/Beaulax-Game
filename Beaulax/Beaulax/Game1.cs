@@ -130,7 +130,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Delete))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
@@ -409,7 +409,7 @@ namespace Beaulax
             }
 
             // pause the game by switching to the pause menu state
-            if (kb.IsKeyDown(Keys.Escape))
+            if (kb.IsKeyDown(Keys.Enter))
             {
                 currentState = GameState.PauseMenu;
                 Thread.Sleep(150);
@@ -436,7 +436,7 @@ namespace Beaulax
             KeyboardState kb = Keyboard.GetState();
 
             // resume the game by switching to the gameplay state
-            if (kb.IsKeyDown(Keys.Escape))
+            if (kb.IsKeyDown(Keys.Enter))
             {
                 currentState = GameState.Gameplay;
                 Thread.Sleep(150);

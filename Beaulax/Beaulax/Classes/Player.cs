@@ -35,23 +35,25 @@ namespace Beaulax.Classes
             hasJumppack = false;
             hasSpacesuit = false;
             accessLevel = 0;
-            location = new Rectangle(0, 0, 422, 585);
+            location = new Vector2(0, 0);
             hasJumped = true;
             hasDoubleJumped = true;
-            speed = 3;
+            speed = 3f;
             jumpHeight = 10f;
         }
 
-        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, int ispeed, float ijumpHeight, Rectangle ilocation, int health, int damage) : base( health, damage, ilocation, ispeed)
+        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
             hasSpacesuit = ihasSpacesuit;
             accessLevel = iaccessLevel;
-            initialLocation = new Vector2 (ilocation.X, ilocation.Y);
+            location = ilocation;
+            initialLocation = ilocation;
             hasJumped = true;
             hasDoubleJumped = true;
             this.sprite = sprite;
+            speed = ispeed;
             jumpHeight = ijumpHeight;
         }
 
@@ -60,7 +62,7 @@ namespace Beaulax.Classes
         public bool HasJumppack { get { return hasJumppack; } set { hasJumppack = value; } }
         public bool HasSpacesuit { get { return hasSpacesuit; } set { hasSpacesuit = value; } }
         public int AccessLevel { get { return accessLevel; } set { accessLevel = value; } }
-        public Rectangle Location { get { return location; } set { location = value; } }
+        public Vector2 Location { get { return location; } set { location = value; } }
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
         public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
@@ -77,8 +79,7 @@ namespace Beaulax.Classes
         public void Movement()
         {
             state = Keyboard.GetState();
-            location.X += (int)velocity.X;
-            location.Y += (int)velocity.Y;
+            location += velocity;
 
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
             {
@@ -97,13 +98,13 @@ namespace Beaulax.Classes
 
             if (state.IsKeyDown(Keys.W) && hasJumped == false) // initiates jump if the player is on the ground and W is pressed
             {
-                location.Y -= 10;
+                location.Y -= 10f;
                 velocity.Y = -5f;
                 hasJumped = true;
             }
             else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false)
             {
-                location.Y -= 10;
+                location.Y -= 10f;
                 velocity.Y = -5f;
                 hasDoubleJumped = true;
             }
@@ -118,7 +119,7 @@ namespace Beaulax.Classes
             {
                 hasJumped = false;
                 hasDoubleJumped = false;
-                location.Y = (int)initialLocation.Y;
+                location.Y = initialLocation.Y;
             }
 
             if (hasJumped == false) // makes sure the sprite does not move passed the floor

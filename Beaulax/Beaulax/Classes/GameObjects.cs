@@ -12,6 +12,7 @@ namespace Beaulax.Classes
 {
     class GameObjects
     {
+<<<<<<< HEAD
         // attributes
         protected Rectangle location; // gives an x,y location and a seze (width, height)
         protected bool hasCollided; // stores the information of whether an object has collided with another
@@ -49,5 +50,7 @@ namespace Beaulax.Classes
             return false;
         }
 
+=======
+>>>>>>> parent of d590be7... Made a shit ton of changes
     }
 }

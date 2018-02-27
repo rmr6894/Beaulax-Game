@@ -20,11 +20,11 @@ namespace Beaulax.Classes
         {
             health = 100;
             damage = 10;
-            speed = 4;
-            location = new Rectangle(0, 0, 100, 100);
+            speed = 4f;
+            location = new Vector2(0, 0);
         }
 
-        public Enemy(int iHealth, int iDamage, int iSpeed, Rectangle iLocation)
+        public Enemy(int iHealth, int iDamage, float iSpeed, Vector2 iLocation)
         {
             health = iHealth;
             damage = iDamage;
