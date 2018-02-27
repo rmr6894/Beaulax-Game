@@ -101,7 +101,7 @@ namespace Beaulax
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3, 10f, new Rectangle((int)initialPosition.X, (int)initialPosition.Y, 422, 585), 15, 15);
+            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition);
 
             cursor = Content.Load<Texture2D>("cursor");
 
