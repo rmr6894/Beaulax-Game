@@ -15,7 +15,7 @@ namespace Beaulax.Classes
         // attributes
         private Player player;
         private Texture2D enemySprite;
-        private int jumpHeight; // may not need, not sure if enemies will jump...
+        private float jumpHeight; // may not need, not sure if enemies will jump...
 
         // constructor
         public Enemy()
@@ -35,6 +35,12 @@ namespace Beaulax.Classes
             speed = iSpeed;
             location = iLocation;
         }
+
+        // parameters
+        public int Health { get { return health; } set { health = value; } }
+        public int Damage { get { return damage; } set { damage = value; } }
+        public float Speed { get { return speed; } set { speed = value; } }
+        public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
         public void Movement()
         {

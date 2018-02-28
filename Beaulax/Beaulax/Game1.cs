@@ -462,7 +462,8 @@ namespace Beaulax
             // load the game
             if (kb.IsKeyDown(Keys.G))
             {
-                saver.LoadExt(player);
+                saver.LoadExtP(player);
+                //saver.LoadExtE(enemy)
             }
 
             // pause the game by switching to the pause menu state

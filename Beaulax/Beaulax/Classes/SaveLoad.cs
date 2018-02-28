@@ -106,7 +106,7 @@ namespace Beaulax.Classes
             }
         }
 
-        public void LoadExt(Player p)
+        public void LoadExtP(Player p)
         {
             Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\playerSave.data"); // reads in file from external tool // creates a stream
 
@@ -128,6 +128,31 @@ namespace Beaulax.Classes
             catch (Exception e)
             {
                 Console.WriteLine(e);
+            }
+            finally
+            {
+                inStream.Close();
+            }
+        }
+
+        public void LoadExtE(Enemy e)
+        {
+            Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\enemySave.data"); // reads in file from external tool // creates a stream
+
+            try
+            {
+                BinaryReader input = new BinaryReader(inStream); // opens binary reader
+
+                e.CharacterHealth = input.ReadInt32();
+                e.CharacterDamage = input.ReadInt32();
+                e.Speed = (float)input.ReadInt32();
+                e.JumpHeight = (float)input.ReadInt32();
+
+                inStream.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
             finally
             {
