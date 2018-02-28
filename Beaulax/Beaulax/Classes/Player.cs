@@ -23,6 +23,9 @@ namespace Beaulax.Classes
         private bool hasDoubleJumped;
         private Vector2 initialLocation;
         private float jumpHeight;
+        private int width;
+        private int height;
+        Rectangle hitBox;
 
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
@@ -40,9 +43,10 @@ namespace Beaulax.Classes
             hasDoubleJumped = true;
             speed = 3f;
             jumpHeight = 10f;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
         }
 
-        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation)
+        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -55,6 +59,9 @@ namespace Beaulax.Classes
             this.sprite = sprite;
             speed = ispeed;
             jumpHeight = ijumpHeight;
+            width = iWidth;
+            height = iHeight;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
         }
 
         // properties
@@ -66,6 +73,8 @@ namespace Beaulax.Classes
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
         public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
+        public float Speed { get { return speed; } set { speed = value; } }
+        public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
 
         // method
         public override string ToString()
@@ -78,8 +87,7 @@ namespace Beaulax.Classes
         /// </summary>
         public void Movement()
         {
-            state = Keyboard.GetState();
-            location += velocity;
+            state = Keyboard.GetState(); // moved location change to update
 
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
             {
@@ -98,13 +106,13 @@ namespace Beaulax.Classes
 
             if (state.IsKeyDown(Keys.W) && hasJumped == false) // initiates jump if the player is on the ground and W is pressed
             {
-                location.Y -= 10f;
+                location.Y -= jumpHeight;
                 velocity.Y = -5f;
                 hasJumped = true;
             }
-            else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false)
+            else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false) // double jump: checks if the player presses w a second time, ensures they have the jumppack and haven't already double-jumped
             {
-                location.Y -= 10f;
+                location.Y -= 5f;
                 velocity.Y = -5f;
                 hasDoubleJumped = true;
             }
@@ -130,9 +138,16 @@ namespace Beaulax.Classes
             prevState = state;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            location += velocity;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, new Rectangle((int)location.X, (int)location.Y, 50, 74), Color.White);
+            spriteBatch.Draw(sprite, new Rectangle(hitBox.X - 15, hitBox.Y, width, height), Color.Red);
+            spriteBatch.Draw(sprite, hitBox, Color.White);
         }
     }
 }

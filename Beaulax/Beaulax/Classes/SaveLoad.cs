@@ -105,5 +105,34 @@ namespace Beaulax.Classes
                 Console.WriteLine("Warning: File Does Not Exist");
             }
         }
+
+        public void LoadExt(Player p)
+        {
+            Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\playerSave.data"); // reads in file from external tool // creates a stream
+
+            try
+            {
+                BinaryReader input = new BinaryReader(inStream); // opens binary reader
+
+                p.CharacterHealth = input.ReadInt32();
+                p.CharacterDamage = input.ReadInt32();
+                p.Speed = (float)input.ReadInt32();
+                p.JumpHeight = (float)input.ReadInt32();
+                p.AccessLevel = input.ReadInt32();
+                p.HasJumppack = input.ReadBoolean();
+                p.HasFlashlight = input.ReadBoolean();
+                p.HasSpacesuit = input.ReadBoolean();
+
+                inStream.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                inStream.Close();
+            }
+        }
     }
 }

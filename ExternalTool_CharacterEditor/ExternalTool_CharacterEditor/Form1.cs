@@ -15,7 +15,7 @@ namespace ExternalTool_CharacterEditor
     {
 
         // attributes: easier to save to files.
-        public float pSpeed, eSpeed;
+        public int pSpeed, eSpeed;
         public int pDamage, eDamage;
         public int pHealth, eHealth;
         public int pJumpHeight, eJumpHeight;

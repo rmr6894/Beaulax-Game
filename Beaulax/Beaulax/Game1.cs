@@ -178,7 +178,7 @@ namespace Beaulax
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition);
+            player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
 
             // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
@@ -462,7 +462,7 @@ namespace Beaulax
             // load the game
             if (kb.IsKeyDown(Keys.G))
             {
-                saver.Load(player);
+                saver.LoadExt(player);
             }
 
             // pause the game by switching to the pause menu state
@@ -471,6 +471,8 @@ namespace Beaulax
                 currentState = GameState.PauseMenu;
                 Thread.Sleep(100);
             }
+
+            player.Update(gameTime);
         }
 
         /// <summary>
