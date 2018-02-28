@@ -50,6 +50,9 @@ namespace Beaulax
         int exitButtonY;
         #endregion
 
+        // pause menu textures and attributes
+        Texture2D pauseMenuBackground;
+
         // screen size attributes
         int screenWidth = 1200;
         int screenHeight = 720;
@@ -103,9 +106,8 @@ namespace Beaulax
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition);
 
-
+            // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
-
 
             // load main menu assets
             mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
@@ -114,6 +116,9 @@ namespace Beaulax
             optionsButton = Content.Load<Texture2D>("Main Menu Assets/Options");
             exitButton = Content.Load<Texture2D>("Main Menu Assets/Exit");
             teamName = Content.Load<Texture2D>("Main Menu Assets/ColdHot Studios");
+
+            // load pause menu assets
+            pauseMenuBackground = Content.Load<Texture2D>("Pause Menu Assets/Pause BG");
         }
 
         /// <summary>
