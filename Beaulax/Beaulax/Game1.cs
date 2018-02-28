@@ -21,6 +21,13 @@ namespace Beaulax
         Vector2 initialPosition;
         Texture2D cursor;
 
+        // attributes for scaling and buttons
+        double widthScaleFactor = 1;
+        double heightScaleFactor = 1;
+        int buttonWidth;
+        int buttonHeight;
+        int buttonX;
+
         #region Main Menu
         // main menu textures and attributes
         Texture2D mainMenuBackground;
@@ -29,29 +36,39 @@ namespace Beaulax
         Texture2D optionsButton;
         Texture2D exitButton;
         Texture2D teamName;
+        Rectangle teamNameRectangle;
         bool newGameButtonHover = false;
         bool loadGameButtonHover = false;
         bool optionsButtonHover = false;
         bool exitButtonHover = false;
-        double widthScaleFactor = 1;
-        double heightScaleFactor = 1;
-        int buttonWidth;
-        int buttonHeight;
-        int buttonX;
         int newGameButtonY;
         int loadGameButtonY;
         int optionsButtonY;
-        int teamNameWidth;
-        int teamNameHeight;
-        int teamNameX;
-        int teamNameY;
         int exitButtonDimension;
         int exitButtonX;
         int exitButtonY;
         #endregion
 
+        #region Pause Menu
         // pause menu textures and attributes
         Texture2D pauseMenuBackground;
+        Texture2D pauseText;
+        Texture2D resumeGameButton;
+        Texture2D saveGameButton;
+        Texture2D exitToMenuButton;
+        Texture2D helpButton;
+        Rectangle pauseTextRectangle;
+        bool resumeGameButtonHover = false;
+        bool saveGameButtonHover = false;
+        bool exitToMenuButtonHover = false;
+        bool helpButtonHover = false;
+        int resumeGameButtonY;
+        int saveGameButtonY;
+        int exitToMenuButtonY;
+        int helpButtonDimension;
+        int helpButtonX;
+        int helpButtonY;
+        #endregion
 
         // screen size attributes
         int screenWidth = 1200;
@@ -91,6 +108,63 @@ namespace Beaulax
             initialPosition = new Vector2(50, 500);
             saver = new Classes.SaveLoad();
 
+            #region Calculations for Menu Assets
+            // scale factors for appropriately resizing buttons depending on screen resolution
+            widthScaleFactor = 3440f / screenWidth;
+            heightScaleFactor = 2160f / screenHeight;
+
+            // size of the buttons
+            buttonWidth = (int)(922 / widthScaleFactor);
+            buttonHeight = (int)(181 / heightScaleFactor);
+
+            // button X position
+            buttonX = (screenWidth - buttonWidth) / 2;
+
+            #region Main Menu
+            // button y positions
+            newGameButtonY = (int)(screenHeight * (7f / 12f));
+            loadGameButtonY = (int)(newGameButtonY + buttonHeight + screenHeight * (1f / 72f));
+            optionsButtonY = loadGameButtonY + 2 * buttonHeight;
+
+            // team name size
+            teamNameRectangle.Width = (int)(screenWidth * (91f / 600f));
+            teamNameRectangle.Height = (int)(screenHeight * (1f / 12f));
+
+            // team name location
+            teamNameRectangle.X = (int)(screenWidth * (1f / 80f));
+            teamNameRectangle.Y = (int)(screenHeight - screenHeight * (1f / 48f) - teamNameRectangle.Height);
+
+            // exit button size
+            exitButtonDimension = (int)(screenWidth * (1f / 24f));
+
+            // exit button location
+            exitButtonX = (int)(screenWidth - screenWidth * (1f / 120f) - exitButtonDimension);
+            exitButtonY = (int)(screenHeight * (1f / 72f));
+            #endregion
+
+            #region Pause Menu
+            // button y positions
+            resumeGameButtonY = (int)(screenHeight * (35f / 72f));
+            saveGameButtonY = (int)(resumeGameButtonY + buttonHeight + screenHeight * (1f / 72f));
+            exitToMenuButtonY = saveGameButtonY + 2 * buttonHeight;
+
+            // pause text size
+            pauseTextRectangle.Width = (int)(screenWidth * (1f / 3f));
+            pauseTextRectangle.Height = (int)(screenHeight * (13f / 60f));
+
+            // pause text location
+            pauseTextRectangle.X = (screenWidth - pauseTextRectangle.Width) / 2;
+            pauseTextRectangle.Y = (int)(screenHeight * (169f / 1440f));//(4f / 48f));
+
+            // help button size
+            helpButtonDimension = (int)(screenWidth * (7f / 120f));
+
+            // help button location
+            helpButtonX = (int)(screenWidth - screenWidth * (1f / 120f) - helpButtonDimension);
+            helpButtonY = (int)(screenHeight * (1f / 72f));
+            #endregion
+            #endregion
+
             base.Initialize();
         }
 
@@ -119,6 +193,11 @@ namespace Beaulax
 
             // load pause menu assets
             pauseMenuBackground = Content.Load<Texture2D>("Pause Menu Assets/Pause BG");
+            pauseText = Content.Load<Texture2D>("Pause Menu Assets/PauseText");
+            resumeGameButton = Content.Load<Texture2D>("Pause Menu Assets/ResumeGame");
+            saveGameButton = Content.Load<Texture2D>("Pause Menu Assets/SaveGame");
+            exitToMenuButton = Content.Load<Texture2D>("Pause Menu Assets/ExitToMenu");
+            helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
         }
 
         /// <summary>
@@ -311,41 +390,12 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawMainMenu(GameTime deltaTime)
         {
-            // calculate scale factors for appropriately resizing buttons depending on screen resolution
-            widthScaleFactor = (float)mainMenuBackground.Width / screenWidth;
-            heightScaleFactor = (float)mainMenuBackground.Height / screenHeight;
-
-            // calculate the size of the buttons
-            buttonWidth = (int)(newGameButton.Width / widthScaleFactor);
-            buttonHeight = (int)(newGameButton.Height / heightScaleFactor);
-
-            // calculate button locations
-            buttonX = (screenWidth - buttonWidth) / 2;
-            newGameButtonY = (int)(screenHeight / (12f / 7f));
-            loadGameButtonY = (int)(newGameButtonY + buttonHeight + screenHeight * (1f / 72f));
-            optionsButtonY = loadGameButtonY + 2 * buttonHeight;
-
-            // calculate team name size
-            teamNameWidth = (int)(screenWidth * (91f / 600f));
-            teamNameHeight = (int)(screenHeight * (1f / 12f));
-
-            // calculate team name location
-            teamNameX = (int)(screenWidth * (1f / 80f));
-            teamNameY = (int)(screenHeight - screenHeight * (1f / 48f) - teamNameHeight);
-
-            // calculate exit button size
-            exitButtonDimension = (int)(screenWidth * (1f / 24f));
-
-            // calculate exit button location
-            exitButtonX = (int)(screenWidth - screenWidth * (1f / 120f) - exitButtonDimension);
-            exitButtonY = (int)(screenHeight * (1f / 72f));
-            
             // draw the main menu
             spriteBatch.Draw(mainMenuBackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             spriteBatch.Draw(newGameButton, new Rectangle(buttonX, newGameButtonY, buttonWidth, buttonHeight), Color.Gray);
             spriteBatch.Draw(loadGameButton, new Rectangle(buttonX, loadGameButtonY, buttonWidth, buttonHeight), Color.Gray);
             spriteBatch.Draw(optionsButton, new Rectangle(buttonX, optionsButtonY, buttonWidth, buttonHeight), Color.Gray);
-            spriteBatch.Draw(teamName, new Rectangle(teamNameX, teamNameY, teamNameWidth, teamNameHeight), Color.White);
+            spriteBatch.Draw(teamName, teamNameRectangle, Color.White);
             spriteBatch.Draw(exitButton, new Rectangle(exitButtonX, exitButtonY, exitButtonDimension, exitButtonDimension), Color.Gray);
 
             // if the mouse is over a button then make that button lighter
@@ -419,7 +469,7 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.PauseMenu;
-                Thread.Sleep(150);
+                Thread.Sleep(100);
             }
         }
 
@@ -446,7 +496,7 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.Gameplay;
-                Thread.Sleep(150);
+                Thread.Sleep(100);
             }
         }
 
@@ -456,6 +506,14 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawPauseMenu(GameTime deltaTime)
         {
+            // draw the pause menu
+            spriteBatch.Draw(pauseMenuBackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+            spriteBatch.Draw(pauseText, pauseTextRectangle, Color.White);
+            spriteBatch.Draw(resumeGameButton, new Rectangle(buttonX, resumeGameButtonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(saveGameButton, new Rectangle(buttonX, saveGameButtonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(exitToMenuButton, new Rectangle(buttonX, exitToMenuButtonY, buttonWidth, buttonHeight), Color.White);
+            spriteBatch.Draw(helpButton, new Rectangle(helpButtonX, helpButtonY, helpButtonDimension, helpButtonDimension), Color.White);
+
             // draw the custom cursor
             DrawCursor(spriteBatch);
         }
