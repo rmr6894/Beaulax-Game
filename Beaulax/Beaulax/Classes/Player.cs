@@ -26,6 +26,7 @@ namespace Beaulax.Classes
         private int width;
         private int height;
         Rectangle hitBox;
+        private bool takingDamage = false;
 
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
@@ -44,6 +45,7 @@ namespace Beaulax.Classes
             speed = 3f;
             jumpHeight = 10f;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            health = 100;
         }
 
         public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
@@ -62,6 +64,7 @@ namespace Beaulax.Classes
             width = iWidth;
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            health = 100;
         }
 
         // properties
@@ -75,6 +78,7 @@ namespace Beaulax.Classes
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
+        public Rectangle HitBox { get { return hitBox; } }
 
         // method
         public override string ToString()
@@ -138,6 +142,23 @@ namespace Beaulax.Classes
             prevState = state;
         }
 
+        /// <summary>
+        /// Dameges the player by a certain number.
+        /// </summary>
+        /// <param name="damage">amount of damage that the player takes</param>
+        public void TakeDamage(int damage)
+        {
+            if (health > 0)
+            {
+                health -= damage;
+            }
+            if (health < 0)
+            {
+                health = 0;
+            }
+            takingDamage = true;
+        }
+
         public void Update(GameTime gameTime)
         {
             location += velocity;
@@ -146,8 +167,17 @@ namespace Beaulax.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(sprite, new Rectangle(hitBox.X - 15, hitBox.Y, width, height), Color.Red);
-            spriteBatch.Draw(sprite, hitBox, Color.White);
+            // if the player is taking damage then they turn red
+            if (takingDamage)
+            {
+                spriteBatch.Draw(sprite, hitBox, Color.Red);
+                takingDamage = false;
+            }
+            // if the player is not taking damage then draw them normally
+            else
+            {
+                spriteBatch.Draw(sprite, hitBox, Color.White);
+            }
         }
     }
 }

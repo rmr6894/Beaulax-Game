@@ -126,6 +126,9 @@
     <Content Include="Content\cursor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Main Menu Assets\Beaulax Menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

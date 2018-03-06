@@ -81,6 +81,7 @@ namespace Beaulax
         // call classes
         Classes.Player player;
         Classes.SaveLoad saver;
+        Classes.Enemy enemy;
         #endregion
 
         public Game1()
@@ -179,6 +180,7 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("the_smallest_space_pirate"), true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
+            enemy = new Classes.Enemy(player, this.Content.Load<Texture2D>("Enemy"), 100, 10, 2f, new Vector2(600, 500), 50, 74);
 
             // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
@@ -450,6 +452,8 @@ namespace Beaulax
         void UpdateGameplay(GameTime gameTime)
         {
             player.Movement();
+            enemy.Movement();
+            enemy.Attack();
 
             KeyboardState kb = Keyboard.GetState();
 
@@ -473,6 +477,11 @@ namespace Beaulax
                 Thread.Sleep(100);
             }
 
+            if (player.CharacterHealth <= 0)
+            {
+                currentState = GameState.GameOver;
+            }
+
             player.Update(gameTime);
         }
 
@@ -482,6 +491,7 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameplay(GameTime deltaTime)
         {
+            enemy.Draw(spriteBatch);
             player.Draw(spriteBatch);
         }
         #endregion

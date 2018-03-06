@@ -15,7 +15,17 @@ namespace Beaulax.Classes
         // attributes
         private Player player;
         private Texture2D enemySprite;
+        private Rectangle attackBox;
+        private Rectangle hitBox;
         private float jumpHeight; // may not need, not sure if enemies will jump...
+        private int width;
+        private int height;
+        private int direction = 1;
+        private int counterWhileStill = 0;
+        private int counterWhileMoving = 0;
+        private int timesToMoveBySpeed = 30;
+        private int cyclesToStandStill = 55;
+        private int counterWhileDamaging = 0;
 
         // constructor
         public Enemy()
@@ -24,9 +34,12 @@ namespace Beaulax.Classes
             damage = 10;
             speed = 4f;
             location = new Vector2(0, 0);
+            width = 50;
+            height = 74;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
         }
 
-        public Enemy(Player iPlayer, Texture2D sprite, int iHealth, int iDamage, float iSpeed, Vector2 iLocation)
+        public Enemy(Player iPlayer, Texture2D sprite, int iHealth, int iDamage, float iSpeed, Vector2 iLocation, int iWidth, int iHeight)
         {
             player = iPlayer;
             enemySprite = sprite;
@@ -34,6 +47,9 @@ namespace Beaulax.Classes
             damage = iDamage;
             speed = iSpeed;
             location = iLocation;
+            width = iWidth;
+            height = iHeight;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
         }
 
         // parameters
@@ -41,41 +57,96 @@ namespace Beaulax.Classes
         public int Damage { get { return damage; } set { damage = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
+        public Rectangle HitBox { get { return hitBox; } }
 
         public void Movement()
         {
-            // if the player is within a certain range of the enemy then the enemy moves towards the player
-            if (Math.Abs(player.Location.X - location.X) <= 300)
+            // if the player is within a certain range of the enemy then the enemy moves towards the player at full speed
+            if (Math.Abs(player.Location.X - location.X) <= 250)
             {
-                // add code for moving the enemy towards the player
+                // if the player is to the right of the enemy then move the enemy right
+                if (player.Location.X - location.X > 30)
+                {
+                    location.X += speed;
+                }
+                // if the player is to the left of the enemy then move the enemy left
+                else if (player.Location.X - location.X < -30)
+                {
+                    location.X -= speed;
+                }
             }
             // otherwise move the enemy randomly
             else
             {
-                int direction = 0;
-                int moveDistance = 0;
                 Random rng = new Random();
 
-                moveDistance = rng.Next(0, 5);
-
-                // randomly pick a direction. -1 for left, 1 for right
-                direction = rng.Next(0, 1);
-                if (direction == 0)
+                // while moving
+                if (counterWhileStill >= cyclesToStandStill && counterWhileMoving <= timesToMoveBySpeed)
                 {
-                    direction = -1;
+                    if (counterWhileMoving == timesToMoveBySpeed)
+                    {
+                        cyclesToStandStill = rng.Next(40, 70);
+                        counterWhileStill = 0;
+                    }
+                    location.X += (direction * (speed / 2));
+                    counterWhileMoving++;
                 }
-
-                // move by the speed a random number of times
-                for (int i = 0; i < moveDistance; i++)
+                // while still
+                else
                 {
-                    location.X += (direction * speed);
+                    // randomly pick a direction. -1 for left, 1 for right
+                    direction = rng.Next(0, 2);
+                    if (direction == 0)
+                    {
+                        direction = -1;
+                    }
+
+                    // randomly pick a number of times that the enemy will move by the speed value
+                    timesToMoveBySpeed = rng.Next(10, 50);
+
+                    // update the counters
+                    counterWhileMoving = 0;
+                    counterWhileStill++;
+                }                
+            }
+            // update the hitbox location
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+        }
+
+        public void Attack()
+        {
+            if (Math.Abs(player.Location.X - location.X) <= 100)
+            {
+                // if the player is to the right of the enemy then move the enemy right
+                if (player.Location.X - location.X > 0)
+                {
+                    attackBox = new Rectangle((int)(location.X + width / 4), (int)location.Y, width, height);
+                }
+                // if the player is to the left of the enemy then move the enemy left
+                else if (player.Location.X - location.X < 0)
+                {
+                    attackBox = new Rectangle((int)(location.X - width / 4), (int)location.Y, width, height);
+                }
+            }
+
+            // if the attack hits the player then the player takes damage
+            if (attackBox.Intersects(player.HitBox))
+            {
+                if (counterWhileDamaging >= 20)
+                {
+                    counterWhileDamaging = 0;
+                    player.TakeDamage(damage);
+                }
+                else
+                {
+                    counterWhileDamaging++;
                 }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(enemySprite, new Rectangle((int)location.X, (int)location.Y, 50, 74), Color.White);
+            spriteBatch.Draw(enemySprite, hitBox, Color.White);
         }
     }
 }
