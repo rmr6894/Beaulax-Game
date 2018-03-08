@@ -18,11 +18,21 @@ namespace Beaulax.Classes
         private bool hasSpacesuit;
         private int accessLevel;
         private Texture2D sprite;
+        private Texture2D laser;
         private Vector2 velocity;
         private bool hasJumped;
         private bool hasDoubleJumped;
         private Vector2 initialLocation;
         private float jumpHeight;
+<<<<<<< HEAD
+=======
+        private int width;
+        private int height;
+        Rectangle hitBox;
+        Rectangle attackBox;
+        private float laserRotation = 0f;
+        private bool firingLaser = false;
+>>>>>>> 6a60018bd01758af2536c2469570eb76d6ea8006
         private bool takingDamage = false;
 
         // defining states
@@ -45,7 +55,7 @@ namespace Beaulax.Classes
             health = 100;
         }
 
-        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
+        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -61,6 +71,7 @@ namespace Beaulax.Classes
             width = iWidth;
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            laser = laserBeam;
             health = 100;
         }
 
@@ -137,6 +148,71 @@ namespace Beaulax.Classes
             prevState = state;
         }
 
+        public void Attack(Enemy enemy)
+        {
+            state = Keyboard.GetState();
+
+            attackBox = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2), 800, 30);
+
+            // do nothing if both right and left are pressed
+            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Left)) { firingLaser = false; }
+            // do nothing if both up and down are pressed
+            else if (state.IsKeyDown(Keys.Up) && state.IsKeyDown(Keys.Down)) { firingLaser = false; }
+            // shoot diagonally up right
+            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Up))
+            {
+                laserRotation = (7 * (float)Math.PI) / 4;
+                firingLaser = true;
+            }
+            // shoot diagonally down right
+            else if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Down))
+            {
+                laserRotation = (float)Math.PI / 4;
+                firingLaser = true;
+            }
+            // shoot diagonally up left
+            else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Up))
+            {
+                laserRotation = (5 * (float)Math.PI) / 4;
+                firingLaser = true;
+            }
+            // shoot diagonally down left
+            else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Down))
+            {
+                laserRotation = (3 * (float)Math.PI) / 4;
+                firingLaser = true;
+            }
+            // shoot right
+            else if (state.IsKeyDown(Keys.Right))
+            {
+                laserRotation = 0f;
+                firingLaser = true;
+            }
+            // shoot left
+            else if (state.IsKeyDown(Keys.Left))
+            {
+                laserRotation = (float)Math.PI;
+                firingLaser = true;
+            }
+            // shoot up
+            else if (state.IsKeyDown(Keys.Up))
+            {
+                laserRotation = (3 * (float)Math.PI) / 2;
+                firingLaser = true;
+            }
+            // shoot down
+            else if (state.IsKeyDown(Keys.Down))
+            {
+                laserRotation = (float)Math.PI / 2;
+                firingLaser = true;
+            }
+            // if nothing is pressed then the player is not firing the laser
+            else
+            {
+                firingLaser = false;
+            }
+        }
+
         /// <summary>
         /// Dameges the player by a certain number.
         /// </summary>
@@ -162,6 +238,12 @@ namespace Beaulax.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // if the player is shooting then draw the laser
+            if (firingLaser)
+            {
+                spriteBatch.Draw(laser, attackBox, new Rectangle(0, 0, laser.Width, laser.Height), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
+            }
+
             // if the player is taking damage then they turn red
             if (takingDamage)
             {
