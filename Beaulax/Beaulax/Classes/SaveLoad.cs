@@ -147,6 +147,8 @@ namespace Beaulax.Classes
                 e.CharacterDamage = input.ReadInt32();
                 e.Speed = (float)input.ReadInt32();
                 e.JumpHeight = (float)input.ReadInt32();
+                e.AtkRange = input.ReadInt32();
+
 
                 inStream.Close();
             }

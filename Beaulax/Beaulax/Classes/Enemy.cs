@@ -16,7 +16,6 @@ namespace Beaulax.Classes
         private Player player;
         private Texture2D enemySprite;
         private Rectangle attackBox;
-        private Rectangle hitBox;
         private float jumpHeight; // may not need, not sure if enemies will jump...
         private int width;
         private int height;
@@ -26,6 +25,8 @@ namespace Beaulax.Classes
         private int timesToMoveBySpeed = 30;
         private int cyclesToStandStill = 55;
         private int counterWhileDamaging = 0;
+        private int atkRange;
+        private int atkSpeed;
 
         // constructor
         public Enemy()
@@ -37,9 +38,11 @@ namespace Beaulax.Classes
             width = 50;
             height = 74;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            atkRange = 250;
+            atkSpeed = 20;
         }
 
-        public Enemy(Player iPlayer, Texture2D sprite, int iHealth, int iDamage, float iSpeed, Vector2 iLocation, int iWidth, int iHeight)
+        public Enemy(Player iPlayer, Texture2D sprite, int iHealth, int iDamage, float iSpeed, Vector2 iLocation, int iWidth, int iHeight, int atkRng, int atkSpd)
         {
             player = iPlayer;
             enemySprite = sprite;
@@ -50,6 +53,8 @@ namespace Beaulax.Classes
             width = iWidth;
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            atkRange = atkRng;
+            atkSpeed = atkSpd;
         }
 
         // parameters
@@ -57,12 +62,12 @@ namespace Beaulax.Classes
         public int Damage { get { return damage; } set { damage = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
-        public Rectangle HitBox { get { return hitBox; } }
+        public int AtkRange { get { return atkRange; } set { atkRange = value; } }
 
         public void Movement()
         {
             // if the player is within a certain range of the enemy then the enemy moves towards the player at full speed
-            if (Math.Abs(player.Location.X - location.X) <= 250)
+            if (Math.Abs(player.Location.X - location.X) <= atkRange)
             {
                 // if the player is to the right of the enemy then move the enemy right
                 if (player.Location.X - location.X > 30)
@@ -115,8 +120,6 @@ namespace Beaulax.Classes
 
         public void Attack()
         {
-            if (Math.Abs(player.Location.X - location.X) <= 100)
-            {
                 // if the player is to the right of the enemy then move the enemy right
                 if (player.Location.X - location.X > 0)
                 {
@@ -127,15 +130,14 @@ namespace Beaulax.Classes
                 {
                     attackBox = new Rectangle((int)(location.X - width / 4), (int)location.Y, width, height);
                 }
-            }
 
             // if the attack hits the player then the player takes damage
             if (attackBox.Intersects(player.HitBox))
             {
-                if (counterWhileDamaging >= 20)
+                if (counterWhileDamaging >= atkSpeed)
                 {
                     counterWhileDamaging = 0;
-                    player.TakeDamage(damage);
+                    player.TakeDamage(damage, this);
                 }
                 else
                 {
@@ -147,6 +149,7 @@ namespace Beaulax.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(enemySprite, hitBox, Color.White);
+            spriteBatch.Draw(enemySprite, attackBox, Color.Red);
         }
     }
 }

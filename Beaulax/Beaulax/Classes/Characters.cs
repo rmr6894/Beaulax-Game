@@ -16,7 +16,6 @@ namespace Beaulax.Classes
         protected int health;
         protected int damage;
         protected float speed;
-        protected Vector2 location;
 
         //Gets and Sets for attributes
         public int CharacterHealth { get { return health; } set { health = value; } }

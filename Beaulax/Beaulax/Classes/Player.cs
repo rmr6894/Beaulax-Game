@@ -23,9 +23,6 @@ namespace Beaulax.Classes
         private bool hasDoubleJumped;
         private Vector2 initialLocation;
         private float jumpHeight;
-        private int width;
-        private int height;
-        Rectangle hitBox;
         private bool takingDamage = false;
 
         // defining states
@@ -72,13 +69,11 @@ namespace Beaulax.Classes
         public bool HasJumppack { get { return hasJumppack; } set { hasJumppack = value; } }
         public bool HasSpacesuit { get { return hasSpacesuit; } set { hasSpacesuit = value; } }
         public int AccessLevel { get { return accessLevel; } set { accessLevel = value; } }
-        public Vector2 Location { get { return location; } set { location = value; } }
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
         public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
-        public Rectangle HitBox { get { return hitBox; } }
 
         // method
         public override string ToString()
@@ -146,7 +141,7 @@ namespace Beaulax.Classes
         /// Dameges the player by a certain number.
         /// </summary>
         /// <param name="damage">amount of damage that the player takes</param>
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, Enemy enemy)
         {
             if (health > 0)
             {

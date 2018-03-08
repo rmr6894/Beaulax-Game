@@ -49,6 +49,9 @@
             this.playerSpeed = new System.Windows.Forms.NumericUpDown();
             this.playerSpeedProgress = new System.Windows.Forms.ProgressBar();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.spaceSuitCheck = new System.Windows.Forms.CheckBox();
+            this.flashlightCheck = new System.Windows.Forms.CheckBox();
+            this.jumpPackCheck = new System.Windows.Forms.CheckBox();
             this.savePlayer = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.enemySave = new System.Windows.Forms.Button();
@@ -65,9 +68,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.enemySpeed = new System.Windows.Forms.NumericUpDown();
             this.enemySpeedProgress = new System.Windows.Forms.ProgressBar();
-            this.jumpPackCheck = new System.Windows.Forms.CheckBox();
-            this.flashlightCheck = new System.Windows.Forms.CheckBox();
-            this.spaceSuitCheck = new System.Windows.Forms.CheckBox();
+            this.atkSpdProgress = new System.Windows.Forms.ProgressBar();
+            this.atkSpdNum = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.atkRngProgression = new System.Windows.Forms.ProgressBar();
+            this.atkRngNum = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playerHealth)).BeginInit();
@@ -81,6 +87,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.enemyDamage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemyJump)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemySpeed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.atkSpdNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.atkRngNum)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -88,7 +96,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(61, 100);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(145, 25);
+            this.label2.Size = new System.Drawing.Size(118, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Item Posession";
             // 
@@ -111,7 +119,7 @@
             this.levelFive.AutoSize = true;
             this.levelFive.Location = new System.Drawing.Point(64, 56);
             this.levelFive.Name = "levelFive";
-            this.levelFive.Size = new System.Drawing.Size(44, 29);
+            this.levelFive.Size = new System.Drawing.Size(36, 24);
             this.levelFive.TabIndex = 4;
             this.levelFive.TabStop = true;
             this.levelFive.Text = "5";
@@ -122,7 +130,7 @@
             this.levelFour.AutoSize = true;
             this.levelFour.Location = new System.Drawing.Point(64, 25);
             this.levelFour.Name = "levelFour";
-            this.levelFour.Size = new System.Drawing.Size(44, 29);
+            this.levelFour.Size = new System.Drawing.Size(36, 24);
             this.levelFour.TabIndex = 3;
             this.levelFour.TabStop = true;
             this.levelFour.Text = "4";
@@ -133,7 +141,7 @@
             this.levelThree.AutoSize = true;
             this.levelThree.Location = new System.Drawing.Point(7, 86);
             this.levelThree.Name = "levelThree";
-            this.levelThree.Size = new System.Drawing.Size(44, 29);
+            this.levelThree.Size = new System.Drawing.Size(36, 24);
             this.levelThree.TabIndex = 2;
             this.levelThree.TabStop = true;
             this.levelThree.Text = "3";
@@ -144,7 +152,7 @@
             this.levelTwo.AutoSize = true;
             this.levelTwo.Location = new System.Drawing.Point(6, 56);
             this.levelTwo.Name = "levelTwo";
-            this.levelTwo.Size = new System.Drawing.Size(44, 29);
+            this.levelTwo.Size = new System.Drawing.Size(36, 24);
             this.levelTwo.TabIndex = 1;
             this.levelTwo.TabStop = true;
             this.levelTwo.Text = "2";
@@ -155,7 +163,7 @@
             this.levelOne.AutoSize = true;
             this.levelOne.Location = new System.Drawing.Point(7, 26);
             this.levelOne.Name = "levelOne";
-            this.levelOne.Size = new System.Drawing.Size(44, 29);
+            this.levelOne.Size = new System.Drawing.Size(36, 24);
             this.levelOne.TabIndex = 0;
             this.levelOne.TabStop = true;
             this.levelOne.Text = "1";
@@ -199,7 +207,7 @@
             0,
             0});
             this.playerHealth.Name = "playerHealth";
-            this.playerHealth.Size = new System.Drawing.Size(50, 30);
+            this.playerHealth.Size = new System.Drawing.Size(50, 26);
             this.playerHealth.TabIndex = 10;
             this.playerHealth.Value = new decimal(new int[] {
             1,
@@ -213,7 +221,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(10, 174);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(68, 25);
+            this.label8.Size = new System.Drawing.Size(56, 20);
             this.label8.TabIndex = 9;
             this.label8.Text = "Health";
             this.label8.Click += new System.EventHandler(this.label8_Click);
@@ -234,7 +242,7 @@
             0,
             0});
             this.playerDamage.Name = "playerDamage";
-            this.playerDamage.Size = new System.Drawing.Size(50, 30);
+            this.playerDamage.Size = new System.Drawing.Size(50, 26);
             this.playerDamage.TabIndex = 7;
             this.playerDamage.Value = new decimal(new int[] {
             1,
@@ -248,7 +256,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 132);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 25);
+            this.label1.Size = new System.Drawing.Size(70, 20);
             this.label1.TabIndex = 6;
             this.label1.Text = "Damage";
             // 
@@ -273,7 +281,7 @@
             0,
             0});
             this.playerJump.Name = "playerJump";
-            this.playerJump.Size = new System.Drawing.Size(50, 30);
+            this.playerJump.Size = new System.Drawing.Size(50, 26);
             this.playerJump.TabIndex = 4;
             this.playerJump.Value = new decimal(new int[] {
             1,
@@ -287,7 +295,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(10, 91);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(122, 25);
+            this.label4.Size = new System.Drawing.Size(99, 20);
             this.label4.TabIndex = 3;
             this.label4.Text = "Jump Height";
             // 
@@ -296,7 +304,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 49);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 25);
+            this.label3.Size = new System.Drawing.Size(56, 20);
             this.label3.TabIndex = 2;
             this.label3.Text = "Speed";
             // 
@@ -314,7 +322,7 @@
             0,
             0});
             this.playerSpeed.Name = "playerSpeed";
-            this.playerSpeed.Size = new System.Drawing.Size(50, 30);
+            this.playerSpeed.Size = new System.Drawing.Size(50, 26);
             this.playerSpeed.TabIndex = 1;
             this.playerSpeed.Value = new decimal(new int[] {
             1,
@@ -345,6 +353,36 @@
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Player Stats";
+            // 
+            // spaceSuitCheck
+            // 
+            this.spaceSuitCheck.AutoSize = true;
+            this.spaceSuitCheck.Location = new System.Drawing.Point(66, 205);
+            this.spaceSuitCheck.Name = "spaceSuitCheck";
+            this.spaceSuitCheck.Size = new System.Drawing.Size(139, 24);
+            this.spaceSuitCheck.TabIndex = 10;
+            this.spaceSuitCheck.Text = "Has Space Suit";
+            this.spaceSuitCheck.UseVisualStyleBackColor = true;
+            // 
+            // flashlightCheck
+            // 
+            this.flashlightCheck.AutoSize = true;
+            this.flashlightCheck.Location = new System.Drawing.Point(66, 169);
+            this.flashlightCheck.Name = "flashlightCheck";
+            this.flashlightCheck.Size = new System.Drawing.Size(129, 24);
+            this.flashlightCheck.TabIndex = 9;
+            this.flashlightCheck.Text = "Has Flashlight";
+            this.flashlightCheck.UseVisualStyleBackColor = true;
+            // 
+            // jumpPackCheck
+            // 
+            this.jumpPackCheck.AutoSize = true;
+            this.jumpPackCheck.Location = new System.Drawing.Point(66, 133);
+            this.jumpPackCheck.Name = "jumpPackCheck";
+            this.jumpPackCheck.Size = new System.Drawing.Size(139, 24);
+            this.jumpPackCheck.TabIndex = 8;
+            this.jumpPackCheck.Text = "Has Jump Pack";
+            this.jumpPackCheck.UseVisualStyleBackColor = true;
             // 
             // savePlayer
             // 
@@ -379,6 +417,12 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.atkRngProgression);
+            this.groupBox5.Controls.Add(this.atkRngNum);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.atkSpdProgress);
+            this.groupBox5.Controls.Add(this.atkSpdNum);
+            this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.enemyHealthProgress);
             this.groupBox5.Controls.Add(this.enemyHealth);
             this.groupBox5.Controls.Add(this.label9);
@@ -393,10 +437,10 @@
             this.groupBox5.Controls.Add(this.enemySpeedProgress);
             this.groupBox5.Location = new System.Drawing.Point(82, 156);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(337, 223);
+            this.groupBox5.Size = new System.Drawing.Size(337, 317);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Player Statistics";
+            this.groupBox5.Text = "Enemy Statistics";
             // 
             // enemyHealthProgress
             // 
@@ -414,7 +458,7 @@
             0,
             0});
             this.enemyHealth.Name = "enemyHealth";
-            this.enemyHealth.Size = new System.Drawing.Size(50, 30);
+            this.enemyHealth.Size = new System.Drawing.Size(50, 26);
             this.enemyHealth.TabIndex = 13;
             this.enemyHealth.Value = new decimal(new int[] {
             1,
@@ -428,7 +472,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(12, 175);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(68, 25);
+            this.label9.Size = new System.Drawing.Size(56, 20);
             this.label9.TabIndex = 12;
             this.label9.Text = "Health";
             // 
@@ -448,7 +492,7 @@
             0,
             0});
             this.enemyDamage.Name = "enemyDamage";
-            this.enemyDamage.Size = new System.Drawing.Size(50, 30);
+            this.enemyDamage.Size = new System.Drawing.Size(50, 26);
             this.enemyDamage.TabIndex = 7;
             this.enemyDamage.Value = new decimal(new int[] {
             1,
@@ -462,7 +506,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(10, 132);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 25);
+            this.label5.Size = new System.Drawing.Size(70, 20);
             this.label5.TabIndex = 6;
             this.label5.Text = "Damage";
             // 
@@ -487,7 +531,7 @@
             0,
             0});
             this.enemyJump.Name = "enemyJump";
-            this.enemyJump.Size = new System.Drawing.Size(50, 30);
+            this.enemyJump.Size = new System.Drawing.Size(50, 26);
             this.enemyJump.TabIndex = 4;
             this.enemyJump.Value = new decimal(new int[] {
             1,
@@ -501,7 +545,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(10, 91);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(122, 25);
+            this.label6.Size = new System.Drawing.Size(99, 20);
             this.label6.TabIndex = 3;
             this.label6.Text = "Jump Height";
             // 
@@ -510,7 +554,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 49);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(70, 25);
+            this.label7.Size = new System.Drawing.Size(56, 20);
             this.label7.TabIndex = 2;
             this.label7.Text = "Speed";
             // 
@@ -528,7 +572,7 @@
             0,
             0});
             this.enemySpeed.Name = "enemySpeed";
-            this.enemySpeed.Size = new System.Drawing.Size(50, 30);
+            this.enemySpeed.Size = new System.Drawing.Size(50, 26);
             this.enemySpeed.TabIndex = 1;
             this.enemySpeed.Value = new decimal(new int[] {
             1,
@@ -544,39 +588,77 @@
             this.enemySpeedProgress.Size = new System.Drawing.Size(201, 27);
             this.enemySpeedProgress.TabIndex = 0;
             // 
-            // jumpPackCheck
+            // atkSpdProgress
             // 
-            this.jumpPackCheck.AutoSize = true;
-            this.jumpPackCheck.Location = new System.Drawing.Point(66, 133);
-            this.jumpPackCheck.Name = "jumpPackCheck";
-            this.jumpPackCheck.Size = new System.Drawing.Size(172, 29);
-            this.jumpPackCheck.TabIndex = 8;
-            this.jumpPackCheck.Text = "Has Jump Pack";
-            this.jumpPackCheck.UseVisualStyleBackColor = true;
+            this.atkSpdProgress.Location = new System.Drawing.Point(180, 217);
+            this.atkSpdProgress.Name = "atkSpdProgress";
+            this.atkSpdProgress.Size = new System.Drawing.Size(153, 27);
+            this.atkSpdProgress.TabIndex = 17;
             // 
-            // flashlightCheck
+            // atkSpdNum
             // 
-            this.flashlightCheck.AutoSize = true;
-            this.flashlightCheck.Location = new System.Drawing.Point(66, 169);
-            this.flashlightCheck.Name = "flashlightCheck";
-            this.flashlightCheck.Size = new System.Drawing.Size(157, 29);
-            this.flashlightCheck.TabIndex = 9;
-            this.flashlightCheck.Text = "Has Flashlight";
-            this.flashlightCheck.UseVisualStyleBackColor = true;
+            this.atkSpdNum.Location = new System.Drawing.Point(124, 218);
+            this.atkSpdNum.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.atkSpdNum.Name = "atkSpdNum";
+            this.atkSpdNum.Size = new System.Drawing.Size(50, 26);
+            this.atkSpdNum.TabIndex = 16;
+            this.atkSpdNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.atkSpdNum.ValueChanged += new System.EventHandler(this.atkSpdNum_ValueChanged);
             // 
-            // spaceSuitCheck
+            // label10
             // 
-            this.spaceSuitCheck.AutoSize = true;
-            this.spaceSuitCheck.Location = new System.Drawing.Point(66, 205);
-            this.spaceSuitCheck.Name = "spaceSuitCheck";
-            this.spaceSuitCheck.Size = new System.Drawing.Size(170, 29);
-            this.spaceSuitCheck.TabIndex = 10;
-            this.spaceSuitCheck.Text = "Has Space Suit";
-            this.spaceSuitCheck.UseVisualStyleBackColor = true;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 218);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 20);
+            this.label10.TabIndex = 15;
+            this.label10.Text = "Attack Speed";
+            // 
+            // atkRngProgression
+            // 
+            this.atkRngProgression.Location = new System.Drawing.Point(180, 260);
+            this.atkRngProgression.Name = "atkRngProgression";
+            this.atkRngProgression.Size = new System.Drawing.Size(153, 27);
+            this.atkRngProgression.TabIndex = 20;
+            // 
+            // atkRngNum
+            // 
+            this.atkRngNum.Location = new System.Drawing.Point(124, 261);
+            this.atkRngNum.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.atkRngNum.Name = "atkRngNum";
+            this.atkRngNum.Size = new System.Drawing.Size(50, 26);
+            this.atkRngNum.TabIndex = 19;
+            this.atkRngNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.atkRngNum.ValueChanged += new System.EventHandler(this.atkRngNum_ValueChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(12, 263);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(107, 20);
+            this.label11.TabIndex = 18;
+            this.label11.Text = "Attack Range";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1382, 632);
             this.Controls.Add(this.groupBox4);
@@ -602,6 +684,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.enemyDamage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemyJump)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemySpeed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.atkSpdNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.atkRngNum)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -647,6 +731,12 @@
         private System.Windows.Forms.CheckBox spaceSuitCheck;
         private System.Windows.Forms.CheckBox flashlightCheck;
         private System.Windows.Forms.CheckBox jumpPackCheck;
+        private System.Windows.Forms.ProgressBar atkRngProgression;
+        private System.Windows.Forms.NumericUpDown atkRngNum;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ProgressBar atkSpdProgress;
+        private System.Windows.Forms.NumericUpDown atkSpdNum;
+        private System.Windows.Forms.Label label10;
     }
 }
 

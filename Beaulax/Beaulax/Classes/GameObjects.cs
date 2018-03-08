@@ -14,41 +14,36 @@ namespace Beaulax.Classes
     {
 
         // attributes
-        //protected Rectangle location; // gives an x,y location and a size (width, height)
-        protected bool hasCollided; // stores the information of whether an object has collided with another
+        protected Vector2 location; // gives an x,y location and a size (width, height)
+        protected Rectangle hitBox; // hit box
+        protected int width; // width of hb
+        protected int height; // length of hb
 
-        // properties
-        /*public Rectangle Location
+        //properties
+        public Vector2 Location
         {
             get { return location; }
             set { location = value; }
-        }*/
-
-        public bool HasCollided
-        {
-            get { return hasCollided; }
-            set { hasCollided = value; }
         }
 
-        /*// constructor
-        public GameObjects(Rectangle iLocation)
+        public Rectangle HitBox
         {
-            location = iLocation;
+            get { return hitBox; }
+            set { hitBox = value; }
         }
 
         // methods
-        public bool CheckCollision(GameObjects gameObject)
+        public virtual bool CheckCollision(GameObjects gameObject)
         {
-            if (hasCollided == true)
+            if (gameObject.hitBox.Intersects(this.hitBox))
             {
-                if (gameObject.location.Intersects(this.Location))
-                {
-                    return true;
-                }
+                return true;
             }
-
-            return false;
-        }*/
+            else
+            {
+                return false;
+            }
+        }
 
 
     }

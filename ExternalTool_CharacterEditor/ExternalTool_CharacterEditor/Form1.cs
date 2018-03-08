@@ -23,6 +23,8 @@ namespace ExternalTool_CharacterEditor
         public bool hasFlashLight;
         public bool hasSpaceSuit;
         public int accessLevel;
+        public int atkRng;
+        public int atkSpd;
 
         public Form1()
         {
@@ -76,6 +78,18 @@ namespace ExternalTool_CharacterEditor
         {
             int level = Convert.ToInt32((enemyJump.Value / enemyJump.Maximum) * 100);
             enemyJumpProgress.Value = level;
+        }
+
+        private void atkSpdNum_ValueChanged(object sender, EventArgs e)
+        {
+            int level = Convert.ToInt32((atkSpdNum.Value / atkSpdNum.Maximum) * 100);
+            atkSpdProgress.Value = level;
+        }
+
+        private void atkRngNum_ValueChanged(object sender, EventArgs e)
+        {
+            int level = Convert.ToInt32((atkRngNum.Value / atkRngNum.Maximum) * 100);
+            atkRngProgression.Value = level;
         }
 
         private void enemyDamage_ValueChanged(object sender, EventArgs e)
@@ -176,8 +190,10 @@ namespace ExternalTool_CharacterEditor
             eDamage = (int)enemyDamage.Value;
             eSpeed = (int)enemySpeed.Value;
             eJumpHeight = (int)enemyJump.Value;
+            atkRng = (int)atkRngNum.Value;
+            atkSpd = (int)atkSpdNum.Value;
 
-            Console.WriteLine(eHealth + " " + eDamage + " " + eSpeed + " " + eJumpHeight);
+            Console.WriteLine(eHealth + " " + eDamage + " " + eSpeed + " " + eJumpHeight + " " + atkRng + " " + atkSpd);
 
             // write data out to save file
 
@@ -189,6 +205,8 @@ namespace ExternalTool_CharacterEditor
             output.Write(eDamage);
             output.Write(eSpeed);
             output.Write(eJumpHeight);
+            output.Write(atkRng);
+            output.Write(atkSpd);
 
             outStream.Close();
 
