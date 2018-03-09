@@ -16,6 +16,7 @@ namespace Beaulax.Classes
     {
         // attributes
         Texture2D texture;
+        SideThatHitTheThing state;
 
         // constructor
         public Obstacles(int iWidth, int iHeight, Vector2 iLocation, Texture2D text)
@@ -35,6 +36,26 @@ namespace Beaulax.Classes
             {
                 WhereCollide(chars); // if it is collide, tehn do the thsi check thing?
             }
+
+            if (state == SideThatHitTheThing.Right)
+            {
+                
+            }
+
+            else if (state == SideThatHitTheThing.Left)
+            {
+
+            }
+
+            else if (state == SideThatHitTheThing.Bottom)
+            {
+
+            } 
+
+            else if(state == SideThatHitTheThing.Top)
+            {
+
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -50,7 +71,8 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(go.HitBox.X + Width, i))
                     {
-                        return SideThatHitTheThing.Right;
+                        state = SideThatHitTheThing.Right;
+                        return state;
                     }
 
                 }
@@ -58,7 +80,8 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(go.HitBox.X, i))
                     {
-                        return SideThatHitTheThing.Left;
+                        state = SideThatHitTheThing.Left;
+                        return state;
                     }
 
                 }
@@ -67,7 +90,8 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(i, go.HitBox.Y + Height))
                     {
-                        return SideThatHitTheThing.Bottom;
+                        state = SideThatHitTheThing.Bottom;
+                        return state;
                     }
 
                 }
@@ -75,7 +99,8 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(i, go.HitBox.Y))
                     {
-                        return SideThatHitTheThing.Top;
+                        state = SideThatHitTheThing.Top;
+                        return state;
                     }
 
                 }
