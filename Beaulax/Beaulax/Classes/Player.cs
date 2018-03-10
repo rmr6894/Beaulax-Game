@@ -21,7 +21,7 @@ namespace Beaulax.Classes
         private Vector2 velocity;
         private bool hasJumped;
         private bool hasDoubleJumped;
-        private Vector2 initialLocation;
+        private Vector2 position;
         private float jumpHeight;
         private bool takingDamage = false;
         private Texture2D laser;
@@ -33,6 +33,7 @@ namespace Beaulax.Classes
         private int attackLineX = 0;
         private int attackLineY = 0;
         private bool isDamaging = false;
+        private Vector2 initialPos;
 
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
@@ -62,7 +63,8 @@ namespace Beaulax.Classes
             hasSpacesuit = ihasSpacesuit;
             accessLevel = iaccessLevel;
             location = ilocation;
-            initialLocation = ilocation;
+            position = ilocation;
+            initialPos = ilocation;
             hasJumped = true;
             hasDoubleJumped = true;
             this.sprite = sprite;
@@ -86,6 +88,8 @@ namespace Beaulax.Classes
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
+        public Vector2 Position { get { return position; } set { position = value; } }
+        public Vector2 InitialPos { get { return initialPos; } set { initialPos = value; } }
 
         // method
         public override string ToString()
@@ -134,11 +138,11 @@ namespace Beaulax.Classes
                 velocity.Y += 0.15f * i; // acceleration
             }
 
-            if (location.Y >= initialLocation.Y) // sets boolean back to false and the landing Y coordinate to initial Y position
+            if (location.Y >= position.Y) // sets boolean back to false and the landing Y coordinate to initial Y position
             {
                 hasJumped = false;
                 hasDoubleJumped = false;
-                location.Y = initialLocation.Y;
+                location.Y = position.Y;
             }
 
             if (hasJumped == false) // makes sure the sprite does not move passed the floor
