@@ -480,6 +480,7 @@ namespace Beaulax
                 Thread.Sleep(100);
             }
 
+            // if the player dies then display the game over screen
             if (player.CharacterHealth <= 0)
             {
                 currentState = GameState.GameOver;

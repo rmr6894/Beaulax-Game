@@ -25,6 +25,8 @@ namespace Beaulax.Classes
         private int counterWhileDamaging = 0;
         private int atkRange;
         private int atkSpeed;
+        private bool takingDamage = false;
+        private bool isAlive = true;
 
         // constructor
         public Enemy()
@@ -118,12 +120,12 @@ namespace Beaulax.Classes
 
         public void Attack()
         {
-                // if the player is to the right of the enemy then move the enemy right
+                // if the player is to the right of the enemy then put the attack box to the right of the enemy
                 if (player.Location.X - location.X > 0)
                 {
                     attackBox = new Rectangle((int)(location.X + width / 4), (int)location.Y, width, height);
                 }
-                // if the player is to the left of the enemy then move the enemy left
+                // if the player is to the left of the enemy then put the attack box to the left of the enemy
                 else if (player.Location.X - location.X < 0)
                 {
                     attackBox = new Rectangle((int)(location.X - width / 4), (int)location.Y, width, height);
@@ -144,9 +146,40 @@ namespace Beaulax.Classes
             }
         }
 
+        /// <summary>
+        /// Dameges the enemy by a certain number.
+        /// </summary>
+        /// <param name="damage">amount of damage that the player takes</param>
+        public void TakeDamage(int damage)
+        {
+            if (health > 0)
+            {
+                health -= damage;
+            }
+            else if (health < 0)
+            {
+                health = 0;
+            }
+            else if (health == 0)
+            {
+                isAlive = false;
+            }
+            takingDamage = true;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(enemySprite, hitBox, Color.White);
+            // if the enemy is taking damage and is alive then they turn red
+            if (takingDamage && isAlive)
+            {
+                spriteBatch.Draw(enemySprite, hitBox, Color.Red);
+                takingDamage = false;
+            }
+            // if the enemy is not taking damage and is alive then draw them normally
+            else if (isAlive)
+            {
+                spriteBatch.Draw(enemySprite, hitBox, Color.White);
+            }
         }
     }
 }
