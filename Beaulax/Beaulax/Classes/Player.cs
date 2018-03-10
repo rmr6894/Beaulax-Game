@@ -24,12 +24,19 @@ namespace Beaulax.Classes
         private Vector2 initialLocation;
         private float jumpHeight;
         private bool takingDamage = false;
+        private Texture2D laser;
+        private Rectangle attackBox;
+        private float laserRotation = 0f;
+        private bool firingLaser = false;
+        private int counterWhileDamaging = 0;
+        private Rectangle onLine;
+        private int attackLineX = 0;
+        private int attackLineY = 0;
+        private bool isDamaging = false;
 
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
         KeyboardState prevState;  // will give the precious state of pressed keys
-
-
 
         // constructors
         public Player()
@@ -45,9 +52,10 @@ namespace Beaulax.Classes
             jumpHeight = 10f;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
             health = 100;
+            damage = 10;
         }
 
-        public Player(Texture2D sprite, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
+        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -63,7 +71,9 @@ namespace Beaulax.Classes
             width = iWidth;
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+            laser = laserBeam;
             health = 100;
+            damage = 10;
         }
 
         // properties
@@ -140,6 +150,166 @@ namespace Beaulax.Classes
         }
 
         /// <summary>
+        /// Fire a laser that deals damage to enemies.
+        /// </summary>
+        /// <param name="enemy"></param>
+        public void Attack(Enemy enemy)
+        {
+            state = Keyboard.GetState();
+
+            attackBox = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2), 800, 30);
+
+            // shoot diagonally up right
+            if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Up))
+            {
+                laserRotation = (7 * (float)Math.PI) / 4;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                while (attackLineX <= attackBox.Width)
+                {
+                    attackLineY = -attackLineX - 21;
+                    onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
+                    if (onLine.Intersects(enemy.HitBox))
+                    {
+                        isDamaging = true;
+                    }
+                    attackLineX++;
+                }
+            }
+            // shoot diagonally down right
+            else if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Down))
+            {
+                laserRotation = (float)Math.PI / 4;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                while (attackLineX <= attackBox.Width)
+                {
+                    attackLineY = attackLineX;
+                    onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
+                    if (onLine.Intersects(enemy.HitBox))
+                    {
+                        isDamaging = true;
+                    }
+                    attackLineX++;
+                }
+            }
+            // shoot diagonally up left
+            else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Up))
+            {
+                laserRotation = (5 * (float)Math.PI) / 4;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                while (attackLineX >= -attackBox.Width)
+                {
+                    attackLineY = attackLineX;
+                    onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
+                    if (onLine.Intersects(enemy.HitBox))
+                    {
+                        isDamaging = true;
+                    }
+                    attackLineX--;
+                }
+            }
+            // shoot diagonally down left
+            else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Down))
+            {
+                laserRotation = (3 * (float)Math.PI) / 4;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                while (attackLineX >= -attackBox.Width)
+                {
+                    attackLineY = -attackLineX - 21;
+                    onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
+                    if (onLine.Intersects(enemy.HitBox))
+                    {
+                        isDamaging = true;
+                    }
+                    attackLineX--;
+                }
+            }
+            // shoot right
+            else if (state.IsKeyDown(Keys.Right) && state.IsKeyUp(Keys.Left))
+            {
+                laserRotation = 0f;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                onLine = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
+                if (onLine.Intersects(enemy.HitBox))
+                {
+                    isDamaging = true;
+                }
+            }
+            // shoot left
+            else if (state.IsKeyDown(Keys.Left) && state.IsKeyUp(Keys.Right))
+            {
+                laserRotation = (float)Math.PI;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - attackBox.Width, hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
+                if (onLine.Intersects(enemy.HitBox))
+                {
+                    isDamaging = true;
+                }
+            }
+            // shoot up
+            else if (state.IsKeyDown(Keys.Up) && state.IsKeyUp(Keys.Down))
+            {
+                laserRotation = (3 * (float)Math.PI) / 2;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2) - attackBox.Width, attackBox.Height, attackBox.Width);
+                if (onLine.Intersects(enemy.HitBox))
+                {
+                    isDamaging = true;
+                }
+            }
+            // shoot down
+            else if (state.IsKeyDown(Keys.Down) && state.IsKeyUp(Keys.Up))
+            {
+                laserRotation = (float)Math.PI / 2;
+                firingLaser = true;
+
+                // check if the laser is hitting the enemy
+                onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2), attackBox.Height, attackBox.Width);
+                if (onLine.Intersects(enemy.HitBox))
+                {
+                    isDamaging = true;
+                }
+            }
+            // if nothing is pressed then the player is not firing the laser
+            else
+            {
+                firingLaser = false;
+            }
+
+            // if the player is hitting the enemy then deal damage to the enemy
+            if (isDamaging)
+            {
+                if (counterWhileDamaging >= 20)
+                {
+                    counterWhileDamaging = 0;
+                    enemy.TakeDamage(damage);
+                }
+                else
+                {
+                    counterWhileDamaging++;
+                }
+            }
+
+            // reset attack variables
+            attackLineX = 0;
+            attackLineY = 0;
+            isDamaging = false;
+        }
+
+        /// <summary>
         /// Dameges the player by a certain number.
         /// </summary>
         /// <param name="damage">amount of damage that the player takes</param>
@@ -149,7 +319,7 @@ namespace Beaulax.Classes
             {
                 health -= damage;
             }
-            if (health < 0)
+            else if (health < 0)
             {
                 health = 0;
             }
@@ -164,6 +334,12 @@ namespace Beaulax.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // if the player is shooting then draw the laser
+            if (firingLaser)
+            {
+                spriteBatch.Draw(laser, attackBox, new Rectangle(0, 0, laser.Width, laser.Height), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
+            }
+
             // if the player is taking damage then they turn red
             if (takingDamage)
             {
