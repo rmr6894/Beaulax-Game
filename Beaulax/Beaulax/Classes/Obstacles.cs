@@ -10,13 +10,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Beaulax.Classes
 {
-    enum SideThatHitTheThing { Left, Right, Top, Bottom };
+    enum SideOfObstacle { Left, Right, Top, Bottom };
 
     class Obstacles: StaticObjects
     {
         // attributes
         Texture2D texture;
-        SideThatHitTheThing state;
+        SideOfObstacle state;
 
         // constructor
         public Obstacles(int iWidth, int iHeight, Vector2 iLocation, Texture2D text)
@@ -32,30 +32,36 @@ namespace Beaulax.Classes
         {
             bool isCollid = this.CheckCollision(chars); // check if anything is colliding
 
+            // character's location
+            int xLoc = (int)chars.Location.X;
+            int yLoc = (int)chars.Location.Y;
+
             if (isCollid)
             {
-                WhereCollide(chars); // if it is collide, tehn do the thsi check thing?
+                WhereCollide(chars); // check if the platform and character collides
+
+                if (state == SideOfObstacle.Right)
+                {
+                    chars.Location = new Vector2(xLoc - 1, yLoc);
+                }
+
+                else if (state == SideOfObstacle.Left)
+                {
+                    chars.Location = new Vector2(xLoc + 1, yLoc);
+                }
+
+                else if (state == SideOfObstacle.Bottom)
+                {
+                    chars.Location = new Vector2(xLoc, yLoc + 1);
+                }
+
+                else if (state == SideOfObstacle.Top)
+                {
+                    chars.Location = new Vector2(xLoc, hitBox.Y);
+                }
             }
 
-            if (state == SideThatHitTheThing.Right)
-            {
-                
-            }
-
-            else if (state == SideThatHitTheThing.Left)
-            {
-
-            }
-
-            else if (state == SideThatHitTheThing.Bottom)
-            {
-
-            } 
-
-            else if(state == SideThatHitTheThing.Top)
-            {
-
-            }
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -63,7 +69,7 @@ namespace Beaulax.Classes
             spriteBatch.Draw(texture, hitBox, Color.Black);
         }
 
-        public SideThatHitTheThing WhereCollide(GameObjects go)
+        public SideOfObstacle WhereCollide(GameObjects go)
         {
             if (this.CheckCollision(go))
             {
@@ -71,7 +77,7 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(go.HitBox.X + Width, i))
                     {
-                        state = SideThatHitTheThing.Right;
+                        state = SideOfObstacle.Right;
                         return state;
                     }
 
@@ -80,7 +86,7 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(go.HitBox.X, i))
                     {
-                        state = SideThatHitTheThing.Left;
+                        state = SideOfObstacle.Left;
                         return state;
                     }
 
@@ -90,7 +96,7 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(i, go.HitBox.Y + Height))
                     {
-                        state = SideThatHitTheThing.Bottom;
+                        state = SideOfObstacle.Bottom;
                         return state;
                     }
 
@@ -99,17 +105,17 @@ namespace Beaulax.Classes
                 {
                     if (this.hitBox.Contains(i, go.HitBox.Y))
                     {
-                        state = SideThatHitTheThing.Top;
+                        state = SideOfObstacle.Top;
                         return state;
                     }
 
                 }
 
-                return SideThatHitTheThing.Top;
+                return SideOfObstacle.Top;
             }
             else
             {
-                return SideThatHitTheThing.Top;
+                return SideOfObstacle.Top;
             }
         }
     }

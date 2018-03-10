@@ -29,6 +29,8 @@ namespace Beaulax.Classes
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
         KeyboardState prevState;  // will give the precious state of pressed keys
 
+
+
         // constructors
         public Player()
         {
@@ -106,7 +108,7 @@ namespace Beaulax.Classes
             if (state.IsKeyDown(Keys.W) && hasJumped == false) // initiates jump if the player is on the ground and W is pressed
             {
                 location.Y -= jumpHeight;
-                velocity.Y = -5f;
+                velocity.Y = -5f; 
                 hasJumped = true;
             }
             else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false) // double jump: checks if the player presses w a second time, ensures they have the jumppack and haven't already double-jumped
