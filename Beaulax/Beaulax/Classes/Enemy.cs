@@ -17,8 +17,6 @@ namespace Beaulax.Classes
         private Texture2D enemySprite;
         private Rectangle attackBox;
         private float jumpHeight; // may not need, not sure if enemies will jump...
-        private int width;
-        private int height;
         private int direction = 1;
         private int counterWhileStill = 0;
         private int counterWhileMoving = 0;
@@ -149,7 +147,6 @@ namespace Beaulax.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(enemySprite, hitBox, Color.White);
-            spriteBatch.Draw(enemySprite, attackBox, Color.Red);
         }
     }
 }
