@@ -28,36 +28,41 @@ namespace Beaulax.Classes
             texture = text;
         }
 
-        public void Update(GameTime gameTime, Characters chars)
+        public void Update(GameTime gameTime, Player player)
         {
-            bool isCollid = this.CheckCollision(chars); // check if anything is colliding
+            bool isCollid = this.CheckCollision(player); // check if anything is colliding
 
             // character's location
-            int xLoc = (int)chars.Location.X;
-            int yLoc = (int)chars.Location.Y;
+            int xLoc = (int)player.Location.X;
+            int yLoc = (int)player.Location.Y;
 
             if (isCollid)
             {
-                WhereCollide(chars); // check if the platform and character collides
+                WhereCollide(player); // check if the platform and character collides
 
                 if (state == SideOfObstacle.Right)
                 {
-                    chars.Location = new Vector2(xLoc - 1, yLoc);
+                    player.Position = new Vector2(player.Location.X + 1, player.Location.Y);
                 }
 
                 else if (state == SideOfObstacle.Left)
                 {
-                    chars.Location = new Vector2(xLoc + 1, yLoc);
+                    player.Position = new Vector2(player.Location.X - 1, player.Location.Y);
                 }
 
                 else if (state == SideOfObstacle.Bottom)
                 {
-                    chars.Location = new Vector2(xLoc, yLoc + 1);
+                    player.Position = new Vector2(player.Location.X, player.Location.Y + 1);
                 }
 
                 else if (state == SideOfObstacle.Top)
                 {
-                    chars.Location = new Vector2(xLoc, hitBox.Y);
+                    player.Position = new Vector2(player.Location.X, hitBox.Y);
+
+                    if (player.Position.X < this.hitBox.X || player.Position.X > this.hitBox.Width)
+                    {
+                        player.Position = player.InitialPos;
+                    }
                 }
             }
 
