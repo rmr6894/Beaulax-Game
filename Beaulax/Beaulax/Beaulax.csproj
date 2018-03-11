@@ -164,6 +164,7 @@
     <Content Include="Content\Pause Menu Assets\SaveGame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\playerWalkingSprite.png" />
     <Content Include="Content\tempLaser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

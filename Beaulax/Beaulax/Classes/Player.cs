@@ -35,6 +35,19 @@ namespace Beaulax.Classes
         private bool isDamaging = false;
         private Vector2 initialPos;
 
+        //Player movement enum
+        enum PlayerState {WalkLeft, FaceLeft, WalkRight, FaceRight};
+        PlayerState pState;
+
+        //Player movement attributes
+        private double timePerFrame = 100; //ms
+        private int totalFrames = 8; //Just for the animation, frame 0 is the idle sprite; 9 TOTAL on spriteWalkingSheet
+        private const int PLAYER_HEIGHT = 128;
+        private const int PLAYER_WIDTH = 64;
+        private int currentFrame;
+        private int framesElapsed;
+        
+
         // defining states
         KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
         KeyboardState prevState;  // will give the precious state of pressed keys
@@ -107,11 +120,13 @@ namespace Beaulax.Classes
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
             {
                 velocity.X = speed;
+                pState = PlayerState.WalkRight;
             }
 
             else if (state.IsKeyDown(Keys.A) && state.IsKeyUp(Keys.D)) // move player left
             {
                 velocity.X = -speed;
+                pState = PlayerState.WalkLeft;
             }
 
             else // makes sure player does not move if there is no input
@@ -334,6 +349,10 @@ namespace Beaulax.Classes
         {
             location += velocity;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+
+            //Animation
+            framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
+            currentFrame = framesElapsed % totalFrames + 1;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -347,13 +366,37 @@ namespace Beaulax.Classes
             // if the player is taking damage then they turn red
             if (takingDamage)
             {
-                spriteBatch.Draw(sprite, hitBox, Color.Red);
+                switch (pState.ToString())
+                {
+                    case "WalkLeft":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.Red);
+                        break;
+                    case "WalkRight":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                    case "FaceLeft":
+                        break;
+                    case "FaceRight":
+                        break;
+                }
                 takingDamage = false;
             }
             // if the player is not taking damage then draw them normally
             else
             {
-                spriteBatch.Draw(sprite, hitBox, Color.White);
+                switch (pState.ToString())
+                {
+                    case "WalkLeft":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.White);
+                        break;
+                    case "WalkRight":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                    case "FaceLeft":
+                        break;
+                    case "FaceRight":
+                        break;
+                }
             }
         }
     }
