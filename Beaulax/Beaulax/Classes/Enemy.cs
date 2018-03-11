@@ -120,6 +120,9 @@ namespace Beaulax.Classes
 
         public void Attack()
         {
+            // if the enemy is alive then attack the player
+            if (isAlive)
+            {
                 // if the player is to the right of the enemy then put the attack box to the right of the enemy
                 if (player.Location.X - location.X > 0)
                 {
@@ -131,17 +134,18 @@ namespace Beaulax.Classes
                     attackBox = new Rectangle((int)(location.X - width / 4), (int)location.Y, width, height);
                 }
 
-            // if the attack hits the player then the player takes damage
-            if (attackBox.Intersects(player.HitBox))
-            {
-                if (counterWhileDamaging >= atkSpeed)
+                // if the attack hits the player then the player takes damage
+                if (attackBox.Intersects(player.HitBox))
                 {
-                    counterWhileDamaging = 0;
-                    player.TakeDamage(damage, this);
-                }
-                else
-                {
-                    counterWhileDamaging++;
+                    if (counterWhileDamaging >= atkSpeed)
+                    {
+                        counterWhileDamaging = 0;
+                        player.TakeDamage(damage, this);
+                    }
+                    else
+                    {
+                        counterWhileDamaging++;
+                    }
                 }
             }
         }
