@@ -108,7 +108,8 @@ namespace Beaulax.Classes
 
         public void LoadExtP(Player p)
         {
-            Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\playerSave.data"); // reads in file from external tool // creates a stream
+            //Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\playerSave.data"); // reads in file from external tool // creates a stream
+            Stream inStream = File.OpenRead("playerSave.data"); // reads in file from external tool // creates a stream
 
             try
             {
@@ -137,7 +138,8 @@ namespace Beaulax.Classes
 
         public void LoadExtE(Enemy e)
         {
-            Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\enemySave.data"); // reads in file from external tool // creates a stream
+            //Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\enemySave.data"); // reads in file from external tool // creates a stream
+            Stream inStream = File.OpenRead("enemySave.data"); // reads in file from external tool // creates a stream
 
             try
             {
