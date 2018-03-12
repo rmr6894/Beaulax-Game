@@ -59,9 +59,11 @@ namespace Beaulax.Classes
                 {
                     player.Position = new Vector2(player.Location.X, hitBox.Y);
 
-                    if (player.Position.X < this.hitBox.X || player.Position.X > this.hitBox.Width)
+                    //if (player.Position.X < this.hitBox.X || player.Position.X > this.hitBox.Width)
+                    if (player.HasJumped == true)
                     {
                         player.Position = player.InitialPos;
+                        //player.HasJumped = true;
                     }
                 }
             }
