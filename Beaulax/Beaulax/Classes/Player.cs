@@ -36,7 +36,7 @@ namespace Beaulax.Classes
         private Vector2 initialPos;
 
         //Player movement enum
-        enum PlayerState {WalkLeft, FaceLeft, WalkRight, FaceRight};
+        enum PlayerState {WalkLeft, FaceLeft, WalkRight, FaceRight, Jumping};
         PlayerState pState;
 
         //Player movement attributes
@@ -49,8 +49,8 @@ namespace Beaulax.Classes
         
 
         // defining states
-        KeyboardState state; // moved up here for easier use/// gives the current state of pressed keys
-        KeyboardState prevState;  // will give the precious state of pressed keys
+        KeyboardState state; // gives the current state of pressed keys
+        KeyboardState prevState;  // will give the previous state of pressed keys
 
         // constructors
         public Player()
@@ -132,6 +132,15 @@ namespace Beaulax.Classes
             else // makes sure player does not move if there is no input
             {
                 velocity.X = 0f;
+                //changing pState for drawing purposes
+                if (prevState.IsKeyDown(Keys.A)) // not moving, facing left
+                {
+                    pState = PlayerState.FaceLeft;
+                }
+                else if(prevState.IsKeyDown(Keys.D))// not moving, facing right
+                {
+                    pState = PlayerState.FaceRight;
+                }
             }
 
             if (state.IsKeyDown(Keys.W) && hasJumped == false) // initiates jump if the player is on the ground and W is pressed
@@ -160,7 +169,7 @@ namespace Beaulax.Classes
                 location.Y = position.Y;
             }
 
-            if (hasJumped == false) // makes sure the sprite does not move passed the floor
+            if (hasJumped == false) // makes sure the sprite does not move past the floor
             {
                 velocity.Y = 0f;
             }
