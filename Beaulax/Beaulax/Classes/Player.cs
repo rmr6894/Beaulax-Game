@@ -412,6 +412,8 @@ namespace Beaulax.Classes
                         break;
                 }
             }
+
+            spriteBatch.Draw(sprite, hitBox, Color.Red);
         }
     }
 }

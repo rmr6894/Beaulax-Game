@@ -182,7 +182,7 @@ namespace Beaulax
             // TODO: use this.Content to load your game content here
             player = new Classes.Player(this.Content.Load<Texture2D>("playerWalkingSprite"), this.Content.Load<Texture2D>("tempLaser"), true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             enemy = new Classes.Enemy(player, this.Content.Load<Texture2D>("Enemy"), 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
-            platform = new Classes.Obstacles(100, 10, new Vector2(100, 400), Content.Load<Texture2D>("Enemy"));
+            platform = new Classes.Obstacles(100, 10, new Vector2(100, 450), Content.Load<Texture2D>("BlackSquare"));
 
             // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
@@ -470,7 +470,7 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.G))
             {
                 saver.LoadExtP(player);
-                //saver.LoadExtE(enemy)
+                saver.LoadExtE(enemy);
             }
 
             // pause the game by switching to the pause menu state
@@ -516,6 +516,11 @@ namespace Beaulax
             {
                 currentState = GameState.Gameplay;
                 Thread.Sleep(100);
+            }
+            if (kb.IsKeyDown(Keys.L))
+            {
+                saver.Load(player);
+                currentState = GameState.Gameplay;
             }
         }
 

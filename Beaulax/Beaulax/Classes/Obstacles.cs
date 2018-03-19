@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Beaulax.Classes
 {
-    enum SideOfObstacle { Left, Right, Top, Bottom };
+    enum SideOfObstacle { Left, Right, Top, Bottom, NoCollide };
 
     class Obstacles: StaticObjects
     {
@@ -36,62 +36,86 @@ namespace Beaulax.Classes
             int xLoc = (int)player.Location.X;
             int yLoc = (int)player.Location.Y;
 
+
+            WhereCollide(player); // check if the platform and character collides
+
             if (isCollid)
             {
-                WhereCollide(player); // check if the platform and character collides
-
                 if (state == SideOfObstacle.Right)
                 {
-                    player.Position = new Vector2(player.Location.X + 1, player.Location.Y);
+                    player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
                 }
 
                 else if (state == SideOfObstacle.Left)
                 {
-                    player.Position = new Vector2(player.Location.X - 1, player.Location.Y);
+                    player.Location= new Vector2(player.Location.X - player.Speed, player.Location.Y);
                 }
 
                 else if (state == SideOfObstacle.Bottom)
                 {
-                    player.Position = new Vector2(player.Location.X, player.Location.Y + 1);
+                    player.Location = new Vector2(player.Location.X, player.Location.Y + player.JumpHeight);
                 }
 
                 else if (state == SideOfObstacle.Top)
                 {
-                    player.Position = new Vector2(player.Location.X, hitBox.Y);
+                    player.Location = new Vector2(player.Location.X, hitBox.Y);
+                    player.HasJumped = false;
 
                     //if (player.Position.X < this.hitBox.X || player.Position.X > this.hitBox.Width)
                     if (player.HasJumped == true)
                     {
                         player.Position = player.InitialPos;
-                        //player.HasJumped = true;
+                        player.HasJumped = true;
                     }
+                }
+
+                else if (state == SideOfObstacle.NoCollide)
+                {
+                    player.Location = player.Position;
                 }
             }
 
-            
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, hitBox, Color.Black);
+            spriteBatch.Draw(texture, hitBox, Color.White);
         }
 
         public SideOfObstacle WhereCollide(GameObjects go)
         {
             if (this.CheckCollision(go))
             {
-                for (int i = 0; i < go.HitBox.Height; i++)
+                for (int i = go.HitBox.X; i < go.HitBox.X + go.HitBox.Width; i++)
                 {
-                    if (this.hitBox.Contains(go.HitBox.X + Width, i))
+                    if (this.hitBox.Contains(i, go.HitBox.Y + go.HitBox.Height))
+                    {
+                        state = SideOfObstacle.Top;
+                        Console.WriteLine("Hit Top");
+                        return state;
+                    }
+                }
+                for (int i = go.HitBox.X; i < go.HitBox.X + go.HitBox.Width; i++)
+                {
+                    if (this.hitBox.Contains(i, go.HitBox.Y))
+                    {
+                        state = SideOfObstacle.Bottom;
+                        return state;
+                    }
+
+                }
+                for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                {
+                    if (this.hitBox.Contains(go.HitBox.X, i))
                     {
                         state = SideOfObstacle.Right;
                         return state;
                     }
 
                 }
-                for (int i = 0; i < go.HitBox.Height; i++)
+                for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
                 {
-                    if (this.hitBox.Contains(go.HitBox.X, i))
+                    if (this.hitBox.Contains(go.HitBox.X + go.HitBox.Width, i))
                     {
                         state = SideOfObstacle.Left;
                         return state;
@@ -99,30 +123,13 @@ namespace Beaulax.Classes
 
                 }
 
-                for (int i = 0; i < go.HitBox.Width; i++)
-                {
-                    if (this.hitBox.Contains(i, go.HitBox.Y + Height))
-                    {
-                        state = SideOfObstacle.Bottom;
-                        return state;
-                    }
-
-                }
-                for (int i = 0; i < go.HitBox.Width; i++)
-                {
-                    if (this.hitBox.Contains(i, go.HitBox.Y))
-                    {
-                        state = SideOfObstacle.Top;
-                        return state;
-                    }
-
-                }
-
-                return SideOfObstacle.Top;
+                state = SideOfObstacle.NoCollide;
+                return state;
             }
             else
             {
-                return SideOfObstacle.Top;
+                state = SideOfObstacle.NoCollide;
+                return state;
             }
         }
     }
