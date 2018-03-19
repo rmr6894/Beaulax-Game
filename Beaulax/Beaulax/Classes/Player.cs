@@ -116,6 +116,7 @@ namespace Beaulax.Classes
         public void Movement()
         {
             state = Keyboard.GetState(); // moved location change to update
+            pState = PlayerState.FaceRight; //player initially starts off idly facing to the right
 
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
             {
