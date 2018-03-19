@@ -369,14 +369,16 @@ namespace Beaulax.Classes
                 switch (pState.ToString())
                 {
                     case "WalkLeft":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.Red);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "WalkRight":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                     case "FaceLeft":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "FaceRight":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                 }
                 takingDamage = false;
@@ -387,14 +389,16 @@ namespace Beaulax.Classes
                 switch (pState.ToString())
                 {
                     case "WalkLeft":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.White);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "WalkRight":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_WIDTH), Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                     case "FaceLeft":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "FaceRight":
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                 }
             }
