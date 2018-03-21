@@ -58,11 +58,10 @@ namespace Beaulax.Classes
 
                 else if (state == SideOfObstacle.Top)
                 {
-                    player.Location = new Vector2(player.Location.X, hitBox.Y);
+                    player.Location = new Vector2(player.Location.X, hitBox.Y - player.HitBox.Height);
                     player.HasJumped = false;
 
-                    //if (player.Position.X < this.hitBox.X || player.Position.X > this.hitBox.Width)
-                    if (player.HasJumped == true)
+                    if (player.HitBox.X + player.HitBox.Width < this.hitBox.X || player.HitBox.X > this.hitBox.X + this.hitBox.Width)
                     {
                         player.Position = player.InitialPos;
                         player.HasJumped = true;
