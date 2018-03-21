@@ -1,0 +1,20 @@
+Key:
+
+~ Horizontal Platform
+| Vertical Platform
+! Empty Space
+0 0Door
+1 1Door
+2 2Door
+3 3Door
+4 4Door
+5 5Door
+C Computer
+P Player
+M Map
+E Enemy
+H Health Pack
+J Jump Pack
+O Oxygen Tank
+F Flashlight
+B Boss
