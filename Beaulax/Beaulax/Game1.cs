@@ -146,24 +146,24 @@ namespace Beaulax
 
             #region Pause Menu
             // button y positions
-            resumeGameButtonY = (int)(screenHeight * (35f / 72f));
+            resumeGameButtonY = (int)(screenHeight * (5f / 12f));
             saveGameButtonY = (int)(resumeGameButtonY + buttonHeight + screenHeight * (1f / 72f));
             exitToMenuButtonY = saveGameButtonY + 2 * buttonHeight;
 
             // pause text size
-            pauseTextRectangle.Width = (int)(screenWidth * (1f / 3f));
-            pauseTextRectangle.Height = (int)(screenHeight * (13f / 60f));
+            pauseTextRectangle.Width = (int)(screenWidth * (16f / 75f));
+            pauseTextRectangle.Height = (int)(screenHeight * (5f / 36f));
 
             // pause text location
             pauseTextRectangle.X = (screenWidth - pauseTextRectangle.Width) / 2;
-            pauseTextRectangle.Y = (int)(screenHeight * (169f / 1440f));//(4f / 48f));
+            pauseTextRectangle.Y = (int)(screenHeight * (5f / 24f));
 
             // help button size
             helpButtonDimension = (int)(screenWidth * (7f / 120f));
 
             // help button location
-            helpButtonX = (int)(screenWidth - screenWidth * (1f / 120f) - helpButtonDimension);
-            helpButtonY = (int)(screenHeight * (1f / 72f));
+            helpButtonX = (int)(screenWidth - screenWidth * (7f / 50f) - helpButtonDimension);
+            helpButtonY = (int)(screenHeight * (7f / 36f));
             #endregion
             #endregion
 
@@ -369,7 +369,7 @@ namespace Beaulax
                 optionsButtonHover = false;
             }
 
-            // open the options menu when the options button is left clicked
+            // close the game when the exit button is left clicked
             if (mState.Y >= exitButtonY && mState.Y <= exitButtonY + exitButtonDimension && mState.X >= exitButtonX && mState.X <= exitButtonX + exitButtonDimension)
             {
                 // set to true when the mouse is over the button
@@ -510,6 +510,7 @@ namespace Beaulax
         void UpdatePauseMenu(GameTime gameTime)
         {
             KeyboardState kb = Keyboard.GetState();
+            MouseState mState = Mouse.GetState();
 
             // resume the game by switching to the gameplay state
             if (kb.IsKeyDown(Keys.Escape))
