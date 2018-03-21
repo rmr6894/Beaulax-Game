@@ -99,6 +99,7 @@ namespace Beaulax.Classes
         public Texture2D Sprite { get { return sprite; } set { sprite = value; } }
         public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public bool HasJumped { get { return hasJumped; } set { hasJumped = value; } }
+        public bool HasDoubleJumped { get { return hasDoubleJumped; } set { hasDoubleJumped = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
         public Vector2 Position { get { return position; } set { position = value; } }
@@ -160,8 +161,7 @@ namespace Beaulax.Classes
 
             if (hasJumped == true)
             {
-                float i = 1;
-                velocity.Y += 0.15f * i; // acceleration
+                this.Fall();
             }
 
             if (location.Y >= position.Y) // sets boolean back to false and the landing Y coordinate to initial Y position
@@ -177,6 +177,12 @@ namespace Beaulax.Classes
             }
 
             prevState = state;
+        }
+
+        public void Fall()
+        {
+            float i = 1;
+            velocity.Y += 0.15f * i; // acceleration
         }
 
         /// <summary>

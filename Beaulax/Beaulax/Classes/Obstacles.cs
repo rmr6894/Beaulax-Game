@@ -17,6 +17,7 @@ namespace Beaulax.Classes
         // attributes
         Texture2D texture;
         SideOfObstacle state;
+        bool onTop = false;
 
         // constructor
         public Obstacles(int iWidth, int iHeight, Vector2 iLocation, Texture2D text)
@@ -48,7 +49,7 @@ namespace Beaulax.Classes
 
                 else if (state == SideOfObstacle.Left)
                 {
-                    player.Location= new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                    player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
                 }
 
                 else if (state == SideOfObstacle.Bottom)
@@ -58,27 +59,37 @@ namespace Beaulax.Classes
 
                 else if (state == SideOfObstacle.Top)
                 {
-                    player.Location = new Vector2(player.Location.X, hitBox.Y - player.HitBox.Height);
+                    onTop = true;
+                    player.Location = new Vector2(player.Location.X, hitBox.Y - player.HitBox.Height + 1);
                     player.HasJumped = false;
+                    player.HasDoubleJumped = false;
 
-                    if (player.HitBox.X + player.HitBox.Width < this.hitBox.X || player.HitBox.X > this.hitBox.X + this.hitBox.Width)
+                    if (player.Location.X + player.HitBox.Width < this.hitBox.X || player.Location.X > this.hitBox.X + this.hitBox.Width)
                     {
                         player.Position = player.InitialPos;
                         player.HasJumped = true;
+                        Console.WriteLine("Falling");
                     }
                 }
-
-                else if (state == SideOfObstacle.NoCollide)
+            }
+            else
+            {
+                if (onTop == true)
                 {
-                    player.Location = player.Position;
+                    player.HasJumped = true;
+                    Console.Write("falling    ");
+                    onTop = false;
                 }
             }
-
+            //Console.Write(player.HasJumped + "   ");
+            //Console.Write(player.HasDoubleJumped + "   ");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, hitBox, Color.White);
+            //Console.WriteLine(state);
+
         }
 
         public SideOfObstacle WhereCollide(GameObjects go)
