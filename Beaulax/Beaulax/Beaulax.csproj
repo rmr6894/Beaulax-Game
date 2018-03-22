@@ -132,6 +132,9 @@
     <Content Include="Content\Enemy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\enemyWalkingSprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Main Menu Assets\Beaulax Menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -168,7 +171,9 @@
     <Content Include="Content\Pause Menu Assets\SaveGame.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\playerWalkingSprite.png" />
+    <Content Include="Content\playerWalkingSprite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\tempLaser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
