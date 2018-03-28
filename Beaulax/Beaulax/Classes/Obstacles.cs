@@ -55,6 +55,7 @@ namespace Beaulax.Classes
                 else if (state == SideOfObstacle.Bottom)
                 {
                     player.Location = new Vector2(player.Location.X, player.Location.Y + player.JumpHeight);
+                    player.Velocity = new Vector2(player.Velocity.X, 0f);
                 }
 
                 else if (state == SideOfObstacle.Top)
