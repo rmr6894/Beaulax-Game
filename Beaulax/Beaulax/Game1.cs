@@ -488,6 +488,7 @@ namespace Beaulax
 
             player.Update(gameTime);
             platform.Update(gameTime, player);
+            enemy.Update(gameTime);
         }
 
         /// <summary>

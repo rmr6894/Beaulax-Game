@@ -28,6 +28,18 @@ namespace Beaulax.Classes
         private bool takingDamage = false;
         private bool isAlive = true;
 
+        //enemy movement enum
+        enum enemyState {WalkLeft, FaceLeft, WalkRight, FaceRight};
+        enemyState eState;
+
+        //enemy movement attributes
+        private double timePerFrame = 100; //ms
+        private int totalFrames = 8; //Just for the animation, frame 0 is the idle sprite; 9 TOTAL on spriteWalkingSheet
+        private const int ENEMY_HEIGHT = 128;
+        private const int ENEMY_WIDTH = 64;
+        private int currentFrame;
+        private int framesElapsed;
+
         // constructor
         public Enemy()
         {
@@ -73,11 +85,13 @@ namespace Beaulax.Classes
                 if (player.Location.X - location.X > 30)
                 {
                     location.X += speed;
+                    eState = enemyState.WalkRight;
                 }
                 // if the player is to the left of the enemy then move the enemy left
                 else if (player.Location.X - location.X < -30)
                 {
                     location.X -= speed;
+                    eState = enemyState.WalkLeft;
                 }
             }
             // otherwise move the enemy randomly
@@ -88,6 +102,16 @@ namespace Beaulax.Classes
                 // while moving
                 if (counterWhileStill >= cyclesToStandStill && counterWhileMoving <= timesToMoveBySpeed)
                 {
+                    //Change of movement state based on what number direction is
+                    if(direction > 0) // Walking right
+                    {
+                        eState = enemyState.WalkRight;
+                    }
+                    else //Walking left
+                    {
+                        eState = enemyState.WalkLeft;
+                    }
+
                     if (counterWhileMoving == timesToMoveBySpeed)
                     {
                         cyclesToStandStill = rng.Next(40, 70);
@@ -104,6 +128,11 @@ namespace Beaulax.Classes
                     if (direction == 0)
                     {
                         direction = -1;
+                        eState = enemyState.FaceLeft;
+                    }
+                    else //enemy faces right while standing still
+                    {
+                        eState = enemyState.FaceRight;
                     }
 
                     // randomly pick a number of times that the enemy will move by the speed value
@@ -171,18 +200,53 @@ namespace Beaulax.Classes
             takingDamage = true;
         }
 
+        public void Update(GameTime gameTime)
+        {
+            //Animation
+            framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
+            currentFrame = framesElapsed % totalFrames + 1;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             // if the enemy is taking damage and is alive then they turn red
             if (takingDamage && isAlive)
             {
-                spriteBatch.Draw(enemySprite, hitBox, Color.Red);
+                switch (eState.ToString())
+                {
+                    case "WalkLeft":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(ENEMY_WIDTH * currentFrame, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        break;
+                    case "WalkRight":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(ENEMY_WIDTH * currentFrame, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                    case "FaceLeft":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        break;
+                    case "FaceRight":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                }
                 takingDamage = false;
             }
             // if the enemy is not taking damage and is alive then draw them normally
             else if (isAlive)
             {
-                spriteBatch.Draw(enemySprite, hitBox, Color.White);
+                switch (eState.ToString())
+                {
+                    case "WalkLeft":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(ENEMY_WIDTH * currentFrame, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        break;
+                    case "WalkRight":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(ENEMY_WIDTH * currentFrame, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                    case "FaceLeft":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        break;
+                    case "FaceRight":
+                        spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        break;
+                }
             }
         }
     }
