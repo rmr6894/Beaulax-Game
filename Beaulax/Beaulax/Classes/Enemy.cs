@@ -100,10 +100,10 @@ namespace Beaulax.Classes
                 Random rng = new Random();
 
                 // while moving
-                if (counterWhileStill >= cyclesToStandStill && counterWhileMoving <= timesToMoveBySpeed)
+                if (counterWhileStill > cyclesToStandStill && counterWhileMoving <= timesToMoveBySpeed)
                 {
                     //Change of movement state based on what number direction is
-                    if(direction > 0) // Walking right
+                    if (direction > 0) // Walking right
                     {
                         eState = enemyState.WalkRight;
                     }
@@ -111,23 +111,34 @@ namespace Beaulax.Classes
                     {
                         eState = enemyState.WalkLeft;
                     }
-
+                    
+                    // at the end of the movement randomly pick a number of cycles to stand still and reset the counter for standing still to start standing still again
                     if (counterWhileMoving == timesToMoveBySpeed)
                     {
                         cyclesToStandStill = rng.Next(40, 70);
                         counterWhileStill = 0;
                     }
+
+                    // move and update the movement counter
                     location.X += (direction * (speed / 2));
                     counterWhileMoving++;
                 }
                 // while still
                 else
                 {
-                    // randomly pick a direction. -1 for left, 1 for right
-                    direction = rng.Next(0, 2);
-                    if (direction == 0)
+                    // at the end of standing still (right before moving) randomly pick a direction. -1 for left, 1 for right
+                    if (counterWhileStill == cyclesToStandStill)
                     {
-                        direction = -1;
+                        direction = rng.Next(0, 2);
+                        if (direction == 0)
+                        {
+                            direction = -1;
+                        }
+                    }
+
+                    // enemy faces left while standing still
+                    if (direction == -1)
+                    {
                         eState = enemyState.FaceLeft;
                     }
                     else //enemy faces right while standing still
