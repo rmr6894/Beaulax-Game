@@ -35,8 +35,8 @@ namespace Beaulax.Classes
         private bool isDamaging = false;
         private Vector2 initialPos;
 
-        //Player movement enum
-        enum PlayerState {WalkLeft, FaceLeft, WalkRight, FaceRight, Jumping};
+        //Player movement enum (FaceRight first so player initially starts off idly facing to the right)
+        enum PlayerState { FaceRight, WalkRight, FaceLeft, WalkLeft, Jumping };
         PlayerState pState;
 
         //Player movement attributes
@@ -118,7 +118,6 @@ namespace Beaulax.Classes
         public void Movement()
         {
             state = Keyboard.GetState(); // moved location change to update
-            pState = PlayerState.FaceRight; //player initially starts off idly facing to the right
 
             if (state.IsKeyDown(Keys.D) && state.IsKeyUp(Keys.A)) // move player right
             {
@@ -140,7 +139,7 @@ namespace Beaulax.Classes
                 {
                     pState = PlayerState.FaceLeft;
                 }
-                else if(prevState.IsKeyDown(Keys.D))// not moving, facing right
+                else if (prevState.IsKeyDown(Keys.D))// not moving, facing right
                 {
                     pState = PlayerState.FaceRight;
                 }
