@@ -21,6 +21,10 @@ namespace Beaulax
         Vector2 initialPosition;
         Texture2D cursor;
 
+        // delay counters
+        int mainMenuDelayCount = 0;
+        int pauseMenuDelayCount = 0;
+
         // attributes for scaling and buttons
         double widthScaleFactor = 1;
         double heightScaleFactor = 1;
@@ -224,7 +228,7 @@ namespace Beaulax
                 Exit();
 
             // TODO: Add your update logic here
-
+            
             // run the update method for the current game state
             switch (currentState)
             {
@@ -301,6 +305,13 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdateMainMenu(GameTime gameTime)
         {
+            // delay the method until the count is high enough
+            if (mainMenuDelayCount < 20)
+            {
+                mainMenuDelayCount++;
+                return;
+            }
+
             MouseState mState = Mouse.GetState();
 
             // check if the mouse is in the X position that the buttons are located at
@@ -361,7 +372,7 @@ namespace Beaulax
                     optionsButtonHover = false;
                 }
             }
-            // set to false when the mouse is not over the button
+            // set to false when the mouse is not over a button
             else
             {
                 newGameButtonHover = false;
@@ -378,7 +389,7 @@ namespace Beaulax
                 // if the left mouse button is clicked then exit the game
                 if (mState.LeftButton == ButtonState.Pressed)
                 {
-                    Environment.Exit(0);
+                    Exit();
                 }
             }
             // set to false when the mouse is not over the button
@@ -477,7 +488,7 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.PauseMenu;
-                Thread.Sleep(100);
+                pauseMenuDelayCount = 0;
             }
 
             // if the player dies then display the game over screen
@@ -510,6 +521,13 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdatePauseMenu(GameTime gameTime)
         {
+            // delay the method until the count is high enough
+            if (pauseMenuDelayCount < 20)
+            {
+                pauseMenuDelayCount++;
+                return;
+            }
+
             KeyboardState kb = Keyboard.GetState();
             MouseState mState = Mouse.GetState();
 
@@ -524,6 +542,91 @@ namespace Beaulax
                 saver.Load(player);
                 currentState = GameState.Gameplay;
             }
+
+            // check if the mouse is in the X position that the buttons are located at
+            if (mState.X >= buttonX && mState.X <= buttonX + buttonWidth)
+            {
+                // return to the gameplay state when the resume game button is left clicked
+                if (mState.Y >= resumeGameButtonY && mState.Y <= resumeGameButtonY + buttonHeight)
+                {
+                    // set to true when the mouse is over the button
+                    resumeGameButtonHover = true;
+
+                    // if the left mouse button is clicked then switch states
+                    if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        currentState = GameState.Gameplay;
+                    }
+                }
+                // set to false when the mouse is not over the button
+                else
+                {
+                    resumeGameButtonHover = false;
+                }
+
+                // save the game when the save game button is left clicked
+                if (mState.Y >= saveGameButtonY && mState.Y <= saveGameButtonY + buttonHeight)
+                {
+                    // set to true when the mouse is over the button
+                    saveGameButtonHover = true;
+
+                    // if the left mouse button is clicked then save the game
+                    if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        saver.Save(player);
+                    }
+                }
+                // set to false when the mouse is not over the button
+                else
+                {
+                    saveGameButtonHover = false;
+                }
+
+                // switch to the main menu state when the exit to menu button is left clicked
+                if (mState.Y >= exitToMenuButtonY && mState.Y <= exitToMenuButtonY + buttonHeight)
+                {
+                    // set to true when the mouse is over the button
+                    exitToMenuButtonHover = true;
+
+                    // if the left mouse button is clicked then save and switch states
+                    if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        saver.Save(player);
+                        currentState = GameState.MainMenu;
+                        mainMenuDelayCount = 0;
+                    }
+                }
+                // set to false when the mouse is not over the button
+                else
+                {
+                    exitToMenuButtonHover = false;
+                }
+            }
+            // set to false when the mouse is not over a button
+            else
+            {
+                resumeGameButtonHover = false;
+                saveGameButtonHover = false;
+                exitToMenuButtonHover = false;
+            }
+
+            // show the controls when the help button is clicked
+            if (mState.Y >= helpButtonY && mState.Y <= helpButtonY + helpButtonDimension && mState.X >= helpButtonX && mState.X <= helpButtonX + helpButtonDimension)
+            {
+                // set to true when the mouse is over the button
+                helpButtonHover = true;
+
+                // if the left mouse button is clicked then show the controls
+                if (mState.LeftButton == ButtonState.Pressed)
+                {
+                    //TODO add code for the help screen
+                }
+            }
+            // set to false when the mouse is not over the button
+            else
+            {
+                helpButtonHover = false;
+            }
         }
 
         /// <summary>
@@ -535,10 +638,28 @@ namespace Beaulax
             // draw the pause menu
             spriteBatch.Draw(pauseMenuBackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             spriteBatch.Draw(pauseText, pauseTextRectangle, Color.White);
-            spriteBatch.Draw(resumeGameButton, new Rectangle(buttonX, resumeGameButtonY, buttonWidth, buttonHeight), Color.White);
-            spriteBatch.Draw(saveGameButton, new Rectangle(buttonX, saveGameButtonY, buttonWidth, buttonHeight), Color.White);
-            spriteBatch.Draw(exitToMenuButton, new Rectangle(buttonX, exitToMenuButtonY, buttonWidth, buttonHeight), Color.White);
-            spriteBatch.Draw(helpButton, new Rectangle(helpButtonX, helpButtonY, helpButtonDimension, helpButtonDimension), Color.White);
+            spriteBatch.Draw(resumeGameButton, new Rectangle(buttonX, resumeGameButtonY, buttonWidth, buttonHeight), Color.Gray);
+            spriteBatch.Draw(saveGameButton, new Rectangle(buttonX, saveGameButtonY, buttonWidth, buttonHeight), Color.Gray);
+            spriteBatch.Draw(exitToMenuButton, new Rectangle(buttonX, exitToMenuButtonY, buttonWidth, buttonHeight), Color.Gray);
+            spriteBatch.Draw(helpButton, new Rectangle(helpButtonX, helpButtonY, helpButtonDimension, helpButtonDimension), Color.Gray);
+
+            // if the mouse is over a button then make that button lighter
+            if (resumeGameButtonHover)
+            {
+                spriteBatch.Draw(resumeGameButton, new Rectangle(buttonX, resumeGameButtonY, buttonWidth, buttonHeight), Color.White);
+            }
+            if (saveGameButtonHover)
+            {
+                spriteBatch.Draw(saveGameButton, new Rectangle(buttonX, saveGameButtonY, buttonWidth, buttonHeight), Color.White);
+            }
+            if (exitToMenuButtonHover)
+            {
+                spriteBatch.Draw(exitToMenuButton, new Rectangle(buttonX, exitToMenuButtonY, buttonWidth, buttonHeight), Color.White);
+            }
+            if (helpButtonHover)
+            {
+                spriteBatch.Draw(helpButton, new Rectangle(helpButtonX, helpButtonY, helpButtonDimension, helpButtonDimension), Color.White);
+            }
 
             // draw the custom cursor
             DrawCursor(spriteBatch);
