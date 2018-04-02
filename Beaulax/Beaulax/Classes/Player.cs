@@ -419,7 +419,7 @@ namespace Beaulax.Classes
                 }
             }
 
-            spriteBatch.Draw(sprite, hitBox, Color.Red);
+            //spriteBatch.Draw(sprite, hitBox, Color.Red); // we'll deal with this later
         }
     }
 }
