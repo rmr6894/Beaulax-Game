@@ -9,19 +9,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Beaulax.Classes
 {
-    class Door
+    class Door : GameObjects
     {
         // attributes
         protected int ID; // ID of the room it leads to
         protected int accessLevel; // checks the access key the player has
-        protected Rectangle doorLocation; // where in the room will this door be drawn
+        protected Texture2D door;
 
         // constructor
         public Door(int id, int accessLevel, Rectangle location)
         {
             ID = id;
             this.accessLevel = accessLevel;
-            doorLocation = location;
+            location = this.hitBox;
         }
 
         // methods
@@ -30,20 +30,27 @@ namespace Beaulax.Classes
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public int EnterDoor(Player player)
+        public void EnterDoor(Player player, Game1 game)
         {
-            if (player.HitBox.Intersects(doorLocation))
+            if (player.HitBox.Intersects(this.hitBox))
             {
                 if (player.AccessLevel == accessLevel)
                 {
                     Console.WriteLine("Player in Door! To Room " + ID);
-                    return ID;
+                    game.ReadMap(ID.ToString());
                 }
 
-                return -1;
             }
 
-            return -1;
+        }
+
+        /// <summary>
+        /// Draws in the door onto the screen
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void Draw(SpriteBatch spriteBatch, Color color)
+        {
+            spriteBatch.Draw(door, this.hitBox, color);
         }
 
     }
