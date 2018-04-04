@@ -218,7 +218,8 @@ namespace Beaulax
             laserText = Content.Load<Texture2D>("laserSprite");
             enemyText = Content.Load<Texture2D>("enemyWalkingSprite");
             platformText = Content.Load<Texture2D>("BlackSquare");
-
+            doorText = Content.Load<Texture2D>("BlackSquare");
+ 
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
             //platform = new Classes.Obstacles(100, 10, new Vector2(100, 450), platformText);
@@ -243,7 +244,7 @@ namespace Beaulax
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
 
             // initialize game
-            this.ReadMap("01");
+            this.ReadMap("02");
         }
 
         /// <summary>
@@ -571,7 +572,7 @@ namespace Beaulax
             {
                 for (int i = 0; i < doors.Count; i++)
                 {
-                    doors[i].EnterDoor(player);
+                    doors[i].EnterDoor(player, this);
                 }
             }
         }
@@ -602,7 +603,7 @@ namespace Beaulax
             {
                 for (int i = 0; i < doors.Count; i++)
                 {
-                    doors[i].EnterDoor(player);
+                    doors[i].Draw(spriteBatch, Color.Gray);
                 }
             }
         }
@@ -827,6 +828,9 @@ namespace Beaulax
         {
             Stream inStream = File.OpenRead("Rooms.txt");
 
+            this.enemies.Clear();
+            this.plats.Clear();
+            this.doors.Clear();
             try
             {
                 StreamReader sr = new StreamReader(inStream);
@@ -869,7 +873,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -878,7 +884,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -887,7 +895,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -896,7 +906,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -905,7 +917,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -914,7 +928,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -924,7 +940,7 @@ namespace Beaulax
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 10f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':
@@ -984,7 +1000,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -993,7 +1011,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -1002,7 +1022,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -1011,7 +1033,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -1020,7 +1044,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -1029,7 +1055,9 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+
+                                            doorID = "";
 
                                             x += 2;
                                             break;
@@ -1039,7 +1067,7 @@ namespace Beaulax
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 10f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':

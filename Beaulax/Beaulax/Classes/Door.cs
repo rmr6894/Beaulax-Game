@@ -12,16 +12,17 @@ namespace Beaulax.Classes
     class Door : GameObjects
     {
         // attributes
-        protected int ID; // ID of the room it leads to
+        protected string ID; // ID of the room it leads to
         protected int accessLevel; // checks the access key the player has
         protected Texture2D door;
 
         // constructor
-        public Door(int id, int accessLevel, Rectangle location)
+        public Door(string id, int accessLevel, Rectangle location, Texture2D text)
         {
             ID = id;
             this.accessLevel = accessLevel;
-            location = this.hitBox;
+            this.hitBox = location;
+            door = text;
         }
 
         // methods
@@ -37,7 +38,7 @@ namespace Beaulax.Classes
                 if (player.AccessLevel == accessLevel)
                 {
                     Console.WriteLine("Player in Door! To Room " + ID);
-                    game.ReadMap(ID.ToString());
+                    game.ReadMap(ID);
                 }
 
             }

@@ -17,6 +17,7 @@ namespace Beaulax.Classes
         // attributes
         Texture2D texture;
         SideOfObstacle state;
+        SideOfObstacle prev;
         bool onTop = false;
 
         // constructor
@@ -72,6 +73,8 @@ namespace Beaulax.Classes
                         //Console.WriteLine("Falling");
                     }
                 }
+
+                prev = state;
             }
             else
             {
@@ -97,41 +100,85 @@ namespace Beaulax.Classes
         {
             if (this.CheckCollision(go))
             {
-                for (int i = go.HitBox.X; i < go.HitBox.X + go.HitBox.Width; i++)
+                if (prev == SideOfObstacle.Top)
                 {
-                    if (this.hitBox.Contains(i, go.HitBox.Y + go.HitBox.Height))
+                    for (int i = go.HitBox.X; i < go.HitBox.X + go.HitBox.Width; i++)
                     {
-                        state = SideOfObstacle.Top;
-                        //Console.WriteLine("Hit Top");
-                        return state;
+                        if (this.hitBox.Contains(i, go.HitBox.Y + go.HitBox.Height))
+                        {
+                            state = SideOfObstacle.Top;
+                            Console.WriteLine("Hit Top");
+                            return state;
+                        }
+                    }
+                    for (int i = go.HitBox.X + 20; i < go.HitBox.X + (go.HitBox.Width - 20); i++)
+                    {
+                        if (this.hitBox.Contains(i, go.HitBox.Y))
+                        {
+                            state = SideOfObstacle.Bottom;
+                            return state;
+                        }
+
+                    }
+                    for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                    {
+                        if (this.hitBox.Contains(go.HitBox.X, i))
+                        {
+                            state = SideOfObstacle.Right;
+                            return state;
+                        }
+
+                    }
+                    for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                    {
+                        if (this.hitBox.Contains(go.HitBox.X + go.HitBox.Width, i))
+                        {
+                            state = SideOfObstacle.Left;
+                            return state;
+                        }
+
                     }
                 }
-                for (int i = go.HitBox.X; i < go.HitBox.X + go.HitBox.Width; i++)
-                {
-                    if (this.hitBox.Contains(i, go.HitBox.Y))
-                    {
-                        state = SideOfObstacle.Bottom;
-                        return state;
-                    }
 
-                }
-                for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
-                {
-                    if (this.hitBox.Contains(go.HitBox.X, i))
-                    {
-                        state = SideOfObstacle.Right;
-                        return state;
-                    }
 
-                }
-                for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                else
                 {
-                    if (this.hitBox.Contains(go.HitBox.X + go.HitBox.Width, i))
+                    for (int i = go.HitBox.X + 20; i < go.HitBox.X + (go.HitBox.Width - 20); i++)
                     {
-                        state = SideOfObstacle.Left;
-                        return state;
+                        if (this.hitBox.Contains(i, go.HitBox.Y + go.HitBox.Height))
+                        {
+                            state = SideOfObstacle.Top;
+                            Console.WriteLine("Hit Top");
+                            return state;
+                        }
                     }
+                    for (int i = go.HitBox.X + 20; i < go.HitBox.X + (go.HitBox.Width - 20); i++)
+                    {
+                        if (this.hitBox.Contains(i, go.HitBox.Y))
+                        {
+                            state = SideOfObstacle.Bottom;
+                            return state;
+                        }
 
+                    }
+                    for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                    {
+                        if (this.hitBox.Contains(go.HitBox.X, i))
+                        {
+                            state = SideOfObstacle.Right;
+                            return state;
+                        }
+
+                    }
+                    for (int i = go.HitBox.Y; i < go.HitBox.Y + go.HitBox.Height; i++)
+                    {
+                        if (this.hitBox.Contains(go.HitBox.X + go.HitBox.Width, i))
+                        {
+                            state = SideOfObstacle.Left;
+                            return state;
+                        }
+
+                    }
                 }
 
                 state = SideOfObstacle.NoCollide;
