@@ -102,7 +102,7 @@ namespace Beaulax.Classes
             }
             catch (Exception e)
             {
-                Console.WriteLine("Warning: File Does Not Exist");
+                Console.WriteLine("Warning: File Does Not Exist\n" + e.Message);
             }
         }
 

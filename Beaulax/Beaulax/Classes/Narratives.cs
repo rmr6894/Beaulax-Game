@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Beaulax.Classes
 {
-    class Narratives: Collectibles
+    /*class Narratives: Collectibles
     {
-    }
+    }*/
 }

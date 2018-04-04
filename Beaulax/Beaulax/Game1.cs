@@ -7,6 +7,8 @@ using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
+
 
 namespace Beaulax
 {
@@ -74,6 +76,16 @@ namespace Beaulax
         int helpButtonY;
         #endregion
 
+        #region Map Reader Attributes
+        // attributes
+        int rows = 12;
+        int columns = 20;
+        int pxlPerBox = 60;
+        string thisRow;
+        string[] longRows;
+        string doorID = "";
+        #endregion
+
         // screen size attributes
         int screenWidth = 1200;
         int screenHeight = 720;
@@ -85,8 +97,26 @@ namespace Beaulax
         // call classes
         Classes.Player player;
         Classes.SaveLoad saver;
-        Classes.Enemy enemy;
-        Classes.Obstacles platform;
+        List<Classes.Enemy> enemies = new List<Classes.Enemy>();
+        List<Classes.Obstacles> plats = new List<Classes.Obstacles>();
+        List<Classes.Door> doors = new List<Classes.Door>();
+        Classes.Computer comp;
+        Classes.MapRoom map;
+        Classes.Collectibles clct;
+        //MapReader mr = new MapReader(1);
+
+        // create texture classes
+        public Texture2D playerText;
+        public Texture2D enemyText;
+        public Texture2D platformText;
+        public Texture2D doorText;
+        public Texture2D laserText;
+
+        // character stats
+        public bool hasFlash = false;
+        public bool hasJump = false;
+        public bool hasTank = false;
+        public int access = 0;
         #endregion
 
         public Game1()
@@ -184,9 +214,14 @@ namespace Beaulax
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player = new Classes.Player(this.Content.Load<Texture2D>("playerWalkingSprite"), this.Content.Load<Texture2D>("tempLaser"), true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
-            enemy = new Classes.Enemy(player, this.Content.Load<Texture2D>("enemyWalkingSprite"), 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
-            platform = new Classes.Obstacles(100, 10, new Vector2(100, 450), Content.Load<Texture2D>("BlackSquare"));
+            playerText = Content.Load<Texture2D>("playerWalkingSprite");
+            laserText = Content.Load<Texture2D>("tempLaser");
+            enemyText = Content.Load<Texture2D>("enemyWalkingSprite");
+            platformText = Content.Load<Texture2D>("BlackSquare");
+
+            //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
+            //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
+            //platform = new Classes.Obstacles(100, 10, new Vector2(100, 450), platformText);
 
             // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
@@ -206,6 +241,9 @@ namespace Beaulax
             saveGameButton = Content.Load<Texture2D>("Pause Menu Assets/SaveGame");
             exitToMenuButton = Content.Load<Texture2D>("Pause Menu Assets/ExitToMenu");
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
+
+            // initialize game
+            this.ReadMap("1");
         }
 
         /// <summary>
@@ -464,10 +502,19 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdateGameplay(GameTime gameTime)
         {
-            player.Movement();
-            player.Attack(enemy);
-            enemy.Movement();
-            enemy.Attack();
+            if (player != null)
+            {
+                player.Movement();
+            }
+            if (enemies.Count != 0)
+            {
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    player.Attack(enemies[i]);
+                    enemies[i].Movement();
+                    enemies[i].Attack();
+                }
+            }
 
             KeyboardState kb = Keyboard.GetState();
 
@@ -481,7 +528,10 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.G))
             {
                 saver.LoadExtP(player);
-                saver.LoadExtE(enemy);
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    saver.LoadExtE(enemies[i]);
+                }
             }
 
             // pause the game by switching to the pause menu state
@@ -492,14 +542,32 @@ namespace Beaulax
             }
 
             // if the player dies then display the game over screen
-            if (player.CharacterHealth <= 0)
+            if (player != null)
             {
-                currentState = GameState.GameOver;
+                if (player.CharacterHealth <= 0)
+                {
+                    currentState = GameState.GameOver;
+                }
             }
 
-            player.Update(gameTime);
-            platform.Update(gameTime, player);
-            enemy.Update(gameTime);
+            if (player != null)
+            {
+                player.Update(gameTime);
+            }
+            if (plats.Count != 0)
+            {
+                for (int i = 0; i < plats.Count; i++)
+                {
+                    plats[i].Update(gameTime, player);
+                }
+            }
+            if (enemies.Count != 0)
+            {
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    enemies[i].Update(gameTime);
+                }
+            }
         }
 
         /// <summary>
@@ -508,9 +576,22 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameplay(GameTime deltaTime)
         {
-            enemy.Draw(spriteBatch);
+            if (enemies.Count != 0)
+            {
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    enemies[i].Draw(spriteBatch);
+                }
+
+            }
             player.Draw(spriteBatch);
-            platform.Draw(spriteBatch);
+            if (plats.Count != 0)
+            {
+                for (int i = 0; i < plats.Count; i++)
+                {
+                    plats[i].Draw(spriteBatch);
+                }
+            }
         }
         #endregion
 
@@ -723,6 +804,281 @@ namespace Beaulax
 
             // draw the cursor
             spriteBatch.Draw(cursor, new Rectangle(cursorX, cursorY, cursorDimensions, cursorDimensions), Color.LightGray);
+        }
+
+        /// <summary>
+        /// Reads the map from the file and prints it on screen
+        /// </summary>
+        /// <param name="roomNum"></param>
+        public void ReadMap(string roomNum)
+        {
+            Stream inStream = File.OpenRead("Rooms.txt");
+
+            try
+            {
+                StreamReader sr = new StreamReader(inStream);
+
+                while ((thisRow = sr.ReadLine()) != null)
+                {
+                    if (thisRow == roomNum)
+                    {
+                        thisRow = sr.ReadLine();
+
+                        longRows = thisRow.Split(',');
+
+                        for (int i = 0; i < rows; i++)
+                        {
+                            thisRow = sr.ReadLine();
+
+                            if (longRows.Contains(Convert.ToString(i)))
+                            {
+                                for (int x = 0; x < columns + 4; x++)
+                                {
+                                    /*if (x == (columns + 3))
+                                    {
+                                        Console.WriteLine(thisRow[x]);
+                                    }
+                                    else
+                                    {
+                                        Console.Write(thisRow[x]);
+                                    }*/
+                                    switch (thisRow[x])
+                                    {
+                                        case '!':
+                                            break;
+
+                                        case '~':
+                                            Classes.Obstacles platform = new Classes.Obstacles(pxlPerBox, pxlPerBox, new Vector2((pxlPerBox * x), (pxlPerBox * i)), this.platformText);
+                                            plats.Add(platform);
+                                            break;
+
+                                        case '0':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '1':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '2':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '3':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '4':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '5':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case 'C':
+                                            comp = new Classes.Computer();
+                                            break;
+
+                                        case 'P':
+                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 10f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'M':
+                                            map = new Classes.MapRoom();
+                                            break;
+
+                                        case 'E':
+                                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * x), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));
+                                            break;
+
+                                        case 'H':
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'J':
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'O':
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'F':
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'B':
+                                            enemies.Add(new Classes.Enemy());
+                                            break;
+                                    }
+                                    
+                                }
+                            }
+                            else
+                            {
+                                for (int x = 0; x < columns; x++)
+                                {
+                                    /*if (x == (columns -1))
+                                    {
+                                        Console.WriteLine(thisRow[i]);
+                                    }
+                                    else
+                                    {
+                                        Console.Write(thisRow[i]);
+                                    }*/
+                                    switch (thisRow[x])
+                                    {
+                                        case '!':
+                                            break;
+
+                                        case '~':
+                                            Classes.Obstacles platform = new Classes.Obstacles(pxlPerBox, pxlPerBox, new Vector2((pxlPerBox * x), (pxlPerBox * i)), this.platformText);
+                                            plats.Add(platform);
+                                            break;
+
+                                        case '0':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '1':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '2':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '3':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '4':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '5':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case 'C':
+                                            comp = new Classes.Computer();
+                                            break;
+
+                                        case 'P':
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 10f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'M':
+                                            map = new Classes.MapRoom();
+                                            break;
+
+                                        case 'E':
+                                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * x), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));
+                                            break;
+
+                                        case 'H':
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'J':
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'O':
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'F':
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'B':
+                                            enemies.Add(new Classes.Enemy());
+                                            break;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 13; i++)
+                        {
+                            sr.ReadLine();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error reading map: " + e.Message);
+            }
+            finally
+            {
+                inStream.Close();
+            }
         }
     }
 }

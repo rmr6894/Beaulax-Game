@@ -69,7 +69,7 @@ namespace Beaulax.Classes
                     {
                         player.Position = player.InitialPos;
                         player.HasJumped = true;
-                        Console.WriteLine("Falling");
+                        //Console.WriteLine("Falling");
                     }
                 }
             }
@@ -78,7 +78,7 @@ namespace Beaulax.Classes
                 if (onTop == true)
                 {
                     player.HasJumped = true;
-                    Console.Write("falling    ");
+                    //Console.Write("falling    ");
                     onTop = false;
                 }
             }
@@ -102,7 +102,7 @@ namespace Beaulax.Classes
                     if (this.hitBox.Contains(i, go.HitBox.Y + go.HitBox.Height))
                     {
                         state = SideOfObstacle.Top;
-                        Console.WriteLine("Hit Top");
+                        //Console.WriteLine("Hit Top");
                         return state;
                     }
                 }
