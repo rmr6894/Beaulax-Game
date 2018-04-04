@@ -215,7 +215,7 @@ namespace Beaulax
 
             // TODO: use this.Content to load your game content here
             playerText = Content.Load<Texture2D>("playerWalkingSprite");
-            laserText = Content.Load<Texture2D>("tempLaser");
+            laserText = Content.Load<Texture2D>("laserSprite");
             enemyText = Content.Load<Texture2D>("enemyWalkingSprite");
             platformText = Content.Load<Texture2D>("BlackSquare");
 
