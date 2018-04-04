@@ -114,7 +114,7 @@ namespace Beaulax
 
         // character stats
         public bool hasFlash = false;
-        public bool hasJump = false;
+        public bool hasJump = true;
         public bool hasTank = false;
         public int access = 0;
         #endregion
@@ -243,7 +243,7 @@ namespace Beaulax
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
 
             // initialize game
-            this.ReadMap("1");
+            this.ReadMap("01");
         }
 
         /// <summary>
@@ -506,15 +506,14 @@ namespace Beaulax
             {
                 player.Movement();
             }
-            if (enemies.Count != 0)
+
+            for (int i = 0; i < enemies.Count; i++)
             {
-                for (int i = 0; i < enemies.Count; i++)
-                {
-                    player.Attack(enemies[i]);
-                    enemies[i].Movement();
-                    enemies[i].Attack();
-                }
+                player.Attack(enemies[i]);
+                enemies[i].Movement();
+                enemies[i].Attack();
             }
+            
 
             KeyboardState kb = Keyboard.GetState();
 
