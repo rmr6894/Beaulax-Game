@@ -568,6 +568,13 @@ namespace Beaulax
                     enemies[i].Update(gameTime);
                 }
             }
+            if (doors.Count != 0)
+            {
+                for (int i = 0; i < doors.Count; i++)
+                {
+                    doors[i].EnterDoor(player);
+                }
+            }
         }
 
         /// <summary>
@@ -590,6 +597,13 @@ namespace Beaulax
                 for (int i = 0; i < plats.Count; i++)
                 {
                     plats[i].Draw(spriteBatch);
+                }
+            }
+            if (doors.Count != 0)
+            {
+                for (int i = 0; i < doors.Count; i++)
+                {
+                    doors[i].EnterDoor(player);
                 }
             }
         }
@@ -1061,6 +1075,8 @@ namespace Beaulax
                                 }
                             }
                         }
+
+                        //return;
                     }
                     else
                     {

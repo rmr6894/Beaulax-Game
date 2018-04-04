@@ -36,6 +36,7 @@ namespace Beaulax.Classes
             {
                 if (player.AccessLevel == accessLevel)
                 {
+                    Console.WriteLine("Player in Door! To Room " + ID);
                     return ID;
                 }
 
