@@ -25,6 +25,7 @@ namespace Beaulax
 
         // delay counters
         int mainMenuDelayCount = 0;
+        int gameplayDelayCount = 0;
         int pauseMenuDelayCount = 0;
 
         // attributes for scaling and buttons
@@ -366,6 +367,7 @@ namespace Beaulax
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
                         currentState = GameState.Gameplay;
+                        gameplayDelayCount = 0;
                     }
                 }
                 // set to false when the mouse is not over the button
@@ -385,6 +387,7 @@ namespace Beaulax
                     {
                         saver.Load(player);
                         currentState = GameState.Gameplay;
+                        gameplayDelayCount = 0;
                     }
                 }
                 // set to false when the mouse is not over the button
@@ -503,6 +506,13 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdateGameplay(GameTime gameTime)
         {
+            // delay the method until the count is high enough
+            if (gameplayDelayCount < 20)
+            {
+                gameplayDelayCount++;
+                return;
+            }
+
             if (player != null)
             {
                 player.Movement();
@@ -515,7 +525,6 @@ namespace Beaulax
                 enemies[i].Attack();
             }
             
-
             KeyboardState kb = Keyboard.GetState();
 
             // save the game
@@ -630,12 +639,13 @@ namespace Beaulax
             if (kb.IsKeyDown(Keys.Escape))
             {
                 currentState = GameState.Gameplay;
-                Thread.Sleep(100);
+                gameplayDelayCount = 0;
             }
             if (kb.IsKeyDown(Keys.L))
             {
                 saver.Load(player);
                 currentState = GameState.Gameplay;
+                gameplayDelayCount = 0;
             }
 
             // check if the mouse is in the X position that the buttons are located at
@@ -651,6 +661,7 @@ namespace Beaulax
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
                         currentState = GameState.Gameplay;
+                        gameplayDelayCount = 0;
                     }
                 }
                 // set to false when the mouse is not over the button

@@ -134,6 +134,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\enemyWalkingSprite.png" />
+    <Content Include="Content\Game Over Assets\GameOverBG.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Game Over Assets\GameOverExit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Game Over Assets\GameOverLoad.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Game Over Assets\GameOverTitle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\laserSprite.png" />
     <Content Include="Content\Main Menu Assets\Beaulax Menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
