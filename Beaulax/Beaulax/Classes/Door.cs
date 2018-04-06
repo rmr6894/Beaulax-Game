@@ -43,7 +43,7 @@ namespace Beaulax.Classes
 
             if (player.HitBox.Intersects(this.hitBox))
             {
-                if (player.AccessLevel == accessLevel)
+                if (player.AccessLevel >= accessLevel)
                 {
                     Console.WriteLine("Player in Door! To Room " + ID);
                     game.ReadMap(ID);
