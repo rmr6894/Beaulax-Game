@@ -1,0 +1,184 @@
+// reads in a text file and interprets the current map
+    class MapReader
+    {
+        // attributes
+        int rows = 12;
+        int columns = 20;
+        int pxlPerBox = 60;
+        string thisRow;
+        string[] longRows;
+
+        public Classes.Player player;
+        public List<Classes.Enemy> enemies = new List<Classes.Enemy>();
+        public List<Classes.Obstacles> plats = new List<Classes.Obstacles>();
+        public List<Classes.Door> doors = new List<Classes.Door>();
+        public Classes.Computer comp;
+        public Classes.MapRoom map;
+        public Classes.Collectibles clct;
+
+
+        string doorID = "";
+
+        //int initialRoom;
+
+        // constructor
+        public MapReader(int iRoom)
+        {
+            //initialRoom = iRoom;
+        }
+
+        // methods
+        public void ReadMap(int roomNum, Classes.Player play)
+        {
+            Stream inStream = File.OpenRead("Rooms.txt");
+
+            try
+            {
+                StreamReader sr = new StreamReader(inStream);
+
+                while ((thisRow = sr.ReadLine()) != null)
+                {
+                    if (Convert.ToInt32(thisRow) == roomNum)
+                    {
+                        thisRow = sr.ReadLine();
+
+                        longRows = thisRow.Split(',');
+
+                        for (int i = 0; i < rows; i++)
+                        {
+                            thisRow = sr.ReadLine();
+
+                            if (longRows.Contains(Convert.ToString(i)))
+                            {
+                                for (int x = 0; x < columns + 4; x++)
+                                {
+                                    switch (thisRow[x])
+                                    {
+                                        case '!':
+                                            break;
+
+                                        case '~':
+                                            Classes.Obstacles platform = new Classes.Obstacles(pxlPerBox, pxlPerBox, new Vector2((pxlPerBox * x), (pxlPerBox * i)), this.platformText);
+                                            plats.Add(platform);
+                                            break;
+
+                                        case '0':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '1':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '2':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '3':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '4':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case '5':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(Convert.ToInt32(doorID), 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox)));
+
+                                            x += 2;
+                                            break;
+
+                                        case 'C':
+                                            comp = new Classes.Computer();
+                                            break;
+
+                                        case 'P':
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 10f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'M':
+                                            map = new Classes.MapRoom();
+                                            break;
+
+                                        case 'E':
+                                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * x), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));
+                                            break;
+
+                                        case 'H':
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'J':
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'O':
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'F':
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            break;
+
+                                        case 'B':
+                                            enemies.Add(new Classes.E)
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                for (int x = 0; x < columns; x++)
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 13; i++)
+                        {
+                            sr.ReadLine();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                inStream.Close();
+            }
+        }
+    }

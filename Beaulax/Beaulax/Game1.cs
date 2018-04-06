@@ -245,7 +245,7 @@ namespace Beaulax
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
 
             // initialize game
-            this.ReadMap("02");
+            this.ReadMap("01");
         }
 
         /// <summary>
