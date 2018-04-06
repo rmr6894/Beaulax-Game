@@ -19,9 +19,10 @@ namespace Beaulax.Classes
         private bool touched3 = false;
         private bool touched4 = false;
         private bool touched5 = false;
+        Color color;
 
 
-        public Computer(string identifier, Vector2 loc, int wide, int high, Texture2D txt)
+        public Computer(string identifier, Vector2 loc, int wide, int high, Texture2D txt, Color col)
         {
             id = identifier;
             location = loc;
@@ -29,6 +30,7 @@ namespace Beaulax.Classes
             height = high;
             hitBox = new Rectangle(Convert.ToInt32(loc.X), Convert.ToInt32(loc.Y), wide, height);
             text = txt;
+            color = col;
         }
 
         public void Update(GameTime gameTime, Player play, Game1 game)
@@ -85,7 +87,7 @@ namespace Beaulax.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(text, hitBox, Color.White);
+            spriteBatch.Draw(text, hitBox, color);
         }
     }
 }

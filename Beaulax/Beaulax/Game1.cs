@@ -222,7 +222,7 @@ namespace Beaulax
             laserText = Content.Load<Texture2D>("laserSprite");
             enemyText = Content.Load<Texture2D>("enemyWalkingSprite");
             platformText = Content.Load<Texture2D>("BlackSquare");
-            doorText = Content.Load<Texture2D>("BlackSquare");
+            doorText = Content.Load<Texture2D>("WhiteSquare");
             computerText = Content.Load<Texture2D>("computerTemp");
  
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
@@ -620,7 +620,7 @@ namespace Beaulax
             {
                 for (int i = 0; i < doors.Count; i++)
                 {
-                    doors[i].Draw(spriteBatch, Color.Gray);
+                    doors[i].Draw(spriteBatch);
                 }
             }
             if (comp != null)
@@ -897,7 +897,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray));
 
                                             doorID = "";
 
@@ -908,7 +908,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue));
 
                                             doorID = "";
 
@@ -919,7 +919,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow));
 
                                             doorID = "";
 
@@ -930,7 +930,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red));
 
                                             doorID = "";
 
@@ -941,7 +941,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green));
 
                                             doorID = "";
 
@@ -952,7 +952,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple));
 
                                             doorID = "";
 
@@ -960,27 +960,27 @@ namespace Beaulax
                                             break;
 
                                         case 'C':
-                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Blue);
                                             break;
 
                                         case 'V':
-                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Yellow);
                                             break;
 
                                         case 'N':
-                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Red);
                                             break;
 
                                         case ',':
-                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Green);
                                             break;
 
                                         case '.':
-                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Purple);
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':
@@ -1040,7 +1040,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray));
 
                                             doorID = "";
 
@@ -1051,7 +1051,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue));
 
                                             doorID = "";
 
@@ -1062,7 +1062,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow));
 
                                             doorID = "";
 
@@ -1073,7 +1073,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red));
 
                                             doorID = "";
 
@@ -1084,7 +1084,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green));
 
                                             doorID = "";
 
@@ -1095,7 +1095,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple));
 
                                             doorID = "";
 
@@ -1103,27 +1103,27 @@ namespace Beaulax
                                             break;
 
                                         case 'C':
-                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Blue);
                                             break;
 
                                         case 'V':
-                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Yellow);
                                             break;
 
                                         case 'N':
-                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Red);
                                             break;
 
                                         case ',':
-                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Green);
                                             break;
 
                                         case '.':
-                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText, Color.Purple);
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':

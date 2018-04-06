@@ -76,8 +76,8 @@ namespace Beaulax.Classes
             hasSpacesuit = ihasSpacesuit;
             accessLevel = iaccessLevel;
             location = ilocation;
-            position = ilocation;
-            initialPos = ilocation;
+            position = new Vector2(ilocation.X, 1000f);
+            initialPos = new Vector2(ilocation.X, 1000f);
             hasJumped = true;
             hasDoubleJumped = true;
             this.sprite = sprite;
@@ -147,13 +147,15 @@ namespace Beaulax.Classes
 
             if (state.IsKeyDown(Keys.W) && hasJumped == false) // initiates jump if the player is on the ground and W is pressed
             {
-                location.Y -= jumpHeight;
-                velocity.Y = -5f; 
+                /*location.Y -= jumpHeight;
+                velocity.Y = -5f; */
+                location.Y -= 1;
+                velocity.Y = -jumpHeight;
                 hasJumped = true;
             }
             else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false) // double jump: checks if the player presses w a second time, ensures they have the jumppack and haven't already double-jumped
             {
-                location.Y -= 5f;
+                location.Y -= 10f;
                 velocity.Y = -5f;
                 hasDoubleJumped = true;
             }
@@ -181,7 +183,7 @@ namespace Beaulax.Classes
         public void Fall()
         {
             float i = 1;
-            velocity.Y += 0.15f * i; // acceleration
+            velocity.Y += 0.20f * i; // acceleration
         }
 
         /// <summary>

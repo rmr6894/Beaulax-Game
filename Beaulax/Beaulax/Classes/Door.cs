@@ -16,15 +16,17 @@ namespace Beaulax.Classes
         protected int accessLevel; // checks the access key the player has
         protected Texture2D door;
         SideOfObstacle state; // for collision with the door
+        Color color;
 
 
         // constructor
-        public Door(string id, int accessLevel, Rectangle location, Texture2D text)
+        public Door(string id, int accessLevel, Rectangle location, Texture2D text, Color col)
         {
             ID = id;
             this.accessLevel = accessLevel;
             this.hitBox = location;
             door = text;
+            color = col;
         }
 
         // methods
@@ -71,7 +73,7 @@ namespace Beaulax.Classes
         /// Draws in the door onto the screen
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch, Color color)
+        public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(door, this.hitBox, color);
         }
