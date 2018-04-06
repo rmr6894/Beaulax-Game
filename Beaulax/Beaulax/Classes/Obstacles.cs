@@ -17,7 +17,7 @@ namespace Beaulax.Classes
         // attributes
         Texture2D texture;
         SideOfObstacle state;
-        SideOfObstacle prev;
+        static SideOfObstacle prev;
         bool onTop = false;
 
         // constructor
@@ -46,11 +46,13 @@ namespace Beaulax.Classes
                 if (state == SideOfObstacle.Right)
                 {
                     player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
+                    player.Velocity = new Vector2(0f, player.Velocity.Y);
                 }
 
                 else if (state == SideOfObstacle.Left)
                 {
                     player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                    player.Velocity = new Vector2(0f, player.Velocity.Y);
                 }
 
                 else if (state == SideOfObstacle.Bottom)

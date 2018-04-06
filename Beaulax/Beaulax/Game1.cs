@@ -85,6 +85,8 @@ namespace Beaulax
         string thisRow;
         string[] longRows;
         string doorID = "";
+
+        int platformLngth = 0;
         #endregion
 
         // screen size attributes
