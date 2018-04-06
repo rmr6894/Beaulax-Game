@@ -1,7 +1,6 @@
 Key:
 
-~ Horizontal Platform
-| Vertical Platform
+~ Platform
 ! Empty Space
 0 0Door
 1 1Door
@@ -9,7 +8,11 @@ Key:
 3 3Door
 4 4Door
 5 5Door
-C Computer
+C Computer1
+V Computer2
+N Computer3
+, Computer4
+. Computer5
 P Player
 M Map
 E Enemy

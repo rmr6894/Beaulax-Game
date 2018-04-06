@@ -114,6 +114,7 @@ namespace Beaulax
         public Texture2D platformText;
         public Texture2D doorText;
         public Texture2D laserText;
+        public Texture2D computerText;
 
         // character stats
         public bool hasFlash = false;
@@ -222,6 +223,7 @@ namespace Beaulax
             enemyText = Content.Load<Texture2D>("enemyWalkingSprite");
             platformText = Content.Load<Texture2D>("BlackSquare");
             doorText = Content.Load<Texture2D>("BlackSquare");
+            computerText = Content.Load<Texture2D>("computerTemp");
  
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
@@ -586,6 +588,10 @@ namespace Beaulax
                     doors[i].EnterDoor(player, this);
                 }
             }
+            if (comp != null)
+            {
+                comp.Update(gameTime, player, this);
+            }
         }
 
         /// <summary>
@@ -616,6 +622,10 @@ namespace Beaulax
                 {
                     doors[i].Draw(spriteBatch, Color.Gray);
                 }
+            }
+            if (comp != null)
+            {
+                comp.Draw(spriteBatch);
             }
         }
         #endregion
@@ -844,6 +854,7 @@ namespace Beaulax
             this.enemies.Clear();
             this.plats.Clear();
             this.doors.Clear();
+            this.comp = null;
             try
             {
                 StreamReader sr = new StreamReader(inStream);
@@ -862,7 +873,7 @@ namespace Beaulax
 
                             if (longRows.Contains(Convert.ToString(i)))
                             {
-                                for (int x = 0; x < columns + 4; x++)
+                                for (int x = 0; x < thisRow.Length; x++)
                                 {
                                     /*if (x == (columns + 3))
                                     {
@@ -949,11 +960,27 @@ namespace Beaulax
                                             break;
 
                                         case 'C':
-                                            comp = new Classes.Computer();
+                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case 'V':
+                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case 'N':
+                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case ',':
+                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case '.':
+                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':
@@ -965,19 +992,19 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'J':
-                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'O':
-                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'F':
-                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'B':
@@ -1076,11 +1103,27 @@ namespace Beaulax
                                             break;
 
                                         case 'C':
-                                            comp = new Classes.Computer();
+                                            comp = new Classes.Computer("computer1", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case 'V':
+                                            comp = new Classes.Computer("computer2", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case 'N':
+                                            comp = new Classes.Computer("computer3", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case ',':
+                                            comp = new Classes.Computer("computer4", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            break;
+
+                                        case '.':
+                                            comp = new Classes.Computer("computer5", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 3f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 20f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
                                             break;
 
                                         case 'M':
@@ -1092,19 +1135,19 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'J':
-                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'O':
-                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'F':
-                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
                                             break;
 
                                         case 'B':

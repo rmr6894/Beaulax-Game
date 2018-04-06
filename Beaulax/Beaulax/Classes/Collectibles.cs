@@ -13,14 +13,16 @@ namespace Beaulax.Classes
     class Collectibles: StaticObjects
     {
         string id;
+        private Texture2D text;
 
-        public Collectibles(string identifier, Vector2 loc, int wide, int high)
+        public Collectibles(string identifier, Vector2 loc, int wide, int high, Texture2D txt)
         {
             id = identifier;
             location = loc;
             width = wide;
             height = high;
             hitBox = new Rectangle(Convert.ToInt32(loc.X), Convert.ToInt32(loc.Y), wide, height);
+            text = txt;
         }
 
         public void Update(GameTime gameTime, Player play, Game1 game)
@@ -40,6 +42,11 @@ namespace Beaulax.Classes
                     game.hasTank = true;
                 }
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(text, location, Color.White);
         }
     }
 }

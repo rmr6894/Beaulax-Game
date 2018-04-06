@@ -12,5 +12,80 @@ namespace Beaulax.Classes
 {
     class Computer: MapObjects 
     {
+        public string id;
+        public Texture2D text;
+        private bool touched1 = false; // tells whether the player has interacted with this specific collectible yet
+        private bool touched2 = false;
+        private bool touched3 = false;
+        private bool touched4 = false;
+        private bool touched5 = false;
+
+
+        public Computer(string identifier, Vector2 loc, int wide, int high, Texture2D txt)
+        {
+            id = identifier;
+            location = loc;
+            width = wide;
+            height = high;
+            hitBox = new Rectangle(Convert.ToInt32(loc.X), Convert.ToInt32(loc.Y), wide, height);
+            text = txt;
+        }
+
+        public void Update(GameTime gameTime, Player play, Game1 game)
+        {
+            if (this.hitBox.Intersects(play.HitBox))
+            {
+                if (id == "computer1")
+                {
+                    if (!touched1)
+                    {
+                        play.AccessLevel = 1;
+                        game.access = 1;
+                        touched1 = true;
+                    }
+                }
+                else if (id == "computer2")
+                {
+                    if (!touched2)
+                    {
+                        play.AccessLevel = 2;
+                        game.access = 2;
+                        touched2 = true;
+                    }
+                }
+                else if (id == "computer3")
+                {
+                    if (!touched3)
+                    {
+                        play.AccessLevel = 3;
+                        game.access = 3;
+                        touched3 = true;
+                    }
+                }
+                else if (id == "computer4")
+                {
+                    if (!touched4)
+                    {
+                        play.AccessLevel = 4;
+                        game.access = 4;
+                        touched4 = true;
+                    }
+                }
+                else if (id == "computer5")
+                {
+                    if (!touched5)
+                    {
+                        play.AccessLevel = 5;
+                        game.access = 5;
+                        touched5 = true;
+                    }
+                }
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(text, hitBox, Color.White);
+        }
     }
 }
