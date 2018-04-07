@@ -845,6 +845,7 @@ namespace Beaulax
             spriteBatch.Draw(cursor, new Rectangle(cursorX, cursorY, cursorDimensions, cursorDimensions), Color.LightGray);
         }
 
+        #region Read Map Method
         /// <summary>
         /// Reads the map from the file and prints it on screen
         /// </summary>
@@ -1204,5 +1205,7 @@ namespace Beaulax
                 inStream.Close();
             }
         }
+
+        #endregion
     }
 }
