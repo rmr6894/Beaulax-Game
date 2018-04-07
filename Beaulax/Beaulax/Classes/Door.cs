@@ -47,6 +47,7 @@ namespace Beaulax.Classes
                 {
                     Console.WriteLine("Player in Door! To Room " + ID);
                     game.ReadMap(ID);
+                    game.wasPlayerRoom = ID;
                 }
 
                 else

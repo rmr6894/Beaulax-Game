@@ -87,6 +87,8 @@ namespace Beaulax
         string doorID = "";
 
         int afterDoor = 0;
+        string startingRoom = "01";
+        public string wasPlayerRoom = "01";
         #endregion
 
         // screen size attributes
@@ -249,7 +251,7 @@ namespace Beaulax
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
 
             // initialize game
-            this.ReadMap("09");
+            this.ReadMap(startingRoom);
         }
 
         /// <summary>
@@ -890,7 +892,7 @@ namespace Beaulax
                                             break;
 
                                         case '~':
-                                            Classes.Obstacles platform = new Classes.Obstacles(pxlPerBox, pxlPerBox, new Vector2((pxlPerBox * (x-afterDoor)), (pxlPerBox * i)), this.platformText);
+                                            Classes.Obstacles platform = new Classes.Obstacles(pxlPerBox, pxlPerBox, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), this.platformText);
                                             plats.Add(platform);
                                             break;
 
@@ -992,7 +994,18 @@ namespace Beaulax
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            string roomFrom = "";
+                                            roomFrom += thisRow[x + 1];
+                                            roomFrom += thisRow[x + 2];
+
+                                            if (roomFrom == wasPlayerRoom)
+                                            {
+                                                player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            }
+
+                                            x += 2;
+
+                                            afterDoor += 2;
                                             break;
 
                                         case 'M':
