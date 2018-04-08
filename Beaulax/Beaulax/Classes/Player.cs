@@ -44,8 +44,14 @@ namespace Beaulax.Classes
         private int totalFrames = 8; //Just for the animation, frame 0 is the idle sprite; 9 TOTAL on spriteWalkingSheet
         private const int PLAYER_HEIGHT = 128;
         private const int PLAYER_WIDTH = 64;
-        private int currentFrame;
+        private int currentFramePlayer;
         private int framesElapsed;
+
+        //Laser attributes
+        private int totalLaserFrames = 5;
+        private const int LASER_HEIGHT = 64;
+        private const int LASER_WIDTH = 800;
+        private int currentFrameLaser;
         
 
         // defining states
@@ -370,7 +376,8 @@ namespace Beaulax.Classes
 
             //Animation
             framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
-            currentFrame = framesElapsed % totalFrames + 1;
+            currentFramePlayer = framesElapsed % totalFrames + 1;
+            currentFrameLaser = framesElapsed % totalLaserFrames + 1;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -378,7 +385,7 @@ namespace Beaulax.Classes
             // if the player is shooting then draw the laser
             if (firingLaser)
             {
-                spriteBatch.Draw(laser, attackBox, new Rectangle(0, 0, laser.Width, laser.Height), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
+                spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
             }
 
             // if the player is taking damage then they turn red
@@ -387,10 +394,10 @@ namespace Beaulax.Classes
                 switch (pState.ToString())
                 {
                     case "WalkLeft":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFramePlayer, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "WalkRight":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFramePlayer, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                     case "FaceLeft":
                         spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
@@ -407,10 +414,10 @@ namespace Beaulax.Classes
                 switch (pState.ToString())
                 {
                     case "WalkLeft":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFramePlayer, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                         break;
                     case "WalkRight":
-                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFrame, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
+                        spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(PLAYER_WIDTH * currentFramePlayer, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.FlipHorizontally, 0);
                         break;
                     case "FaceLeft":
                         spriteBatch.Draw(sprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, PLAYER_WIDTH, PLAYER_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
