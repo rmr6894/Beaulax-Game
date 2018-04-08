@@ -15,18 +15,30 @@ namespace Beaulax.Classes
         protected string ID; // ID of the room it leads to
         protected int accessLevel; // checks the access key the player has
         protected Texture2D door;
-        SideOfObstacle state; // for collision with the door
-        Color color;
-
+        protected SideOfObstacle state; // for collision with the door
+        protected Color color;
+        protected bool aLBased; // tells whether the door is based on an access level or an event
+        protected string eventLabel; // if not ALBased, it is based on this string
 
         // constructor
-        public Door(string id, int accessLevel, Rectangle location, Texture2D text, Color col)
+        public Door(string id, int accessLevel, Rectangle location, Texture2D text, Color col, bool based)
         {
             ID = id;
             this.accessLevel = accessLevel;
             this.hitBox = location;
             door = text;
             color = col;
+            aLBased = based;
+        }
+
+        public Door(string id, string eLabel, Rectangle location, Texture2D text, Color col, bool based)
+        {
+            ID = id;
+            eventLabel = eLabel;
+            this.hitBox = location;
+            door = text;
+            color = col;
+            aLBased = based;
         }
 
         // methods
@@ -43,29 +55,87 @@ namespace Beaulax.Classes
 
             if (player.HitBox.Intersects(this.hitBox))
             {
-                if (player.AccessLevel >= accessLevel)
+                if (aLBased)
                 {
-                    Console.WriteLine("Player in Door! To Room " + ID);
-                    game.ReadMap(ID);
-                    game.wasPlayerRoom = ID;
-                }
-
-                else
-                {
-                    if (isCollid)
+                    if (player.AccessLevel >= accessLevel)
                     {
-                        if (state == SideOfObstacle.Right)
-                        {
-                            player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
-                        }
+                        Console.WriteLine("Player in Door! To Room " + ID);
+                        game.playerHealth = player.CharacterHealth;
+                        game.ReadMap(ID);
+                        game.wasPlayerRoom = ID;
+                    }
 
-                        else if (state == SideOfObstacle.Left)
+                    else
+                    {
+                        if (isCollid)
                         {
-                            player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                            if (state == SideOfObstacle.Right)
+                            {
+                                player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
+                            }
+
+                            else if (state == SideOfObstacle.Left)
+                            {
+                                player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                            }
                         }
                     }
                 }
+                else
+                {
+                    if (eventLabel == "flashlight")
+                    {
+                        if (game.hasFlash)
+                        {
+                            Console.WriteLine("Player in Door! To Room " + ID);
+                            game.playerHealth = player.CharacterHealth;
+                            game.ReadMap(ID);
+                            game.wasPlayerRoom = ID;
+                        }
 
+                        else
+                        {
+                            if (isCollid)
+                            {
+                                if (state == SideOfObstacle.Right)
+                                {
+                                    player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
+                                }
+
+                                else if (state == SideOfObstacle.Left)
+                                {
+                                    player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                                }
+                            }
+                        }
+                    }
+                    else if (eventLabel == "oxygentank") 
+                    {
+                        if (player.HasSpacesuit)
+                        {
+                            Console.WriteLine("Player in Door! To Room " + ID);
+                            game.playerHealth = player.CharacterHealth;
+                            game.ReadMap(ID);
+                            game.wasPlayerRoom = ID;
+                        }
+
+                        else
+                        {
+                            if (isCollid)
+                            {
+                                if (state == SideOfObstacle.Right)
+                                {
+                                    player.Location = new Vector2(player.Location.X + player.Speed, player.Location.Y);
+                                }
+
+                                else if (state == SideOfObstacle.Left)
+                                {
+                                    player.Location = new Vector2(player.Location.X - player.Speed, player.Location.Y);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
         }

@@ -136,6 +136,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\enemyWalkingSprite.png" />
+    <Content Include="Content\flashLightTemp.jpg" />
     <Content Include="Content\Game Over Assets\GameOverBG.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -148,6 +149,7 @@
     <Content Include="Content\Game Over Assets\GameOverTitle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\jetpackTempText.png" />
     <Content Include="Content\laserSprite.png" />
     <Content Include="Content\Main Menu Assets\Beaulax Menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -167,6 +169,8 @@
     <Content Include="Content\Main Menu Assets\Options.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Medpack.png" />
+    <Content Include="Content\Oxy_Tank.png" />
     <Content Include="Content\Pause Menu Assets\ExitToMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

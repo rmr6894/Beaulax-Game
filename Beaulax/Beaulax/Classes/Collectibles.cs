@@ -14,6 +14,7 @@ namespace Beaulax.Classes
     {
         string id;
         private Texture2D text;
+        bool pickedUp;
 
         public Collectibles(string identifier, Vector2 loc, int wide, int high, Texture2D txt)
         {
@@ -32,21 +33,32 @@ namespace Beaulax.Classes
                 if (id == "flashlight")
                 {
                     game.hasFlash = true;
+                    pickedUp = true;
                 }
                 else if (id == "jumppack")
                 {
+                    pickedUp = true;
                     game.hasJump = true;
                 }
                 else if (id == "tank")
                 {
+                    pickedUp = true;
                     game.hasTank = true;
+                }
+                else if (id == "medpack")
+                {
+                    pickedUp = true;
+                    game.playerHealth = game.playerMaxHealth;
                 }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(text, location, Color.White);
+            if (pickedUp == false)
+            {
+                spriteBatch.Draw(text, hitBox, Color.White);
+            }
         }
     }
 }

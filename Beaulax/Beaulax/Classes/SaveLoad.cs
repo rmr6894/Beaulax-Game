@@ -106,7 +106,7 @@ namespace Beaulax.Classes
             }
         }
 
-        public void LoadExtP(Player p)
+        public void LoadExtP(Player p, Game1 game)
         {
             //Stream inStream = File.OpenRead("Z:\\IGMProfile\\Documents\\GitHub\\Beaulax\\ExternalTool_CharacterEditor\\ExternalTool_CharacterEditor\\bin\\Debug\\playerSave.data"); // reads in file from external tool // creates a stream
             Stream inStream = File.OpenRead("playerSave.data"); // reads in file from external tool // creates a stream
@@ -115,20 +115,36 @@ namespace Beaulax.Classes
             {
                 BinaryReader input = new BinaryReader(inStream); // opens binary reader
 
-                p.CharacterHealth = input.ReadInt32();
-                p.CharacterDamage = input.ReadInt32();
-                p.Speed = (float)input.ReadInt32();
-                p.JumpHeight = (float)input.ReadInt32();
-                p.AccessLevel = input.ReadInt32();
-                p.HasJumppack = input.ReadBoolean();
-                p.HasFlashlight = input.ReadBoolean();
-                p.HasSpacesuit = input.ReadBoolean();
+                game.playerMaxHealth = input.ReadInt32();
+                game.playerHealth = game.playerMaxHealth;
+                p.CharacterHealth = game.playerMaxHealth;
+
+                game.playerDamage = input.ReadInt32();
+                p.CharacterDamage = game.playerDamage;
+
+                game.playerSpeed = (float)input.ReadInt32();
+                p.Speed = game.playerSpeed;
+
+                game.playerJumpHeight = (float)input.ReadInt32();
+                p.JumpHeight = game.playerJumpHeight;
+
+                game.access = input.ReadInt32();
+                p.AccessLevel = game.access;
+
+                game.hasJump = input.ReadBoolean();
+                p.HasJumppack = game.hasJump;
+
+                game.hasFlash = input.ReadBoolean();
+                p.HasFlashlight = game.hasFlash;
+
+                game.hasTank = input.ReadBoolean();
+                p.HasSpacesuit = game.hasTank;
 
                 inStream.Close();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Error with external tool: " + e);
             }
             finally
             {
