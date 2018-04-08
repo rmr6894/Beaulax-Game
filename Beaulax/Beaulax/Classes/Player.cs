@@ -75,7 +75,7 @@ namespace Beaulax.Classes
             damage = 10;
         }
 
-        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
+        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight, int pHlth, int pDmg)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -93,8 +93,8 @@ namespace Beaulax.Classes
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
             laser = laserBeam;
-            health = 100;
-            damage = 10;
+            health = pHlth;
+            damage = pDmg;
         }
 
         // properties
