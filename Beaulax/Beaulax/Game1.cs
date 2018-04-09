@@ -27,6 +27,7 @@ namespace Beaulax
         int mainMenuDelayCount = 0;
         int gameplayDelayCount = 0;
         int pauseMenuDelayCount = 0;
+        int gameOverDelayCount = 0;
 
         // attributes for scaling and buttons
         double widthScaleFactor = 1;
@@ -75,6 +76,18 @@ namespace Beaulax
         int helpButtonDimension;
         int helpButtonX;
         int helpButtonY;
+        #endregion
+
+        #region Game Over
+        Texture2D gameOverbackground;
+        Texture2D gameOverText;
+        Texture2D loadGameGOButton;
+        Texture2D exitToMenuGOButton;
+        Rectangle gameOverTextRectangle;
+        bool loadGameGOButtonHover = false;
+        bool exitToMenuGOButtonHover = false;
+        int loadGameGOButtonY;
+        int exitToMenuGOButtonY;
         #endregion
 
         #region Map Reader Attributes
@@ -215,6 +228,20 @@ namespace Beaulax
             helpButtonX = (int)(screenWidth - screenWidth * (7f / 50f) - helpButtonDimension);
             helpButtonY = (int)(screenHeight * (7f / 36f));
             #endregion
+
+            #region Game Over
+            // button y positions
+            loadGameGOButtonY = (int)(screenHeight * (5f / 9f));
+            exitToMenuGOButtonY = (int)(loadGameGOButtonY + buttonHeight + screenHeight * (1f / 36f));
+
+            // game over text size
+            gameOverTextRectangle.Width = (int)(screenWidth * (13f / 20f));
+            gameOverTextRectangle.Height = (int)(screenHeight * (79f / 360f));
+
+            // game over text location
+            gameOverTextRectangle.X = (screenWidth - gameOverTextRectangle.Width) / 2;
+            gameOverTextRectangle.Y = (int)(screenHeight * (25f / 144f));
+            #endregion
             #endregion
 
             base.Initialize();
@@ -263,6 +290,12 @@ namespace Beaulax
             saveGameButton = Content.Load<Texture2D>("Pause Menu Assets/SaveGame");
             exitToMenuButton = Content.Load<Texture2D>("Pause Menu Assets/ExitToMenu");
             helpButton = Content.Load<Texture2D>("Pause Menu Assets/Help");
+
+            // load game over assets
+            gameOverbackground = Content.Load<Texture2D>("Game Over Assets/GameOverBG");
+            gameOverText = Content.Load<Texture2D>("Game Over Assets/GameOverTitle");
+            loadGameGOButton = Content.Load<Texture2D>("Game Over Assets/GameOverLoad");
+            exitToMenuGOButton = Content.Load<Texture2D>("Game Over Assets/GameOverExit");
 
             // initialize game
             this.ReadMap(startingRoom);
@@ -576,6 +609,7 @@ namespace Beaulax
                 if (player.CharacterHealth <= 0)
                 {
                     currentState = GameState.GameOver;
+                    gameOverDelayCount = 0;
                 }
             }
 
@@ -836,7 +870,63 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void UpdateGameOver(GameTime gameTime)
         {
+            // delay the method until the count is high enough
+            if (gameOverDelayCount < 20)
+            {
+                gameOverDelayCount++;
+                return;
+            }
 
+            MouseState mState = Mouse.GetState();
+
+            // check if the mouse is in the X position that the buttons are located at
+            if (mState.X >= buttonX && mState.X <= buttonX + buttonWidth)
+            {
+                // load the save and return to the gameplay state when the load game button is left clicked
+                if (mState.Y >= loadGameGOButtonY && mState.Y <= loadGameGOButtonY + buttonHeight)
+                {
+                    // set to true when the mouse is over the button
+                    loadGameGOButtonHover = true;
+
+                    // if the left mouse button is clicked then load the save and switch states
+                    if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        saver.Load(player);
+                        currentState = GameState.Gameplay;
+                        gameplayDelayCount = 0;
+                    }
+                }
+                // set to false when the mouse is not over the button
+                else
+                {
+                    loadGameGOButtonHover = false;
+                }
+
+                // switch to the main menu state when the exit to menu button is left clicked
+                if (mState.Y >= exitToMenuGOButtonY && mState.Y <= exitToMenuGOButtonY + buttonHeight)
+                {
+                    // set to true when the mouse is over the button
+                    exitToMenuGOButtonHover = true;
+
+                    // if the left mouse button is clicked then switch states
+                    if (mState.LeftButton == ButtonState.Pressed)
+                    {
+                        currentState = GameState.MainMenu;
+                        mainMenuDelayCount = 0;
+                    }
+                }
+                // set to false when the mouse is not over the button
+                else
+                {
+                    exitToMenuGOButtonHover = false;
+                }
+            }
+            // set to false when the mouse is not over a button
+            else
+            {
+                loadGameGOButtonHover = false;
+                exitToMenuGOButtonHover = false;
+            }
         }
 
         /// <summary>
@@ -845,6 +935,22 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameOver(GameTime deltaTime)
         {
+            // draw the game over screen
+            spriteBatch.Draw(gameOverbackground, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+            spriteBatch.Draw(gameOverText, gameOverTextRectangle, Color.White);
+            spriteBatch.Draw(loadGameGOButton, new Rectangle(buttonX, loadGameGOButtonY, buttonWidth, buttonHeight), Color.Gray);
+            spriteBatch.Draw(exitToMenuGOButton, new Rectangle(buttonX, exitToMenuGOButtonY, buttonWidth, buttonHeight), Color.Gray);
+
+            // if the mouse is over a button then make that button lighter
+            if (loadGameGOButtonHover)
+            {
+                spriteBatch.Draw(loadGameGOButton, new Rectangle(buttonX, loadGameGOButtonY, buttonWidth, buttonHeight), Color.White);
+            }
+            if (exitToMenuGOButtonHover)
+            {
+                spriteBatch.Draw(exitToMenuGOButton, new Rectangle(buttonX, exitToMenuGOButtonY, buttonWidth, buttonHeight), Color.White);
+            }
+
             // draw the custom cursor
             DrawCursor(spriteBatch);
         }
