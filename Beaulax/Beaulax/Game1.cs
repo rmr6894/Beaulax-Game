@@ -99,6 +99,7 @@ namespace Beaulax
         string[] longRows;
         string doorID = "";
 
+        public string currRoom = "01";
         int afterDoor = 0;
         string startingRoom = "01";
         public string wasPlayerRoom = "01";
@@ -295,10 +296,7 @@ namespace Beaulax
             gameOverbackground = Content.Load<Texture2D>("Game Over Assets/GameOverBG");
             gameOverText = Content.Load<Texture2D>("Game Over Assets/GameOverTitle");
             loadGameGOButton = Content.Load<Texture2D>("Game Over Assets/GameOverLoad");
-            exitToMenuGOButton = Content.Load<Texture2D>("Game Over Assets/GameOverExit");
-
-            // initialize game
-            this.ReadMap(startingRoom);
+            exitToMenuGOButton = Content.Load<Texture2D>("Game Over Assets/GameOverExit");            
         }
 
         /// <summary>
@@ -419,6 +417,18 @@ namespace Beaulax
                     // if the left mouse button is clicked then switch states
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
+                        // initialize game
+                        this.playerHealth = this.playerMaxHealth;
+                        this.wasPlayerRoom = "01";
+                        this.access = 0;
+                        this.hasFlash = false;
+                        this.hasJump = false;
+                        this.hasTank = false;
+
+                        // create the map objects
+                        this.ReadMap(startingRoom);
+
+                        // begin the game
                         currentState = GameState.Gameplay;
                         gameplayDelayCount = 0;
                     }
@@ -438,7 +448,7 @@ namespace Beaulax
                     // if the left mouse button is clicked then load the save and switch states
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
-                        saver.Load(player);
+                        saver.Load(player, this);
                         currentState = GameState.Gameplay;
                         gameplayDelayCount = 0;
                     }
@@ -583,7 +593,7 @@ namespace Beaulax
             // save the game
             if (kb.IsKeyDown(Keys.T))
             {
-                saver.Save(player);
+                saver.Save(player, this);
             }
 
             // load the game
@@ -713,7 +723,7 @@ namespace Beaulax
             }
             if (kb.IsKeyDown(Keys.L))
             {
-                saver.Load(player);
+                saver.Load(player, this);
                 currentState = GameState.Gameplay;
                 gameplayDelayCount = 0;
             }
@@ -749,7 +759,7 @@ namespace Beaulax
                     // if the left mouse button is clicked then save the game
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
-                        saver.Save(player);
+                        saver.Save(player, this);
                     }
                 }
                 // set to false when the mouse is not over the button
@@ -767,7 +777,7 @@ namespace Beaulax
                     // if the left mouse button is clicked then save and switch states
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
-                        saver.Save(player);
+                        saver.Save(player, this);
                         currentState = GameState.MainMenu;
                         mainMenuDelayCount = 0;
                     }
@@ -891,7 +901,7 @@ namespace Beaulax
                     // if the left mouse button is clicked then load the save and switch states
                     if (mState.LeftButton == ButtonState.Pressed)
                     {
-                        saver.Load(player);
+                        saver.Load(player, this);
                         currentState = GameState.Gameplay;
                         gameplayDelayCount = 0;
                     }
@@ -993,8 +1003,10 @@ namespace Beaulax
 
                 while ((thisRow = sr.ReadLine()) != null)
                 {
-                    if (thisRow == roomNum)
+                    if (thisRow == roomNum) // if it's the correct room, load the written map
                     {
+                        currRoom = thisRow;
+
                         thisRow = sr.ReadLine();
 
                         longRows = thisRow.Split(',');

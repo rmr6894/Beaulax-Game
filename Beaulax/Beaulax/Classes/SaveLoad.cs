@@ -21,6 +21,8 @@ namespace Beaulax.Classes
         private int locationX;
         private int locationY;
         private bool hasJumped;
+        private string roomNum;
+        private string roomWas;
 
         private float floatX; // need this to set the vector for location later
         private float floatY; // need this to set the vector for location later
@@ -45,8 +47,10 @@ namespace Beaulax.Classes
         /// This method saves the player's data to an external file, allowing them to reaccess it later.
         /// </summary>
         /// <param name="p"> takes in a player object and uses it's properties to save the current gamestate </param>
-        public void Save(Player p)
+        public void Save(Player p, Game1 game)
         {
+            roomNum = game.currRoom;
+            roomWas = game.wasPlayerRoom;
             flashlight = p.HasFlashlight;
             jumppack = p.HasJumppack;
             spaceSuit = p.HasSpacesuit;
@@ -55,10 +59,13 @@ namespace Beaulax.Classes
             locationY = (int)p.Location.Y;
             hasJumped = p.HasJumped;
 
+
             Stream outStream = File.OpenWrite("saveFile.data");
 
             BinaryWriter output = new BinaryWriter(outStream);
 
+            output.Write(roomNum);
+            output.Write(roomWas);
             output.Write(flashlight);
             output.Write(jumppack);
             output.Write(spaceSuit);
@@ -76,7 +83,7 @@ namespace Beaulax.Classes
         /// Loads the previously saved
         /// </summary>
         /// <param name="p"></param>
-        public void Load(Player p)
+        public void Load(Player p, Game1 game)
         {
             
             Stream inStream;
@@ -86,6 +93,11 @@ namespace Beaulax.Classes
                 inStream = File.OpenRead("saveFile.data");
 
                 BinaryReader input = new BinaryReader(inStream);
+
+                game.currRoom = input.ReadString();
+                game.wasPlayerRoom = input.ReadString();
+
+                game.ReadMap(game.currRoom); // read the map at the designated room
 
                 p.HasFlashlight = input.ReadBoolean();
                 p.HasJumppack = input.ReadBoolean();
