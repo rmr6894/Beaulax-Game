@@ -139,7 +139,7 @@ namespace Beaulax
         public bool hasFlash = false;
         public bool hasJump = false;
         public bool hasTank = false;
-        public int access = 3;
+        public int access = 0;
         public int playerMaxHealth = 80;
         public int playerHealth;
         public float playerJumpHeight = 9f;

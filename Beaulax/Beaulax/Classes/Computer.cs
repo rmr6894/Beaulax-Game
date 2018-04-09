@@ -38,7 +38,6 @@ namespace Beaulax.Classes
                     {
                         play.AccessLevel = 1;
                         game.access = 1;
-                        touched1 = true;
                     }
                 }
                 else if (id == "computer2")
@@ -47,7 +46,6 @@ namespace Beaulax.Classes
                     {
                         play.AccessLevel = 2;
                         game.access = 2;
-                        touched2 = true;
                     }
                 }
                 else if (id == "computer3")
@@ -56,7 +54,6 @@ namespace Beaulax.Classes
                     {
                         play.AccessLevel = 3;
                         game.access = 3;
-                        touched3 = true;
                     }
                 }
                 else if (id == "computer4")
@@ -65,7 +62,6 @@ namespace Beaulax.Classes
                     {
                         play.AccessLevel = 4;
                         game.access = 4;
-                        touched4 = true;
                     }
                 }
                 else if (id == "computer5")
@@ -74,7 +70,6 @@ namespace Beaulax.Classes
                     {
                         play.AccessLevel = 5;
                         game.access = 5;
-                        touched5 = true;
                     }
                 }
             }
