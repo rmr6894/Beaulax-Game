@@ -117,18 +117,28 @@ namespace Beaulax
         public Texture2D doorText;
         public Texture2D laserText;
         public Texture2D computerText;
+        public Texture2D flashText;
+        public Texture2D jumpText;
+        public Texture2D tankText;
+        public Texture2D medText;
 
         // character stats
         public bool hasFlash = false;
-        public bool hasJump = true;
+        public bool hasJump = false;
         public bool hasTank = false;
-        public int access = 0;
+        public int access = 3;
+        public int playerMaxHealth = 80;
+        public int playerHealth;
+        public float playerJumpHeight = 9f;
+        public int playerDamage = 20;
+        public float playerSpeed = 8f;
         #endregion
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            playerHealth = playerMaxHealth;
 
             // set the default resolution
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -226,7 +236,11 @@ namespace Beaulax
             platformText = Content.Load<Texture2D>("BlackSquare");
             doorText = Content.Load<Texture2D>("WhiteSquare");
             computerText = Content.Load<Texture2D>("computerTemp2");
- 
+            jumpText = Content.Load<Texture2D>("jetpackTempText");
+            tankText = Content.Load<Texture2D>("Oxy_Tank");
+            flashText = Content.Load<Texture2D>("flashLightTemp");
+            medText = Content.Load<Texture2D>("Medpack");
+
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
             //platform = new Classes.Obstacles(100, 10, new Vector2(100, 450), platformText);
@@ -542,7 +556,7 @@ namespace Beaulax
             // load the game
             if (kb.IsKeyDown(Keys.G))
             {
-                saver.LoadExtP(player);
+                saver.LoadExtP(player, this);
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     saver.LoadExtE(enemies[i]);
@@ -594,6 +608,10 @@ namespace Beaulax
             {
                 comp.Update(gameTime, player, this);
             }
+            if (clct != null)
+            {
+                clct.Update(gameTime, player, this);
+            }
         }
 
         /// <summary>
@@ -628,6 +646,10 @@ namespace Beaulax
             if (comp != null)
             {
                 comp.Draw(spriteBatch);
+            }
+            if (clct != null)
+            {
+                clct.Draw(spriteBatch);
             }
         }
         #endregion
@@ -858,6 +880,7 @@ namespace Beaulax
             this.plats.Clear();
             this.doors.Clear();
             this.comp = null;
+            this.clct = null;
             try
             {
                 StreamReader sr = new StreamReader(inStream);
@@ -901,7 +924,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, true));
 
                                             doorID = "";
 
@@ -914,7 +937,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue, true));
 
                                             doorID = "";
 
@@ -928,7 +951,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow, true));
 
                                             doorID = "";
 
@@ -942,7 +965,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red, true));
 
                                             doorID = "";
 
@@ -954,7 +977,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green, true));
 
                                             doorID = "";
 
@@ -966,11 +989,37 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple, true));
 
                                             doorID = "";
 
                                             x += 2;
+                                            afterDoor += 2;
+                                            break;
+
+                                        case '|':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(doorID, "flashlight", new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, false));
+
+                                            doorID = "";
+
+                                            x += 2;
+
+                                            afterDoor += 2;
+                                            break;
+
+                                        case ')':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(doorID, "oxygentank", new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, false));
+
+                                            doorID = "";
+
+                                            x += 2;
+
                                             afterDoor += 2;
                                             break;
 
@@ -1001,7 +1050,7 @@ namespace Beaulax
 
                                             if (roomFrom == wasPlayerRoom)
                                             {
-                                                player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                                player = new Classes.Player(playerText, laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, this.playerSpeed, this.playerJumpHeight, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, this.playerHealth, this.playerDamage);
                                             }
 
                                             x += 2;
@@ -1018,19 +1067,19 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, medText);
                                             break;
 
                                         case 'J':
-                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, jumpText);
                                             break;
 
                                         case 'O':
-                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, tankText);
                                             break;
 
                                         case 'F':
-                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, flashText);
                                             break;
 
                                         case 'B':
@@ -1066,7 +1115,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray));
+                                            doors.Add(new Classes.Door(doorID, 0, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, true));
 
                                             doorID = "";
 
@@ -1077,7 +1126,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue));
+                                            doors.Add(new Classes.Door(doorID, 1, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Blue, true));
 
                                             doorID = "";
 
@@ -1088,7 +1137,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow));
+                                            doors.Add(new Classes.Door(doorID, 2, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Yellow, true));
 
                                             doorID = "";
 
@@ -1099,7 +1148,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red));
+                                            doors.Add(new Classes.Door(doorID, 3, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Red, true));
 
                                             doorID = "";
 
@@ -1110,7 +1159,7 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green));
+                                            doors.Add(new Classes.Door(doorID, 4, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Green, true));
 
                                             doorID = "";
 
@@ -1121,11 +1170,37 @@ namespace Beaulax
                                             doorID += thisRow[x + 1];
                                             doorID += thisRow[x + 2];
 
-                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple));
+                                            doors.Add(new Classes.Door(doorID, 5, new Rectangle((pxlPerBox * x), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Purple, true));
 
                                             doorID = "";
 
                                             x += 2;
+                                            break;
+
+                                        case '|':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(doorID, "flashlight", new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, false));
+
+                                            doorID = "";
+
+                                            x += 2;
+
+                                            afterDoor += 2;
+                                            break;
+
+                                        case ')':
+                                            doorID += thisRow[x + 1];
+                                            doorID += thisRow[x + 2];
+
+                                            doors.Add(new Classes.Door(doorID, "oveygentank", new Rectangle((pxlPerBox * (x - afterDoor)), (pxlPerBox * i), pxlPerBox, pxlPerBox), doorText, Color.Gray, false));
+
+                                            doorID = "";
+
+                                            x += 2;
+
+                                            afterDoor += 2;
                                             break;
 
                                         case 'C':
@@ -1149,7 +1224,7 @@ namespace Beaulax
                                             break;
 
                                         case 'P':
-                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, 8f, 9f, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox);
+                                            player = new Classes.Player(this.playerText, this.laserText, this.hasFlash, this.hasJump, this.hasTank, this.access, this.playerSpeed, this.playerJumpHeight, new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, this.playerHealth, this.playerDamage);
                                             break;
 
                                         case 'M':
@@ -1161,19 +1236,19 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, medText);
                                             break;
 
                                         case 'J':
-                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("jumppack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, jumpText);
                                             break;
 
                                         case 'O':
-                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("tank", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, tankText);
                                             break;
 
                                         case 'F':
-                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * x), (pxlPerBox * i)), pxlPerBox, pxlPerBox, computerText);
+                                            clct = new Classes.Collectibles("flashlight", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, flashText);
                                             break;
 
                                         case 'B':
