@@ -377,7 +377,7 @@ namespace Beaulax.Classes
             //Animation
             framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
             currentFramePlayer = framesElapsed % totalFrames + 1;
-            currentFrameLaser = framesElapsed % totalLaserFrames;
+            currentFrameLaser = framesElapsed % totalLaserFrames + 1;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -385,18 +385,7 @@ namespace Beaulax.Classes
             // if the player is shooting then draw the laser
             if (firingLaser)
             {
-                switch(pState.ToString())
-                {
-                    case "WalkLeft":
-                    case "FaceLeft":
-                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
-                        break;
-                    case "WalkRight":
-                    case "FaceRight":
-                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.FlipHorizontally, 0);
-                        break;  
-                }
-                
+                spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
             }
 
             // if the player is taking damage then they turn red
