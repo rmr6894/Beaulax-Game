@@ -75,7 +75,7 @@ namespace Beaulax.Classes
             damage = 10;
         }
 
-        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight, int pHlth, int pDmg)
+        public Player(Texture2D sprite, Texture2D laserBeam, bool ihasFlashlight, bool ihasJumpsuit, bool ihasSpacesuit, int iaccessLevel, float ispeed, float ijumpHeight, Vector2 ilocation, int iWidth, int iHeight)
         {
             hasFlashlight = ihasFlashlight;
             hasJumppack = ihasJumpsuit;
@@ -93,8 +93,8 @@ namespace Beaulax.Classes
             height = iHeight;
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
             laser = laserBeam;
-            health = pHlth;
-            damage = pDmg;
+            health = 100;
+            damage = 10;
         }
 
         // properties
@@ -385,7 +385,17 @@ namespace Beaulax.Classes
             // if the player is shooting then draw the laser
             if (firingLaser)
             {
-                spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
+                switch (pState.ToString())
+                {
+                    case "WalkLeft":
+                    case "FaceLeft":
+                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.None, 0);
+                        break;
+                    case "WalkRight":
+                    case "FaceRight":
+                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, laser.Height / 2), SpriteEffects.FlipHorizontally, 0);
+                        break;
+                }
             }
 
             // if the player is taking damage then they turn red
