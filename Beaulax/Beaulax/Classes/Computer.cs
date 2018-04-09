@@ -14,11 +14,6 @@ namespace Beaulax.Classes
     {
         public string id;
         public Texture2D text;
-        private bool touched1 = false; // tells whether the player has interacted with this specific collectible yet
-        private bool touched2 = false;
-        private bool touched3 = false;
-        private bool touched4 = false;
-        private bool touched5 = false;
         Color color;
 
 

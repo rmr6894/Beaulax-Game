@@ -50,14 +50,11 @@
     <Compile Include="Classes\Computer.cs" />
     <Compile Include="Classes\Enemy.cs" />
     <Compile Include="Classes\GameObjects.cs" />
-    <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\MapObjects.cs" />
     <Compile Include="Classes\MapRoom.cs" />
     <Compile Include="Classes\MovingObjects.cs" />
     <Compile Include="Classes\Narratives.cs" />
     <Compile Include="Classes\Obstacles.cs" />
-    <Compile Include="Classes\Platforms.cs" />
-    <Compile Include="Classes\PlayerInput.cs" />
     <Compile Include="Classes\SaveLoad.cs" />
     <Compile Include="Classes\StaticObjects.cs" />
     <Compile Include="Classes\Door.cs" />
