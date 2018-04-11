@@ -23,6 +23,7 @@ namespace Beaulax.Classes
         private bool hasJumped;
         private string roomNum;
         private string roomWas;
+        private int health;
 
         private float floatX; // need this to set the vector for location later
         private float floatY; // need this to set the vector for location later
@@ -58,6 +59,7 @@ namespace Beaulax.Classes
             locationX = (int)p.Location.X;
             locationY = (int)p.Location.Y;
             hasJumped = p.HasJumped;
+            health = p.CharacterHealth;
 
 
             Stream outStream = File.OpenWrite("saveFile.data");
@@ -73,6 +75,7 @@ namespace Beaulax.Classes
             output.Write(locationX);
             output.Write(locationY);
             output.Write(hasJumped);
+            output.Write(health);
 
             outStream.Close();
 
@@ -86,7 +89,7 @@ namespace Beaulax.Classes
         public void Load(Player p, Game1 game)
         {
             
-            Stream inStream;
+            Stream inStream = null;
 
             try
             {
@@ -106,15 +109,18 @@ namespace Beaulax.Classes
                 floatX = (float)input.ReadInt32();
                 floatY = (float)input.ReadInt32();
                 p.HasJumped = input.ReadBoolean();
+                p.CharacterHealth = input.ReadInt32();
 
                 p.Location = new Vector2(floatX, floatY);
                 Console.WriteLine(p);
-
-                inStream.Close();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Warning: File Does Not Exist\n" + e.Message);
+            }
+            finally
+            {
+                inStream.Close();
             }
         }
 
