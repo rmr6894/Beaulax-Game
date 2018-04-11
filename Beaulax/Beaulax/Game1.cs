@@ -103,6 +103,8 @@ namespace Beaulax
         int afterDoor = 0;
         string startingRoom = "01";
         public string wasPlayerRoom = "01";
+
+        List<Vector2> eLocations = new List<Vector2>();
         #endregion
 
         // screen size attributes
@@ -584,8 +586,6 @@ namespace Beaulax
             for (int i = 0; i < enemies.Count; i++)
             {
                 player.Attack(enemies[i]);
-                enemies[i].Movement();
-                enemies[i].Attack();
             }
             
             KeyboardState kb = Keyboard.GetState();
@@ -997,6 +997,7 @@ namespace Beaulax
             this.doors.Clear();
             this.comp = null;
             this.clct = null;
+            this.eLocations.Clear();
             try
             {
                 StreamReader sr = new StreamReader(inStream);
@@ -1181,7 +1182,8 @@ namespace Beaulax
                                             break;
 
                                         case 'E':
-                                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));
+                                            eLocations.Add(new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * (i + 1)) - 75));
+                                            /*enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));*/
                                             break;
 
                                         case 'H':
@@ -1350,7 +1352,8 @@ namespace Beaulax
                                             break;
 
                                         case 'E':
-                                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * x), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));
+                                            eLocations.Add(new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * (i + 1)) - 75));
+                                            /*enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * (i + 1)) - 75), 50, 74, 250, 20));*/
                                             break;
 
                                         case 'H':
@@ -1376,6 +1379,11 @@ namespace Beaulax
                                     
                                 }
                             }
+                        }
+                        for (int i = 0; i < eLocations.Count; i++)
+                        {
+                            enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, eLocations[i], 50, 74, 250, 20));
+
                         }
 
                         //return;
