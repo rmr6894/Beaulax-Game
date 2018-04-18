@@ -19,7 +19,6 @@ namespace Beaulax.Classes
         SideOfObstacle state;
         static SideOfObstacle prev;
         bool onTop = false;
-        bool onTopE = false;
 
         // constructor
         public Obstacles(int iWidth, int iHeight, Vector2 iLocation, Texture2D text)
@@ -31,13 +30,64 @@ namespace Beaulax.Classes
             texture = text;
         }
 
-        public void Update(GameTime gameTime, Player player, List<Enemy> enemies)
+        public void Update(GameTime gameTime, Player player, Enemy[] enemies)
         {
             bool isCollid = this.CheckCollision(player); // check if anything is colliding
 
-            bool isCollidEnemy;
-
             WhereCollide(player); // check if the platform and character collides
+
+            // checking enemies' states
+            int count = 0;
+            while (count < enemies.Length)
+            {
+                WhereCollide(enemies[count]);
+                if (isCollid)
+                {
+                    if (state == SideOfObstacle.Right)
+                    {
+                        enemies[count].Location = new Vector2(enemies[count].Location.X + enemies[count].Speed, enemies[count].Location.Y);
+                        enemies[count].Velocity = new Vector2(0f, enemies[count].Velocity.Y);
+                    }
+
+                    else if (state == SideOfObstacle.Left)
+                    {
+                        enemies[count].Location = new Vector2(enemies[count].Location.X - enemies[count].Speed, enemies[count].Location.Y);
+                        enemies[count].Velocity = new Vector2(0f, enemies[count].Velocity.Y);
+                    }
+
+                    else if (state == SideOfObstacle.Bottom)
+                    {
+                        enemies[count].Location = new Vector2(enemies[count].Location.X, enemies[count].Location.Y + enemies[count].JumpHeight);
+                        enemies[count].Velocity = new Vector2(enemies[count].Velocity.X, 0f);
+                    }
+
+                    else if (state == SideOfObstacle.Top)
+                    {
+                        onTop = true;
+                        enemies[count].Location = new Vector2(enemies[count].Location.X, hitBox.Y - enemies[count].HitBox.Height + 1);
+                        enemies[count].HasJumped = false;
+                        enemies[count].HasDoubleJumped = false;
+
+                        if (enemies[count].Location.X + enemies[count].HitBox.Width < this.hitBox.X || enemies[count].Location.X > this.hitBox.X + this.hitBox.Width)
+                        {
+                            enemies[count].Position = enemies[count].InitialPos;
+                            enemies[count].HasJumped = true;
+                            //Console.WriteLine("Falling");
+                        }
+                    }
+
+                    prev = state;
+                }
+                else
+                {
+                    if (onTop == true)
+                    {
+                        enemies[count].HasJumped = true;
+                        //Console.Write("falling    ");
+                        onTop = false;
+                    }
+                }
+            }
 
             if (isCollid)
             {
@@ -87,59 +137,6 @@ namespace Beaulax.Classes
             }
             //Console.Write(player.HasJumped + "   ");
             //Console.Write(player.HasDoubleJumped + "   ");
-
-            // checking enemies' states
-            int count = 0;
-            while (count < enemies.Count)
-            {
-                isCollidEnemy = this.CheckCollision(enemies[count]); // check if anything is colliding
-                WhereCollide(enemies[count]);
-                if (isCollidEnemy)
-                {
-                    if (state == SideOfObstacle.Right)
-                    {
-                        enemies[count].Location = new Vector2(enemies[count].Location.X + enemies[count].Speed, enemies[count].Location.Y);
-                        enemies[count].Velocity = new Vector2(0f, enemies[count].Velocity.Y);
-                    }
-
-                    else if (state == SideOfObstacle.Left)
-                    {
-                        enemies[count].Location = new Vector2(enemies[count].Location.X - enemies[count].Speed, enemies[count].Location.Y);
-                        enemies[count].Velocity = new Vector2(0f, enemies[count].Velocity.Y);
-                    }
-
-                    else if (state == SideOfObstacle.Top)
-                    {
-                        onTopE = true;
-                        enemies[count].Location = new Vector2(enemies[count].Location.X, hitBox.Y - enemies[count].HitBox.Height + 1);
-                        //enemies[count].HasJumped = false;
-                        //enemies[count].HasDoubleJumped = false;
-
-                        if (enemies[count].Location.X + enemies[count].HitBox.Width < this.hitBox.X || enemies[count].Location.X > this.hitBox.X + this.hitBox.Width)
-                        {
-                            enemies[count].Fall();
-                            //enemies[count].Position = enemies[count].InitialPos;
-                            //enemies[count].HasJumped = true;
-                            //Console.WriteLine("Falling");
-                        }
-                    }
-
-                    prev = state;
-                }
-                else
-                {
-                    if (onTopE == true)
-                    {
-                        //enemies[count].Fall();
-                        //enemies[count].HasJumped = true;
-                        //Console.Write("falling    ");
-                        onTopE = false;
-                    }
-                }
-                count++;
-            }
-
-            
         }
 
         public void Draw(SpriteBatch spriteBatch)
