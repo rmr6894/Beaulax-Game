@@ -631,7 +631,7 @@ namespace Beaulax
             {
                 for (int i = 0; i < plats.Count; i++)
                 {
-                    plats[i].Update(gameTime, player);
+                    plats[i].Update(gameTime, player, enemies);
                 }
             }
             if (enemies.Count != 0)

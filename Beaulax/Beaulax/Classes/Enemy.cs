@@ -17,6 +17,7 @@ namespace Beaulax.Classes
         private Texture2D enemySprite;
         private Rectangle attackBox;
         private float jumpHeight; // may not need, not sure if enemies will jump...
+        private Vector2 velocity;
         private int direction = 1;
         private int counterWhileStill = 0;
         private int counterWhileMoving = 0;
@@ -67,12 +68,14 @@ namespace Beaulax.Classes
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
             atkRange = atkRng;
             atkSpeed = atkSpd;
+            velocity.Y = 1f;
         }
 
         // parameters
         public int Health { get { return health; } set { health = value; } }
         public int Damage { get { return damage; } set { damage = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
+        public Vector2 Velocity { get { return velocity; } set { velocity = value; } }
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
         public int AtkRange { get { return atkRange; } set { atkRange = value; } }
 
@@ -154,8 +157,17 @@ namespace Beaulax.Classes
                     counterWhileStill++;
                 }                
             }
+
+
             // update the hitbox location
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+        }
+
+        public void Fall()
+        {
+            float i = 1;
+            velocity.Y += 0.20f * i; // acceleration
+            
         }
 
         public void Attack()
@@ -213,6 +225,8 @@ namespace Beaulax.Classes
 
         public void Update(GameTime gameTime)
         {
+            location += velocity;
+
             //Animation
             framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
             currentFrame = framesElapsed % totalFrames + 1;
