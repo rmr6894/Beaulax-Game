@@ -225,6 +225,8 @@ namespace Beaulax.Classes
 
         public void Update(GameTime gameTime)
         {
+            Movement();
+            Attack();
             location += velocity;
 
             //Animation
