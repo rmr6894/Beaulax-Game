@@ -68,7 +68,7 @@ namespace Beaulax.Classes
             hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
             atkRange = atkRng;
             atkSpeed = atkSpd;
-            velocity.Y = 1f;
+            velocity.Y = 5f;
         }
 
         // parameters
