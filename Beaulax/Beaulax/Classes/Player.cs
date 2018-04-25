@@ -440,6 +440,26 @@ namespace Beaulax.Classes
 
             //spriteBatch.Draw(sprite, hitBox, Color.Red); // we'll deal with this later
         }
+
+        /// <summary>
+        /// Draws the health bar, the weapon charge bar, and the UI for it
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="UI"></param>
+        /// <param name="healthBar"></param>
+        /// <param name="chargeBar"></param>
+        /// <param name="currentHealth"></param>
+        /// <param name="maxHealth"></param>
+        public void DrawHUD(SpriteBatch spriteBatch, Texture2D healthBar, int currentHealth, int maxHealth)//Texture2D UI, Texture2D healthBar, Texture2D chargeBar, int currentHealth, int maxHealth)
+        {
+            // calculate width of health bar based on player health
+            float healthPercent = (float)currentHealth / (float)maxHealth;
+            int healthWidth = (int)(healthPercent * 300f);
+
+            // draw health bar
+            spriteBatch.Draw(healthBar, new Rectangle(50, 50, 300, 20), Color.Gray);
+            spriteBatch.Draw(healthBar, new Rectangle(50, 50, healthWidth, 20), Color.White);
+        }
     }
 }
 

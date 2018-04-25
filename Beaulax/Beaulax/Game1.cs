@@ -36,6 +36,9 @@ namespace Beaulax
         int buttonHeight;
         int buttonX;
 
+        // gameplay HUD textures
+        Texture2D healthBar;
+
         #region Main Menu
         // main menu textures and attributes
         Texture2D mainMenuBackground;
@@ -277,6 +280,9 @@ namespace Beaulax
 
             // load the custom cursor
             cursor = Content.Load<Texture2D>("cursor");
+
+            // load gameplay HUD assets
+            healthBar = Content.Load<Texture2D>("tempLaser");
 
             // load main menu assets
             mainMenuBackground = Content.Load<Texture2D>("Main Menu Assets/Beaulax Menu");
@@ -695,6 +701,9 @@ namespace Beaulax
             {
                 clct.Draw(spriteBatch);
             }
+
+            // draw HUD overtop everything else
+            player.DrawHUD(spriteBatch, healthBar, player.CharacterHealth, playerMaxHealth);
         }
         #endregion
 
