@@ -108,6 +108,7 @@ namespace Beaulax
         public string wasPlayerRoom = "01";
 
         List<Vector2> eLocations = new List<Vector2>();
+        Vector2 hLoc = new Vector2();
         #endregion
 
         // screen size attributes
@@ -1006,7 +1007,9 @@ namespace Beaulax
             this.doors.Clear();
             this.comp = null;
             this.clct = null;
+
             this.eLocations.Clear();
+            this.hLoc = new Vector2(10000, 10000);
             try
             {
                 StreamReader sr = new StreamReader(inStream);
@@ -1196,7 +1199,7 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, medText);
+                                            hLoc = new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i));
                                             break;
 
                                         case 'J':
@@ -1366,7 +1369,7 @@ namespace Beaulax
                                             break;
 
                                         case 'H':
-                                            clct = new Classes.Collectibles("healthpack", new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), pxlPerBox, pxlPerBox, medText);
+                                            hLoc = new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i));
                                             break;
 
                                         case 'J':
@@ -1394,7 +1397,7 @@ namespace Beaulax
                             enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, eLocations[i], 50, 74, 250, 20));
 
                         }
-
+                        clct = new Classes.Collectibles("medpack", hLoc, pxlPerBox, pxlPerBox, medText);
                         //return;
                     }
                     else
