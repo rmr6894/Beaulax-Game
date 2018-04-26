@@ -385,3 +385,10 @@
 /processorParam:TextureFormat=Color
 /build:flashLightTemp.jpg
 
+#begin racer.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:racer.spritefont
+
