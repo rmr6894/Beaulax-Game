@@ -146,9 +146,9 @@ namespace Beaulax
         public Texture2D projText;
 
         // character stats
-        public bool hasFlash = false;
-        public bool hasJump = false;
-        public bool hasTank = false;
+        public bool hasFlash = true;
+        public bool hasJump = true;
+        public bool hasTank = true;
         public int access = 5;
         public int playerMaxHealth = 80;
         public int playerHealth;
@@ -434,7 +434,7 @@ namespace Beaulax
                         // initialize game
                         this.playerHealth = this.playerMaxHealth;
                         this.wasPlayerRoom = "01";
-                        this.access = 0;
+                        this.access = 5;
                         this.hasFlash = false;
                         this.hasJump = false;
                         this.hasTank = false;
@@ -668,6 +668,11 @@ namespace Beaulax
             {
                 clct.Update(gameTime, player, this);
             }
+            if (boss != null)
+            {
+                boss.Update(gameTime);
+                player.Attack(boss);
+            }
         }
 
         /// <summary>
@@ -706,6 +711,10 @@ namespace Beaulax
             if (clct != null)
             {
                 clct.Draw(spriteBatch);
+            }
+            if (boss != null)
+            {
+                boss.Draw(spriteBatch);
             }
 
             // draw HUD overtop everything else
@@ -1012,6 +1021,7 @@ namespace Beaulax
             this.doors.Clear();
             this.comp = null;
             this.clct = null;
+            this.boss = null;
 
             this.eLocations.Clear();
             this.hLoc = new Vector2(10000, 10000);
@@ -1220,7 +1230,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            //boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
+                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
                                             break;
                                     }
                                     
@@ -1390,7 +1400,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            enemies.Add(new Classes.Enemy());
+                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
                                             break;
                                     }
                                     
@@ -1402,7 +1412,10 @@ namespace Beaulax
                             enemies.Add(new Classes.Enemy(player, this.enemyText, 100, 10, 2f, eLocations[i], 50, 74, 250, 20));
 
                         }
-                        clct = new Classes.Collectibles("medpack", hLoc, pxlPerBox, pxlPerBox, medText);
+                        if (clct == null)
+                        {
+                            clct = new Classes.Collectibles("medpack", hLoc, pxlPerBox, pxlPerBox, medText);
+                        }
                         //return;
                     }
                     else

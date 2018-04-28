@@ -162,7 +162,7 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.W) && prevState.IsKeyUp(Keys.W) && hasJumped == true && hasJumppack == true && hasDoubleJumped == false) // double jump: checks if the player presses w a second time, ensures they have the jumppack and haven't already double-jumped
             {
                 location.Y -= 10f;
-                velocity.Y = -5f;
+                velocity.Y = -9f;
                 hasDoubleJumped = true;
             }
 

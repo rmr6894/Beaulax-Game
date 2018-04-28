@@ -27,7 +27,6 @@ namespace Beaulax.Classes
         int PROJ_WIDTH = 65;
         int PROJ_HEIGHT = 64;
 
-
         // constructor
         public Projectile(int iWidth, int iHeight, Vector2 Location, Player play, int dmg, Vector2 vel, Texture2D texture)
         {
@@ -105,11 +104,9 @@ namespace Beaulax.Classes
         /// draw the projectile
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(text, location, new Rectangle(PROJ_WIDTH * animationFrameHoriz, PROJ_HEIGHT * animationFrameVert, PROJ_WIDTH, PROJ_HEIGHT), Color.White);
-            spriteBatch.End();
         }
     }
 }

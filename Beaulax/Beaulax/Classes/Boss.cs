@@ -58,7 +58,7 @@ namespace Beaulax.Classes
                     Vector2 projectDirection = new Vector2(playerPos - prjctlOrigin, player.Location.Y - this.location.Y);
                     double pDNorm = Math.Sqrt((projectDirection.X * projectDirection.X) + (projectDirection.Y * projectDirection.Y));
 
-                    projectDirection = new Vector2(projectDirection.X / (float)pDNorm, projectDirection.Y / (float)pDNorm);
+                    projectDirection = new Vector2(8 * (projectDirection.X / (float)pDNorm),  8 * (projectDirection.Y / (float)pDNorm));
 
                     proj.Add(new Projectile(128, 128, new Vector2(prjctlOrigin, this.Location.Y), player, 5, projectDirection, projText));
 
@@ -88,6 +88,11 @@ namespace Beaulax.Classes
                 for (int i = 0; i < proj.Count; i++)
                 {
                     proj[i].Update(gameTime);
+
+                    if (proj[i].Location.X < 0)
+                    {
+                        proj.Remove(proj[i]);
+                    }
                 }
             }
         }
@@ -96,10 +101,19 @@ namespace Beaulax.Classes
         {
             if (isAlive)
             {
-                spriteBatch.Begin();
+                // draw the boss
                 spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
-                spriteBatch.End();
+
+                // draw the projectiles
+                if (proj.Count > 0)
+                {
+                    for (int i = 0; i < proj.Count; i++)
+                    {
+                        proj[i].Draw(spriteBatch);
+                    }
+                }
             }
+
         }
     }
 }
