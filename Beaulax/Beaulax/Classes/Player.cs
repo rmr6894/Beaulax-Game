@@ -356,7 +356,7 @@ namespace Beaulax.Classes
         /// Dameges the player by a certain number.
         /// </summary>
         /// <param name="damage">amount of damage that the player takes</param>
-        public void TakeDamage(int damage, Enemy enemy)
+        public void TakeDamage(int damage)
         {
             if (health > 0)
             {

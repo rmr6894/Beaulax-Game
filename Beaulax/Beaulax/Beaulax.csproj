@@ -45,6 +45,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\Boss.cs" />
     <Compile Include="Classes\Characters.cs" />
     <Compile Include="Classes\Collectibles.cs" />
     <Compile Include="Classes\Computer.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Classes\MovingObjects.cs" />
     <Compile Include="Classes\Narratives.cs" />
     <Compile Include="Classes\Obstacles.cs" />
+    <Compile Include="Classes\Projectile.cs" />
     <Compile Include="Classes\SaveLoad.cs" />
     <Compile Include="Classes\StaticObjects.cs" />
     <Compile Include="Classes\Door.cs" />

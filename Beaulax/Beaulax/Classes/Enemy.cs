@@ -192,7 +192,7 @@ namespace Beaulax.Classes
                     if (counterWhileDamaging >= atkSpeed)
                     {
                         counterWhileDamaging = 0;
-                        player.TakeDamage(damage, this);
+                        player.TakeDamage(damage);
                     }
                     else
                     {
