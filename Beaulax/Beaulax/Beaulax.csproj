@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\BlackSquare.gif" />
+    <Content Include="Content\blood_projectile.png" />
     <Content Include="Content\computerTemp.jpg" />
     <Content Include="Content\computerTemp2.png" />
     <Content Include="Content\cursor.png">

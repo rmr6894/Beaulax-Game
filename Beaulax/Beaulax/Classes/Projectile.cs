@@ -11,14 +11,25 @@ namespace Beaulax.Classes
 {
     class Projectile : StaticObjects
     {
-        /*// attributes
+        // attributes
         Player player;
         int damage;
         Vector2 direction;
         int dmgCoolDwn;
+        Vector2 velocity;
+        Texture2D text;
+
+        // animation
+        int animationFrameHoriz;
+        int animationFrameVert;
+        int timeBtwnFrames = 10;
+        int counter;
+        int PROJ_WIDTH = 65;
+        int PROJ_HEIGHT = 64;
+
 
         // constructor
-        public Projectile(int iWidth, int iHeight, Vector2 Location, Player play, int dmg)
+        public Projectile(int iWidth, int iHeight, Vector2 Location, Player play, int dmg, Vector2 vel, Texture2D texture)
         {
             this.width = iWidth;
             this.height = iHeight;
@@ -27,23 +38,78 @@ namespace Beaulax.Classes
             player = play;
             damage = dmg;
             dmgCoolDwn = 10;
+            velocity = vel;
+            animationFrameHoriz = 0;
+            animationFrameVert = 0;
+            text = texture;
         }
 
-        // damage method
+        /// <summary>
+        /// This method allows the projectile to deal a given amount of damage to the player 6 times a second.
+        /// </summary>
         public void DealDamage()
         {
             if (dmgCoolDwn >= 10)
             {
                 if (this.hitBox.Intersects(player.HitBox))
                 {
-                    player.TakeDamage(damage, this);
-
+                    player.TakeDamage(damage);
+                    dmgCoolDwn = 0;
                 }
             }
             else
             {
                 dmgCoolDwn++;
             }
-        }*/
+        }
+
+        /// <summary>
+        /// update the projectile object
+        /// </summary>
+        /// <param name="gameTime"> give the current time of game</param>
+        public void Update(GameTime gameTime)
+        {
+            this.DealDamage(); // deal damage
+            location += velocity;
+            hitBox = new Rectangle((int)location.X, (int)location.Y, width, height);
+
+            if (counter == timeBtwnFrames)
+            {
+                if (animationFrameHoriz < 2)
+                {
+                    animationFrameHoriz++;
+                }
+                else
+                {
+                    if (animationFrameVert == 0)
+                    {
+                        animationFrameVert = 1;
+                        animationFrameHoriz = 0;
+                    }
+                    else
+                    {
+                        animationFrameVert = 0;
+                        animationFrameHoriz = 0;
+                    }
+                }
+
+                counter = 0;
+            }
+            else
+            {
+                counter++;
+            }
+        }
+
+        /// <summary>
+        /// draw the projectile
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(text, location, new Rectangle(PROJ_WIDTH * animationFrameHoriz, PROJ_HEIGHT * animationFrameVert, PROJ_WIDTH, PROJ_HEIGHT), Color.White);
+            spriteBatch.End();
+        }
     }
 }

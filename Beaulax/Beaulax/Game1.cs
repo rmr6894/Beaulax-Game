@@ -128,6 +128,7 @@ namespace Beaulax
         Classes.Computer comp;
         Classes.MapRoom map;
         Classes.Collectibles clct;
+        Classes.Boss boss = null;
         //MapReader mr = new MapReader(1);
 
         // create texture classes
@@ -141,12 +142,14 @@ namespace Beaulax
         public Texture2D jumpText;
         public Texture2D tankText;
         public Texture2D medText;
+        public Texture2D bossText;
+        public Texture2D projText;
 
         // character stats
         public bool hasFlash = false;
         public bool hasJump = false;
         public bool hasTank = false;
-        public int access = 0;
+        public int access = 5;
         public int playerMaxHealth = 80;
         public int playerHealth;
         public float playerJumpHeight = 9f;
@@ -274,6 +277,8 @@ namespace Beaulax
             tankText = Content.Load<Texture2D>("Oxy_Tank");
             flashText = Content.Load<Texture2D>("flashLightTemp");
             medText = Content.Load<Texture2D>("Medpack");
+            projText = Content.Load<Texture2D>("blood_projectile");
+            bossText = enemyText; // to be replaced later, with real spritesheet 
 
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
@@ -1215,7 +1220,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            enemies.Add(new Classes.Enemy());
+                                            //boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
                                             break;
                                     }
                                     

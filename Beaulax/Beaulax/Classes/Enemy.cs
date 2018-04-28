@@ -36,8 +36,8 @@ namespace Beaulax.Classes
         //enemy movement attributes
         private double timePerFrame = 100; //ms
         private int totalFrames = 8; //Just for the animation, frame 0 is the idle sprite; 9 TOTAL on spriteWalkingSheet
-        private const int ENEMY_HEIGHT = 128;
-        private const int ENEMY_WIDTH = 64;
+        protected const int ENEMY_HEIGHT = 128;
+        protected const int ENEMY_WIDTH = 64;
         private int currentFrame;
         private int framesElapsed;
 
@@ -223,7 +223,7 @@ namespace Beaulax.Classes
             takingDamage = true;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             Movement();
             Attack();
@@ -234,7 +234,7 @@ namespace Beaulax.Classes
             currentFrame = framesElapsed % totalFrames + 1;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             // if the enemy is taking damage and is alive then they turn red
             if (takingDamage && isAlive)
