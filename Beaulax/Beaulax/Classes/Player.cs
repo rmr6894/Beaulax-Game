@@ -110,6 +110,8 @@ namespace Beaulax.Classes
         public float JumpHeight { get { return jumpHeight; } set { jumpHeight = value; } }
         public Vector2 Position { get { return position; } set { position = value; } }
         public Vector2 InitialPos { get { return initialPos; } set { initialPos = value; } }
+        public Rectangle AttackBox { get { return attackBox; } set { attackBox = value; } }
+        public int Damage { get { return damage; } set { damage = value; } }
         
 
         // method

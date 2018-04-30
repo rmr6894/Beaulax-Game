@@ -23,7 +23,7 @@ namespace Beaulax.Classes
         // attack attributes
         private bool isShoot;
         private List<Projectile> proj;
-        
+
         // constructor
         public Boss (Player iPlayer, Texture2D sprite, Texture2D projSprite, int iHealth, int iDamage, Vector2 iLocation, int iWidth, int iHeight, int atkSpd)
         {
@@ -32,10 +32,10 @@ namespace Beaulax.Classes
             projText = projSprite;
             health = iHealth;
             damage = iDamage;
-            this.hitBox = new Rectangle((int)location.X, (int)location.Y, iWidth, iHeight);
             location = iLocation;
             width = iWidth;
             height = iHeight;
+            this.hitBox = new Rectangle((int)location.X, (int)location.Y, iWidth, iHeight);
             atkSpeed = atkSpd;
             counter = atkSpd;
             proj = new List<Projectile>();
@@ -72,11 +72,15 @@ namespace Beaulax.Classes
             }
         }
 
-        public void TakeDamage(int damage)
+        /*public void BossTakeDamage(int damage)
         {
             if (health > 0)
             {
-                health -= damage;
+                if (this.hitBox.Intersects(player.AttackBox))
+                {
+                    health -= damage;
+                    takingDamage = true;
+                }
             }
             else if (health < 0)
             {
@@ -86,8 +90,7 @@ namespace Beaulax.Classes
             {
                 isAlive = false;
             }
-            takingDamage = true;
-        }
+        }*/
 
         public override void Update(GameTime gameTime)
         {
@@ -99,6 +102,7 @@ namespace Beaulax.Classes
                 }
             }
 
+            //this.BossTakeDamage(player.Damage);
             this.ProjectileAttack();
 
             if (proj.Count > 0)

@@ -599,6 +599,11 @@ namespace Beaulax
             {
                 player.Attack(enemies[i]);
             }
+
+            if (boss != null)
+            {
+                player.Attack(boss);
+            }
             
             KeyboardState kb = Keyboard.GetState();
 
@@ -671,7 +676,6 @@ namespace Beaulax
             if (boss != null)
             {
                 boss.Update(gameTime);
-                player.Attack(boss);
             }
         }
 
@@ -1231,7 +1235,6 @@ namespace Beaulax
 
                                         case 'B':
                                             boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
-                                            boss = new Classes.Boss(this.player, bossText, projText, 30, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), 100, 100, 100);
                                             break;
                                     }
                                     
