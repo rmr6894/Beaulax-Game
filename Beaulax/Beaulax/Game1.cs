@@ -441,7 +441,7 @@ namespace Beaulax
                         // initialize game
                         this.playerHealth = this.playerMaxHealth;
                         this.wasPlayerRoom = "01";
-                        this.access = 5;
+                        this.access = 0;
                         this.hasFlash = false;
                         this.hasJump = false;
                         this.hasTank = false;
@@ -1263,7 +1263,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
+                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 604), 624, 604, 100);
                                             break;
                                     }
                                     

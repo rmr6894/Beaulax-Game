@@ -26,7 +26,7 @@ namespace Beaulax.Classes
 
         //animation attributes
         private double timePerFrame = 100; //ms
-        private int totalFrames = 8;
+        private int totalFrames = 7;
         protected const int BOSS_HEIGHT = 604;
         protected const int BOSS_WIDTH = 624;
         private int currentFrame;
@@ -146,7 +146,7 @@ namespace Beaulax.Classes
                     spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                 }
 
-                spriteBatch.Draw(enemySprite, hitBox, Color.Red);
+                //spriteBatch.Draw(enemySprite, hitBox, Color.Red);
 
                 // draw the projectiles
                 if (proj.Count > 0)
