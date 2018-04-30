@@ -24,6 +24,14 @@ namespace Beaulax.Classes
         private bool isShoot;
         private List<Projectile> proj;
 
+        //animation attributes
+        private double timePerFrame = 100; //ms
+        private int totalFrames = 8;
+        protected const int BOSS_HEIGHT = 604;
+        protected const int BOSS_WIDTH = 624;
+        private int currentFrame;
+        private int framesElapsed;
+
         // constructor
         public Boss (Player iPlayer, Texture2D sprite, Texture2D projSprite, int iHealth, int iDamage, Vector2 iLocation, int iWidth, int iHeight, int atkSpd)
         {
@@ -117,6 +125,10 @@ namespace Beaulax.Classes
                     }
                 }
             }
+
+            //Animation
+            framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
+            currentFrame = framesElapsed % totalFrames + 1;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -126,12 +138,12 @@ namespace Beaulax.Classes
                 // draw the boss
                 if (takingDamage && isAlive)
                 {
-                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                     takingDamage = false;
                 }
                 else
                 {
-                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
                 }
 
                 spriteBatch.Draw(enemySprite, hitBox, Color.Red);

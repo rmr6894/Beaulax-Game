@@ -136,6 +136,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\enemyWalkingSprite.png" />
+    <Content Include="Content\finalBoss.png" />
     <Content Include="Content\flashLightTemp.jpg" />
     <Content Include="Content\Game Over Assets\GameOverBG.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
