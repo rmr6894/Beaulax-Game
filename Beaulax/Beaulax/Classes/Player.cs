@@ -52,7 +52,11 @@ namespace Beaulax.Classes
         private const int LASER_HEIGHT = 64;
         private const int LASER_WIDTH = 800;
         private int currentFrameLaser;
-        
+        private int cyclesWhileFiring = 0;
+        private int cyclesToOverheat = 150;
+        private int cyclesWhileCooling = 0;
+        private int cyclesToCooldown = 120;
+        private bool onCooldown = false;
 
         // defining states
         KeyboardState state; // gives the current state of pressed keys
@@ -208,7 +212,10 @@ namespace Beaulax.Classes
             if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Up))
             {
                 laserRotation = (7 * (float)Math.PI) / 4;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 while (attackLineX <= attackBox.Width)
@@ -226,7 +233,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Down))
             {
                 laserRotation = (float)Math.PI / 4;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 while (attackLineX <= attackBox.Width)
@@ -244,7 +254,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Up))
             {
                 laserRotation = (5 * (float)Math.PI) / 4;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 while (attackLineX >= -attackBox.Width)
@@ -262,7 +275,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Left) && state.IsKeyDown(Keys.Down))
             {
                 laserRotation = (3 * (float)Math.PI) / 4;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 while (attackLineX >= -attackBox.Width)
@@ -280,7 +296,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Right) && state.IsKeyUp(Keys.Left))
             {
                 laserRotation = 0f;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
@@ -293,7 +312,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Left) && state.IsKeyUp(Keys.Right))
             {
                 laserRotation = (float)Math.PI;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - attackBox.Width, hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
@@ -306,7 +328,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Up) && state.IsKeyUp(Keys.Down))
             {
                 laserRotation = (3 * (float)Math.PI) / 2;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2) - attackBox.Width, attackBox.Height, attackBox.Width);
@@ -319,7 +344,10 @@ namespace Beaulax.Classes
             else if (state.IsKeyDown(Keys.Down) && state.IsKeyUp(Keys.Up))
             {
                 laserRotation = (float)Math.PI / 2;
-                firingLaser = true;
+                if (onCooldown == false)
+                {
+                    firingLaser = true;
+                }
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2), attackBox.Height, attackBox.Width);
@@ -334,17 +362,38 @@ namespace Beaulax.Classes
                 firingLaser = false;
             }
 
-            // if the player is hitting the enemy then deal damage to the enemy
-            if (isDamaging)
+            // if the laser is being fired and is not overheated
+            if (firingLaser == true && cyclesWhileFiring <= cyclesToOverheat)
             {
-                if (counterWhileDamaging >= 20)
+                // if the player is hitting the enemy then deal damage to the enemy
+                if (isDamaging)
                 {
-                    counterWhileDamaging = 0;
-                    enemy.TakeDamage(damage);
+                    if (counterWhileDamaging >= 20)
+                    {
+                        counterWhileDamaging = 0;
+                        enemy.TakeDamage(damage);
+                    }
+                    else
+                    {
+                        counterWhileDamaging++;
+                    }
+                }
+                cyclesWhileFiring++;
+                cyclesWhileCooling = 0;
+            }
+            else
+            {
+                // if the laser is on cooldown
+                if (cyclesWhileCooling <= cyclesToCooldown)
+                {
+                    cyclesWhileCooling++;
+                    onCooldown = true;
+                    firingLaser = false;
                 }
                 else
                 {
-                    counterWhileDamaging++;
+                    onCooldown = false;
+                    cyclesWhileFiring = 0;
                 }
             }
 
@@ -452,15 +501,40 @@ namespace Beaulax.Classes
         /// <param name="chargeBar"></param>
         /// <param name="currentHealth"></param>
         /// <param name="maxHealth"></param>
-        public void DrawHUD(SpriteBatch spriteBatch, Texture2D healthBar, int currentHealth, int maxHealth)//Texture2D UI, Texture2D healthBar, Texture2D chargeBar, int currentHealth, int maxHealth)
+        public void DrawHUD(SpriteBatch spriteBatch, Texture2D UI, Texture2D healthBar, Texture2D chargeBar, int currentHealth, int maxHealth)
         {
             // calculate width of health bar based on player health
-            float healthPercent = (float)currentHealth / (float)maxHealth;
-            int healthWidth = (int)(healthPercent * 300f);
+            float healthPercent = 1f - (float)currentHealth / (float)maxHealth;
+            int healthWidth = 343 - (int)(healthPercent * 248f);
+            int healthWidthS = healthBar.Width - (int)(healthPercent * 1260f);
+
+            // calculate the width of the weapin charge bar
+            float chargePercent;
+
+            // on cooldown the bar is recharging
+            if (onCooldown == true)
+            {
+                chargePercent = 1f - (float)cyclesWhileCooling / (float)cyclesToCooldown;
+            }
+            // not on cooldown the bar is draining
+            else
+            {
+                chargePercent = (float)cyclesWhileFiring / (float)cyclesToOverheat;
+            }
+            int chargeWidth = 277 - (int)(chargePercent * 180f);
+            int chargeWidthS = chargeBar.Width - (int)(chargePercent * 918f);
+
+            // draw bar holder
+            Rectangle barHolderRectangle = new Rectangle(50, 50, 345, 100);
+            spriteBatch.Draw(UI, barHolderRectangle, Color.White);
 
             // draw health bar
-            spriteBatch.Draw(healthBar, new Rectangle(50, 50, 300, 20), Color.Gray);
-            spriteBatch.Draw(healthBar, new Rectangle(50, 50, healthWidth, 20), Color.White);
+            spriteBatch.Draw(healthBar, new Rectangle(barHolderRectangle.X, barHolderRectangle.Y, 343, 34), Color.Gray);
+            spriteBatch.Draw(healthBar, new Rectangle(barHolderRectangle.X, barHolderRectangle.Y, healthWidth, 34), new Rectangle(0, 0, healthWidthS, healthBar.Height), Color.White);
+
+            // draw weapon charge bar
+            spriteBatch.Draw(chargeBar, new Rectangle(barHolderRectangle.X, barHolderRectangle.Y, 277, 73), Color.Gray);
+            spriteBatch.Draw(chargeBar, new Rectangle(barHolderRectangle.X, barHolderRectangle.Y, chargeWidth, 73), new Rectangle(0, 0, chargeWidthS, chargeBar.Height), Color.White);
         }
     }
 }
