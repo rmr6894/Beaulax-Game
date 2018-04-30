@@ -434,7 +434,7 @@ namespace Beaulax
                         // initialize game
                         this.playerHealth = this.playerMaxHealth;
                         this.wasPlayerRoom = "01";
-                        this.access = 5;
+                        this.access = 0;
                         this.hasFlash = false;
                         this.hasJump = false;
                         this.hasTank = false;
