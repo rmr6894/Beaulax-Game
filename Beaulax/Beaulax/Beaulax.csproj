@@ -178,6 +178,9 @@
     </Content>
     <Content Include="Content\Medpack.png" />
     <Content Include="Content\Oxy_Tank.png" />
+    <Content Include="Content\Pause Menu Assets\ControlsMenu.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Pause Menu Assets\ExitToMenu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
