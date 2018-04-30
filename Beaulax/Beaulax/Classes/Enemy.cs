@@ -26,8 +26,8 @@ namespace Beaulax.Classes
         private int counterWhileDamaging = 0;
         private int atkRange;
         private int atkSpeed;
-        private bool takingDamage = false;
-        private bool isAlive = true;
+        protected bool takingDamage = false;
+        protected bool isAlive = true;
 
         //enemy movement enum
         enum enemyState {WalkLeft, FaceLeft, WalkRight, FaceRight};

@@ -17,8 +17,6 @@ namespace Beaulax.Classes
         private Texture2D projText;
         private int atkSpeed; // how much time is between each boss's shots (in frames)
         private int counter; // keeps track of the time
-        private bool takingDamage = false;
-        private bool isAlive = true;
 
         // attack attributes
         private bool isShoot;
@@ -67,9 +65,9 @@ namespace Beaulax.Classes
                     Vector2 projectDirection = new Vector2(playerPos - prjctlOrigin, player.Location.Y - this.location.Y);
                     double pDNorm = Math.Sqrt((projectDirection.X * projectDirection.X) + (projectDirection.Y * projectDirection.Y));
 
-                    projectDirection = new Vector2(8 * (projectDirection.X / (float)pDNorm),  8 * (projectDirection.Y / (float)pDNorm));
+                    projectDirection = new Vector2(10 * (projectDirection.X / (float)pDNorm),  10 * (projectDirection.Y / (float)pDNorm));
 
-                    proj.Add(new Projectile(128, 128, new Vector2(prjctlOrigin, this.Location.Y), player, 5, projectDirection, projText));
+                    proj.Add(new Projectile(128, 128, new Vector2(prjctlOrigin, this.Location.Y), player, 10, projectDirection, projText));
 
                     counter = atkSpeed;
                 }
@@ -104,10 +102,9 @@ namespace Beaulax.Classes
         {
             if (this.hitBox.Intersects(player.HitBox))
             {
-                if (atkSpeed % 2 == 1)
-                {
+                
                     player.TakeDamage(1);
-                }
+                
             }
 
             //this.BossTakeDamage(player.Damage);
@@ -138,12 +135,12 @@ namespace Beaulax.Classes
                 // draw the boss
                 if (takingDamage && isAlive)
                 {
-                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.Red, 0, Vector2.Zero, (float)1, SpriteEffects.None, 0);
                     takingDamage = false;
                 }
                 else
                 {
-                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(BOSS_WIDTH * currentFrame, 0, BOSS_WIDTH, BOSS_HEIGHT), Color.White, 0, Vector2.Zero, (float)1, SpriteEffects.None, 0);
                 }
 
                 //spriteBatch.Draw(enemySprite, hitBox, Color.Red);

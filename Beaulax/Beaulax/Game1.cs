@@ -441,7 +441,7 @@ namespace Beaulax
                         // initialize game
                         this.playerHealth = this.playerMaxHealth;
                         this.wasPlayerRoom = "01";
-                        this.access = 0;
+                        this.access = 5;
                         this.hasFlash = false;
                         this.hasJump = false;
                         this.hasTank = false;
@@ -812,10 +812,9 @@ namespace Beaulax
                         // set to true when the mouse is over the button
                         exitToMenuButtonHover = true;
 
-                        // if the left mouse button is clicked then save and switch states
+                        // if the left mouse button is clicked, switch states
                         if (mState.LeftButton == ButtonState.Pressed)
                         {
-                            saver.Save(player, this);
                             currentState = GameState.MainMenu;
                             mainMenuDelayCount = 0;
                         }
@@ -1263,7 +1262,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 604), 624, 604, 100);
+                                            boss = new Classes.Boss(this.player, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
                                             break;
                                     }
                                     
@@ -1433,7 +1432,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
+                                            boss = new Classes.Boss(this.player, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
                                             break;
                                     }
                                     
