@@ -22,7 +22,7 @@ namespace Beaulax.Classes
         // animation
         int animationFrameHoriz;
         int animationFrameVert;
-        int timeBtwnFrames = 10;
+        int timeBtwnFrames = 5;
         int counter;
         int PROJ_WIDTH = 65;
         int PROJ_HEIGHT = 64;

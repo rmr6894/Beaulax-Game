@@ -32,6 +32,7 @@ namespace Beaulax.Classes
             projText = projSprite;
             health = iHealth;
             damage = iDamage;
+            this.hitBox = new Rectangle((int)location.X, (int)location.Y, iWidth, iHeight);
             location = iLocation;
             width = iWidth;
             height = iHeight;
@@ -71,6 +72,23 @@ namespace Beaulax.Classes
             }
         }
 
+        public void TakeDamage(int damage)
+        {
+            if (health > 0)
+            {
+                health -= damage;
+            }
+            else if (health < 0)
+            {
+                health = 0;
+            }
+            else if (health == 0)
+            {
+                isAlive = false;
+            }
+            takingDamage = true;
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (this.hitBox.Intersects(player.HitBox))
@@ -102,7 +120,17 @@ namespace Beaulax.Classes
             if (isAlive)
             {
                 // draw the boss
-                spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                if (takingDamage && isAlive)
+                {
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.Red, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                    takingDamage = false;
+                }
+                else
+                {
+                    spriteBatch.Draw(enemySprite, new Vector2((int)location.X, (int)location.Y), new Rectangle(0, 0, ENEMY_WIDTH, ENEMY_HEIGHT), Color.White, 0, Vector2.Zero, (float)0.5, SpriteEffects.None, 0);
+                }
+
+                spriteBatch.Draw(enemySprite, hitBox, Color.Red);
 
                 // draw the projectiles
                 if (proj.Count > 0)

@@ -278,7 +278,7 @@ namespace Beaulax
             flashText = Content.Load<Texture2D>("flashLightTemp");
             medText = Content.Load<Texture2D>("Medpack");
             projText = Content.Load<Texture2D>("blood_projectile");
-            bossText = enemyText; // to be replaced later, with real spritesheet 
+            bossText = enemyText; // to be replaced later, with real spritesheet
 
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
@@ -434,7 +434,7 @@ namespace Beaulax
                         // initialize game
                         this.playerHealth = this.playerMaxHealth;
                         this.wasPlayerRoom = "01";
-                        this.access = 0;
+                        this.access = 5;
                         this.hasFlash = false;
                         this.hasJump = false;
                         this.hasTank = false;
@@ -1231,6 +1231,7 @@ namespace Beaulax
 
                                         case 'B':
                                             boss = new Classes.Boss(this.player, bossText, projText, 300, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i) - 400), 100, 400, 100);
+                                            boss = new Classes.Boss(this.player, bossText, projText, 30, 10, new Vector2((pxlPerBox * (x - afterDoor)), (pxlPerBox * i)), 100, 100, 100);
                                             break;
                                     }
                                     
