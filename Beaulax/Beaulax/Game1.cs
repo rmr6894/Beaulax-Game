@@ -148,6 +148,11 @@ namespace Beaulax
         public Texture2D medText;
         public Texture2D bossText;
         public Texture2D projText;
+        public Texture2D background1;
+        public Texture2D background2;
+        public Texture2D background3;
+        public Texture2D holeBackground;
+
 
         // character stats
         public bool hasFlash = true;
@@ -283,6 +288,10 @@ namespace Beaulax
             medText = Content.Load<Texture2D>("Medpack");
             projText = Content.Load<Texture2D>("blood_projectile");
             bossText = Content.Load<Texture2D>("finalBoss");
+            background1 = Content.Load<Texture2D>("background1");
+            background2 = Content.Load<Texture2D>("background2");
+            background3 = Content.Load<Texture2D>("background3");
+            holeBackground = Content.Load<Texture2D>("holeBackground");
 
             //player = new Classes.Player(playerText, laserText, true, true, true, 2, 3f, 10f, initialPosition, 50, 74);
             //enemy = new Classes.Enemy(player, enemyText, 100, 10, 2f, new Vector2(600, 500), 50, 74, 250, 20);
