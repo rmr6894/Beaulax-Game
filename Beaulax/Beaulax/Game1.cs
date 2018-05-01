@@ -157,7 +157,7 @@ namespace Beaulax
         public int playerMaxHealth = 80;
         public int playerHealth;
         public float playerJumpHeight = 9f;
-        public int playerDamage = 20;
+        public int playerDamage = 40;
         public float playerSpeed = 8f;
         #endregion
 

@@ -154,7 +154,6 @@ namespace Beaulax.Classes
                     }
                 }
             }
-
         }
     }
 }
