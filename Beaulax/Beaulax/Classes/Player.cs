@@ -53,7 +53,7 @@ namespace Beaulax.Classes
         private int currentFrameLaser;
         private int cyclesWhileFiring = 0;
         private int cyclesToOverheat = 150;
-        private int cyclesWhileCooling = 0;
+        private int cyclesWhileCooling = 120;
         private int cyclesToCooldown = 120;
         private bool onCooldown = false;
 
@@ -212,7 +212,7 @@ namespace Beaulax.Classes
                     counterWhileDamaging.Add(0);
                 }
             }
-            Console.WriteLine(counterWhileDamaging.Count);
+            
             attackBox = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2), 800, 30);
 
             // shoot diagonally up right
@@ -413,16 +413,30 @@ namespace Beaulax.Classes
                     }
                 }
                 cyclesWhileFiring++;
-                cyclesWhileCooling = 0;
+                cyclesWhileCooling = (int)((1f - (float)cyclesWhileFiring / (float)cyclesToOverheat) * (float)cyclesToCooldown);
             }
             else
             {
+                // if the charge bar is empty then trigger the cooldown where you cannot shoot the laser while it regenerates
+                if (cyclesWhileCooling == 0)
+                {
+                    onCooldown = true;
+                }
+
                 // if the laser is on cooldown
                 if (cyclesWhileCooling <= cyclesToCooldown)
                 {
-                    cyclesWhileCooling++;
-                    onCooldown = true;
-                    firingLaser = false;
+                    if (onCooldown)
+                    {
+                        cyclesWhileCooling++;
+                        firingLaser = false;
+                    }
+                    else
+                    {
+                        cyclesWhileCooling++;
+                        firingLaser = false;
+                        cyclesWhileFiring = (int)((1f - (float)cyclesWhileCooling / (float)cyclesToCooldown) * (float)cyclesToOverheat);
+                    }
                 }
                 else
                 {
@@ -553,7 +567,7 @@ namespace Beaulax.Classes
             {
                 chargePercent = 1f - (float)cyclesWhileCooling / (float)cyclesToCooldown;
             }
-            // not on cooldown the bar is draining
+            //not on cooldown the bar is draining
             else
             {
                 chargePercent = (float)cyclesWhileFiring / (float)cyclesToOverheat;
