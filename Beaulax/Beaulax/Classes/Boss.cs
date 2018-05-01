@@ -102,9 +102,10 @@ namespace Beaulax.Classes
         {
             if (this.hitBox.Intersects(player.HitBox))
             {
-                
+                if (isAlive)
+                {
                     player.TakeDamage(1);
-                
+                }
             }
 
             //this.BossTakeDamage(player.Damage);
