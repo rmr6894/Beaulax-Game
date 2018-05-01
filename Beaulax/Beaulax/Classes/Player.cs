@@ -28,11 +28,10 @@ namespace Beaulax.Classes
         private Rectangle attackBox;
         private float laserRotation = 0f;
         private bool firingLaser = false;
-        private int counterWhileDamaging = 0;
+        private List<int> counterWhileDamaging = new List<int>();
         private Rectangle onLine;
         private int attackLineX = 0;
         private int attackLineY = 0;
-        private bool isDamaging = false;
         private Vector2 initialPos;
 
         //Player movement enum (FaceRight first so player initially starts off idly facing to the right)
@@ -202,10 +201,18 @@ namespace Beaulax.Classes
         /// Fire a laser that deals damage to enemies.
         /// </summary>
         /// <param name="enemy"></param>
-        public void Attack(Enemy enemy)
+        public void Attack(List<Enemy> enemies)
         {
             state = Keyboard.GetState();
-
+            bool[] isDamaging = new bool[enemies.Count];
+            if (counterWhileDamaging.Count < 1)
+            {
+                for (int i = 0; i < isDamaging.Length; i++)
+                {
+                    counterWhileDamaging.Add(0);
+                }
+            }
+            Console.WriteLine(counterWhileDamaging.Count);
             attackBox = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2), 800, 30);
 
             // shoot diagonally up right
@@ -222,9 +229,12 @@ namespace Beaulax.Classes
                 {
                     attackLineY = -attackLineX - 21;
                     onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
-                    if (onLine.Intersects(enemy.HitBox))
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        isDamaging = true;
+                        if (onLine.Intersects(enemies[i].HitBox))
+                        {
+                            isDamaging[i] = true;
+                        }
                     }
                     attackLineX++;
                 }
@@ -243,9 +253,12 @@ namespace Beaulax.Classes
                 {
                     attackLineY = attackLineX;
                     onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
-                    if (onLine.Intersects(enemy.HitBox))
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        isDamaging = true;
+                        if (onLine.Intersects(enemies[i].HitBox))
+                        {
+                            isDamaging[i] = true;
+                        }
                     }
                     attackLineX++;
                 }
@@ -264,9 +277,12 @@ namespace Beaulax.Classes
                 {
                     attackLineY = attackLineX;
                     onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
-                    if (onLine.Intersects(enemy.HitBox))
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        isDamaging = true;
+                        if (onLine.Intersects(enemies[i].HitBox))
+                        {
+                            isDamaging[i] = true;
+                        }
                     }
                     attackLineX--;
                 }
@@ -285,9 +301,12 @@ namespace Beaulax.Classes
                 {
                     attackLineY = -attackLineX - 21;
                     onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) + attackLineX, hitBox.Y + (hitBox.Height / 2) + attackLineY, 21, 21);
-                    if (onLine.Intersects(enemy.HitBox))
+                    for (int i = 0; i < enemies.Count; i++)
                     {
-                        isDamaging = true;
+                        if (onLine.Intersects(enemies[i].HitBox))
+                        {
+                            isDamaging[i] = true;
+                        }
                     }
                     attackLineX--;
                 }
@@ -303,9 +322,12 @@ namespace Beaulax.Classes
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
-                if (onLine.Intersects(enemy.HitBox))
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    isDamaging = true;
+                    if (onLine.Intersects(enemies[i].HitBox))
+                    {
+                        isDamaging[i] = true;
+                    }
                 }
             }
             // shoot left
@@ -319,9 +341,12 @@ namespace Beaulax.Classes
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - attackBox.Width, hitBox.Y + (hitBox.Height / 2) - 15, attackBox.Width, attackBox.Height);
-                if (onLine.Intersects(enemy.HitBox))
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    isDamaging = true;
+                    if (onLine.Intersects(enemies[i].HitBox))
+                    {
+                        isDamaging[i] = true;
+                    }
                 }
             }
             // shoot up
@@ -335,9 +360,12 @@ namespace Beaulax.Classes
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2) - attackBox.Width, attackBox.Height, attackBox.Width);
-                if (onLine.Intersects(enemy.HitBox))
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    isDamaging = true;
+                    if (onLine.Intersects(enemies[i].HitBox))
+                    {
+                        isDamaging[i] = true;
+                    }
                 }
             }
             // shoot down
@@ -351,9 +379,12 @@ namespace Beaulax.Classes
 
                 // check if the laser is hitting the enemy
                 onLine = new Rectangle(hitBox.X + (hitBox.Width / 2) - 15, hitBox.Y + (hitBox.Height / 2), attackBox.Height, attackBox.Width);
-                if (onLine.Intersects(enemy.HitBox))
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    isDamaging = true;
+                    if (onLine.Intersects(enemies[i].HitBox))
+                    {
+                        isDamaging[i] = true;
+                    }
                 }
             }
             // if nothing is pressed then the player is not firing the laser
@@ -366,16 +397,19 @@ namespace Beaulax.Classes
             if (firingLaser == true && cyclesWhileFiring <= cyclesToOverheat)
             {
                 // if the player is hitting the enemy then deal damage to the enemy
-                if (isDamaging)
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    if (counterWhileDamaging >= 20)
+                    if (isDamaging[i])
                     {
-                        counterWhileDamaging = 0;
-                        enemy.TakeDamage(damage);
-                    }
-                    else
-                    {
-                        counterWhileDamaging++;
+                        if (counterWhileDamaging[i] >= 20)
+                        {
+                            counterWhileDamaging[i] = 0;
+                            enemies[i].TakeDamage(damage);
+                        }
+                        else
+                        {
+                            counterWhileDamaging[i]++;
+                        }
                     }
                 }
                 cyclesWhileFiring++;
@@ -400,7 +434,10 @@ namespace Beaulax.Classes
             // reset attack variables
             attackLineX = 0;
             attackLineY = 0;
-            isDamaging = false;
+            for (int i = 0; i < isDamaging.Length; i++)
+            {
+                isDamaging[i] = false;
+            }
         }
 
         /// <summary>

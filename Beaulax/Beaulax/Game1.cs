@@ -602,16 +602,13 @@ namespace Beaulax
                 player.Movement();
             }
 
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                player.Attack(enemies[i]);
-            }
+            player.Attack(enemies);
 
             if (boss != null)
             {
-                player.Attack(boss);
+                player.Attack(new List<Classes.Enemy> { boss });
             }
-            
+
             KeyboardState kb = Keyboard.GetState();
 
             // save the game
