@@ -52,9 +52,9 @@ namespace Beaulax.Classes
         private const int LASER_WIDTH = 800;
         private int currentFrameLaser;
         private int cyclesWhileFiring = 0;
-        private int cyclesToOverheat = 150;
-        private int cyclesWhileCooling = 120;
-        private int cyclesToCooldown = 120;
+        private int cyclesToOverheat = 90;
+        private int cyclesWhileCooling = 75;
+        private int cyclesToCooldown = 75;
         private bool onCooldown = false;
 
         // defining states
