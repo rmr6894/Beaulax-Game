@@ -13,6 +13,7 @@ namespace Beaulax.Classes
     {
         // attributes
         private Player player;
+        private Game1 game;
         private Texture2D enemySprite;
         private Texture2D projText;
         private int atkSpeed; // how much time is between each boss's shots (in frames)
@@ -30,10 +31,14 @@ namespace Beaulax.Classes
         private int currentFrame;
         private int framesElapsed;
 
+        // for game over
+        private int count = 300;
+
         // constructor
-        public Boss (Player iPlayer, Texture2D sprite, Texture2D projSprite, int iHealth, int iDamage, Vector2 iLocation, int iWidth, int iHeight, int atkSpd)
+        public Boss (Player iPlayer, Game1 iGame, Texture2D sprite, Texture2D projSprite, int iHealth, int iDamage, Vector2 iLocation, int iWidth, int iHeight, int atkSpd)
         {
             player = iPlayer;
+            game = iGame;
             enemySprite = sprite;
             projText = projSprite;
             health = iHealth;
@@ -127,6 +132,18 @@ namespace Beaulax.Classes
             //Animation
             framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
             currentFrame = framesElapsed % totalFrames;
+
+            if (!isAlive)
+            {
+                if (count == 0)
+                {
+                    game.currentState = Game1.GameState.MainMenu;
+                }
+                else
+                {
+                    count--;
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

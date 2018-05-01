@@ -121,8 +121,8 @@ namespace Beaulax
         int screenHeight = 720;
 
         // set up game states
-        enum GameState { MainMenu, Options, Gameplay, PauseMenu, MapView, GameOver };
-        GameState currentState;
+        public enum GameState { MainMenu, Options, Gameplay, PauseMenu, MapView, GameOver };
+        public GameState currentState;
 
         // call classes
         Classes.Player player;
@@ -1272,7 +1272,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            boss = new Classes.Boss(this.player, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
+                                            boss = new Classes.Boss(this.player, this, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
                                             break;
                                     }
                                     
@@ -1442,7 +1442,7 @@ namespace Beaulax
                                             break;
 
                                         case 'B':
-                                            boss = new Classes.Boss(this.player, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
+                                            boss = new Classes.Boss(this.player, this, bossText, projText, 1500, 10, new Vector2((pxlPerBox * (x - afterDoor)) - 300, (pxlPerBox * i) - 540), 624, 604, 50);
                                             break;
                                     }
                                     
