@@ -126,7 +126,7 @@ namespace Beaulax.Classes
 
             //Animation
             framesElapsed = (int)(gameTime.TotalGameTime.TotalMilliseconds / timePerFrame);
-            currentFrame = framesElapsed % totalFrames + 1;
+            currentFrame = framesElapsed % totalFrames;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

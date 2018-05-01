@@ -125,9 +125,15 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\background1.png" />
-    <Content Include="Content\background2.png" />
-    <Content Include="Content\background3.png" />
+    <Content Include="Content\background1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\background2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\background3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\BlackSquare.gif" />
     <Content Include="Content\blood_projectile.png" />
     <Content Include="Content\computerTemp.jpg" />
@@ -156,7 +162,9 @@
     <Content Include="Content\HealthBar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\holeBackground.png" />
+    <Content Include="Content\holeBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\InfoHUD.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

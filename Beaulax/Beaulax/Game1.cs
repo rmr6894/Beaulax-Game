@@ -22,6 +22,7 @@ namespace Beaulax
         SpriteBatch spriteBatch;
         Vector2 initialPosition;
         Texture2D cursor;
+        Random gen = new Random();
 
         // delay counters
         int mainMenuDelayCount = 0;
@@ -698,6 +699,9 @@ namespace Beaulax
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         void DrawGameplay(GameTime deltaTime)
         {
+            //Picking a background to draw before anything else
+            spriteBatch.Draw(background1, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+
             if (enemies.Count != 0)
             {
                 for (int i = 0; i < enemies.Count; i++)
