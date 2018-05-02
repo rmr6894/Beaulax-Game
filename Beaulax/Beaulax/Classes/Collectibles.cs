@@ -47,8 +47,11 @@ namespace Beaulax.Classes
                 }
                 else if (id == "medpack")
                 {
-                    pickedUp = true;
-                    play.CharacterHealth = game.playerMaxHealth;
+                    if (pickedUp == false)
+                    {
+                        pickedUp = true;
+                        play.CharacterHealth = game.playerMaxHealth;
+                    }
                 }
             }
         }
