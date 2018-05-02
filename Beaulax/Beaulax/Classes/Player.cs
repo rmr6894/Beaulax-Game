@@ -213,7 +213,7 @@ namespace Beaulax.Classes
                 }
             }
             
-            attackBox = new Rectangle(hitBox.X + (hitBox.Width / 2), hitBox.Y, 800, 64);
+            attackBox = new Rectangle(hitBox.X + (hitBox.Width / 4), hitBox.Y + (hitBox.Height / 2), 800, 64);
 
             // shoot diagonally up right
             if (state.IsKeyDown(Keys.Right) && state.IsKeyDown(Keys.Up))
@@ -491,11 +491,11 @@ namespace Beaulax.Classes
                 {
                     case "WalkLeft":
                     case "FaceLeft":
-                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, 0), SpriteEffects.None, 0);
+                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, LASER_HEIGHT / 2), SpriteEffects.None, 0);
                         break;
                     case "WalkRight":
                     case "FaceRight":
-                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                        spriteBatch.Draw(laser, attackBox, new Rectangle(0, LASER_HEIGHT * currentFrameLaser, LASER_WIDTH, LASER_HEIGHT), Color.White, laserRotation, new Vector2(0, LASER_HEIGHT / 2), SpriteEffects.FlipHorizontally, 0);
                         break;
                 }
             }
